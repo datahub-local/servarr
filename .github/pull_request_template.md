@@ -22,4 +22,4 @@
 
 <placeholder>
 
-<!-- By submitting this Pull Request, you agree to follow our [Code of Conduct](https://github.com/fonzdm/servarr/CONTRIBUTING.md) -->
+<!-- By submitting this Pull Request, you agree to follow our [Code of Conduct](https://github.com/datahub-local/servarr/CONTRIBUTING.md) -->

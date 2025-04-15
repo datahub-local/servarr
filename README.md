@@ -20,7 +20,7 @@ These instructions will get you a copy of the project up and running on your loc
 1. Clone the repository:
 
 ```shell
-$ git clone https://github.com/fonzdm/servarr.git && cd servarr
+$ git clone https://github.com/datahub-local/servarr.git && cd servarr
 ```
 
 2. Retrieve the dependencies
@@ -81,17 +81,17 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of cond
 
 ## :busts_in_silhouette: Contributors
 
-<a href="https://github.com/fonzdm/servarr/graphs/contributors">
+<a href="https://github.com/datahub-local/servarr/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=fonzdm/servarr" />
 </a>
 
-See the full list of [contributors](https://github.com/fonzdm/servarr/contributors) who participated in this project.
+See the full list of [contributors](https://github.com/datahub-local/servarr/contributors) who participated in this project.
 
 ###### Remember that each dependency has its own author(s) and contributors. Please contact them via their repositories.
 
 ## :label: Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases on this repository](https://github.com/fonzdm/servarr/releases). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases on this repository](https://github.com/datahub-local/servarr/releases). 
 
 ## :scroll: License
 
