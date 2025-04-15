@@ -16,7 +16,7 @@ notifications:
 
 dash:
   username: admin
-  password: str0ngP4ssw0rd.
+  password: str0ngP4ssw0rd
   mail: admin@gmail.com
   countryCode: "US"
   preferredLanguage: "en"
