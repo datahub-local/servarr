@@ -1,0 +1,88 @@
+apiVersion: v1
+entries:
+  servarr:
+  - annotations:
+      artifacthub.io/alternativeName: servar
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/license: AGPL-3.0-or-later
+      artifacthub.io/maintainers: |
+        - name: fonzdm
+          email: adm220297@proton.me
+        - name: imgios
+          email: g.sulipano@outlook.it
+        - name: mrgionsi
+          email: g.pasquariello96@gmail.com
+        - name: lucaam
+          email: luca.amoriello@hotmail.it
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-04-15T17:44:20.679425641Z"
+    dependencies:
+    - name: sonarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - tvseries
+      version: 21.2.1
+    - name: radarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      version: 21.2.1
+    - name: prowlarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 16.2.1
+    - name: qbittorrent
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 19.4.1
+    - name: jellyseerr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 9.5.2
+    - name: jellyfin
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 18.7.7
+    - name: flaresolverr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 13.4.1
+    description: Servarr complete Helm Chart for Kubernetes
+    digest: d016b77f235bad59cdd80b8d59f164f02839cafd4e90efe709d75117ee7a1cf7
+    home: https://github.com/datahub-local/servarr
+    keywords:
+    - servarr
+    - prowlarr
+    - radarr
+    - sonarr
+    - qbittorrent
+    - jellyseerr
+    - jellyfin
+    - flaresolverr
+    maintainers:
+    - email: adm220297@proton.me
+      name: Alfonso De Masi
+    name: servarr
+    sources:
+    - https://github.com/datahub-local/servarr
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-04-15T17:44:20.679434938Z"
