@@ -7,9 +7,13 @@ metadata:
     release: "{{ .Release.Name }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
-    "helm.sh/hook-weight": "40"
+    helm.sh/hook: post-install
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "40"
+
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "40"
 spec:
   backoffLimit: 1
   template:

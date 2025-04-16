@@ -6,9 +6,13 @@ metadata:
     release: "{{ .Release.Name }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
-    "helm.sh/hook-weight": "20"
+    helm.sh/hook: post-install
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "20"
+
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   backoffLimit: 1
   template:
@@ -26,41 +30,41 @@ spec:
             [
               "sh",
               "-c",
-              "until wget --spider -S -T 10 \"http://{{ .Release.Name }}-prowlarr.{{ .Release.Namespace }}.svc.cluster.local:9696\" 2>&1 | grep -qw '200\\|301\\|302' > /dev/null ; do echo Waiting for servarr-prowlarr ; sleep 5 ; done ; sleep 10 ;"
+              "until wget --spider -S -T 10 \"http://{{ .Release.Name }}-prowlarr.{{ .Release.Namespace }}.svc.cluster.local:9696\" 2>&1 | grep -qw '200\\|301\\|302' > /dev/null ; do echo Waiting for servarr-prowlarr ; sleep 5 ; done ; sleep 10 ;",
             ]
       containers:
-      - name: initialize-prowlarr
-        image: python:3.10
-        imagePullPolicy: IfNotPresent
-        env:
-          - name: PYTHONUNBUFFERED
-            value: "1"
-          - name: PROWLARR_HOST
-            value: "{{ .Release.Name }}-prowlarr.{{ .Release.Namespace }}.svc.cluster.local:9696"
-          - name: API_KEY
-            value: "{{ $.Values.global.apikey }}"
-          - name: TORRENT_SERVICE
-            value: "{{ .Release.Name }}-qbittorrent"
-          - name: TORRENT_ADMIN
-            value: "{{ $.Values.torrent.username }}"
-          - name: TORRENT_PASSWORD
-            value: "{{ $.Values.torrent.password }}"
-          - name: PROWLARR_SERVICE
-            value: "{{ .Release.Name }}-prowlarr:9696"
-          - name: RADARR_SERVICE
-            value: "{{ .Release.Name }}-radarr:7878"
-          - name: FLARESOLVERR_SERVICE
-            value: "{{ .Release.Name }}-flaresolverr:8191"
-          - name: SONARR_SERVICE
-            value: "{{ .Release.Name }}-sonarr:8989"
-        command:
-          - "/bin/sh"
-          - "-ec"
-        args:
-          - "pip install requests && python3 -u /mnt/init-prowlarr.py 2>&1;"
-        volumeMounts:
-          - mountPath: "/mnt"
-            name: python-script-and-indexers
+        - name: initialize-prowlarr
+          image: python:3.10
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: PROWLARR_HOST
+              value: "{{ .Release.Name }}-prowlarr.{{ .Release.Namespace }}.svc.cluster.local:9696"
+            - name: API_KEY
+              value: "{{ $.Values.global.apikey }}"
+            - name: TORRENT_SERVICE
+              value: "{{ .Release.Name }}-qbittorrent"
+            - name: TORRENT_ADMIN
+              value: "{{ $.Values.torrent.username }}"
+            - name: TORRENT_PASSWORD
+              value: "{{ $.Values.torrent.password }}"
+            - name: PROWLARR_SERVICE
+              value: "{{ .Release.Name }}-prowlarr:9696"
+            - name: RADARR_SERVICE
+              value: "{{ .Release.Name }}-radarr:7878"
+            - name: FLARESOLVERR_SERVICE
+              value: "{{ .Release.Name }}-flaresolverr:8191"
+            - name: SONARR_SERVICE
+              value: "{{ .Release.Name }}-sonarr:8989"
+          command:
+            - "/bin/sh"
+            - "-ec"
+          args:
+            - "pip install requests && python3 -u /mnt/init-prowlarr.py 2>&1;"
+          volumeMounts:
+            - mountPath: "/mnt"
+              name: python-script-and-indexers
       volumes:
         - name: python-script-and-indexers
           configMap:
