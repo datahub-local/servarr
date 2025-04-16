@@ -1,5 +1,4 @@
-{{- $is_downloads_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.downloads.name) }}
-{{- if not $is_downloads_pvc_present }}
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -15,12 +14,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volumes.downloads.size }}
-{{- end }}
-
 ---
-
-{{- $is_media_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.media.name) }}
-{{- if not $is_media_pvc_present }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -36,12 +30,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volumes.media.size }}
-{{- end }}
-
 ---
-
-{{- $is_torrentconfig_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.torrentConfig.name) }}
-{{- if not $is_torrentconfig_pvc_present }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -57,4 +46,3 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volumes.torrentConfig.size }}
-{{- end }}
