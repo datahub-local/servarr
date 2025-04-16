@@ -26,5 +26,5 @@ jobs:
       with:
         git-push: true
         git-push-user-name: "Servarr Bot 🤖"
-        git-push-user-email: "servarr-bot@fonzdm.xyz"
+        git-push-user-email: "servarr-bot@datahub.local"
         chart-search-root: ./servarr
