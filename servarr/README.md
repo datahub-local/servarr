@@ -12,7 +12,7 @@ Servarr complete Helm Chart for Kubernetes
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Alfonso De Masi | <adm220297@proton.me> |  |
+| alvsanand | <alvsanand@gmail.com> |  |
 
 ## Source Code
 
