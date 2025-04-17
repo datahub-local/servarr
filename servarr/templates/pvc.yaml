@@ -13,7 +13,9 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     #{{- end }}
 spec:
   storageClassName: {{.Values.volumes.storageClass}}
@@ -38,7 +40,9 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     #{{- end }}
 spec:
   storageClassName: {{.Values.volumes.storageClass}}
@@ -63,7 +67,9 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     #{{- end }}
 spec:
   storageClassName: {{.Values.volumes.storageClass}}

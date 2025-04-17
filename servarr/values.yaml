@@ -19,6 +19,9 @@ global:
   # @section -- Global
   certManagerClusterIssuer: &issuer
 
+  annotations:
+    key: value
+
 tags:
   # -- (bool) This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr
   # @default -- true
