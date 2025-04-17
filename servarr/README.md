@@ -340,6 +340,7 @@ flaresolverr:
 |-----|------|---------|-------------|
 | argoCD | bool | false | The flag changes the behavior id deployed with ArgoCD. |
 | flaresolverr | object | `{}` |  |
+| global.annotations.key | string | `"value"` |  |
 | jellyfin | object | `{}` |  |
 | jellyseerr | object | `{}` |  |
 | prowlarr | object | `{}` |  |
