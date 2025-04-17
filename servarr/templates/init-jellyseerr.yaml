@@ -64,6 +64,14 @@ spec:
             value: "{{ $.Values.notifications.telegram.chat_id}}"
           - name: TELEGRAM_BOT_APITOKEN
             value: "{{ $.Values.notifications.telegram.bot_apitoken }}"
+          - name: SONARR_HOST
+            value: "{{ .Release.Name }}-sonarr"
+          - name: SONARR_PORT
+            value: "8989"
+          - name: RADARR_HOST
+            value: "{{ .Release.Name }}-radarr"
+          - name: RADARR_PORT
+            value: "7878"
         command:
           - "/bin/sh"
           - "-ec"
