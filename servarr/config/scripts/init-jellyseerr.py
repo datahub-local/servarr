@@ -20,6 +20,10 @@ JELLYSEERR_HOST = os.getenv("JELLYSEERR_HOST")
 JELLYSEERR_PORT = os.getenv("JELLYSEERR_PORT")
 JELLYFIN_HOST = os.getenv("JELLYFIN_HOST")
 JELLYFIN_PORT = os.getenv("JELLYFIN_PORT")
+SONARR_HOST = os.getenv("SONARR_HOST")
+SONARR_PORT = os.getenv("SONARR_PORT")
+RADARR_HOST = os.getenv("RADARR_HOST")
+RADARR_PORT = os.getenv("RADARR_PORT")
 
 jellyfin_url = "http://{0}:{1}/".format(JELLYFIN_HOST, JELLYFIN_PORT)
 jellyseer_url = "http://{0}:{1}".format(JELLYSEERR_HOST, JELLYSEERR_PORT)
@@ -133,8 +137,8 @@ logger.info("Integrating Sonarr")
 sonarr_endpoint = "/api/v1/settings/sonarr"
 sonarr_body = {
     "name": "Sonarr",
-    "hostname": "servarr-sonarr",
-    "port": 8989,
+    "hostname": SONARR_HOST,
+    "port": SONARR_PORT,
     "apiKey": API_KEY,
     "useSsl": False,
     "activeProfileId": 4,
@@ -164,8 +168,8 @@ logger.info("Integrating Radarr")
 radarr_endpoint = "/api/v1/settings/radarr"
 radarr_body = {
     "name": "Radarr",
-    "hostname": "servarr-radarr",
-    "port": 7878,
+    "hostname": RADARR_HOST,
+    "port": RADARR_PORT,
     "apiKey": API_KEY,
     "useSsl": False,
     "activeProfileId": 4,
