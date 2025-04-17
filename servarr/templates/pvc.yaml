@@ -1,60 +1,75 @@
+{{- $is_downloads_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.downloads.name) }}
+{{- if or .Values.argoCD $is_downloads_pvc_present }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.volumes.downloads.name }}
+  name: {{.Values.volumes.downloads.name}}
   annotations:
+    #{{- if not.Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
     helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
 
-    argocd.argoproj.io/hook: PreSync
+    #{{- if Values.argoCD }}
     argocd.argoproj.io/sync-wave: "-5"
-    argocd.argoproj.io/hook-delete-policy: HookFailed
+    #{{- end }}
 spec:
-  storageClassName: {{ .Values.volumes.storageClass }}
+  storageClassName: {{.Values.volumes.storageClass}}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.volumes.downloads.size }}
+      storage: {{.Values.volumes.downloads.size}}
+{{- end }}
 ---
+{{- $is_media_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.media.name) }}
+{{- if or .Values.argoCD not $is_media_pvc_present }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.volumes.media.name }}
+  name: {{.Values.volumes.media.name}}
   annotations:
+    #{{- if not.Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
     helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
 
-    argocd.argoproj.io/hook: PreSync
+    #{{- if Values.argoCD }}
     argocd.argoproj.io/sync-wave: "-5"
-    argocd.argoproj.io/hook-delete-policy: HookFailed
+    #{{- end }}
 spec:
-  storageClassName: {{ .Values.volumes.storageClass }}
+  storageClassName: {{.Values.volumes.storageClass}}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.volumes.media.size }}
+      storage: {{.Values.volumes.media.size}}
+{{- end }}
 ---
+{{- $is_torrentconfig_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.torrentConfig.name) }}
+{{- if or .Values.argoCD not $is_torrentconfig_pvc_present }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.volumes.torrentConfig.name }}
+  name: {{.Values.volumes.torrentConfig.name}}
   annotations:
+    #{{- if not.Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
     helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
 
-    argocd.argoproj.io/hook: PreSync
+    #{{- if Values.argoCD }}
     argocd.argoproj.io/sync-wave: "-5"
-    argocd.argoproj.io/hook-delete-policy: HookFailed
+    #{{- end }}
 spec:
-  storageClassName: {{ .Values.volumes.storageClass }}
+  storageClassName: {{.Values.volumes.storageClass}}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.volumes.torrentConfig.size }}
+      storage: {{.Values.volumes.torrentConfig.size}}
+{{- end }}

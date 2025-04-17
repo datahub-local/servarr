@@ -1,3 +1,7 @@
+# -- (bool) The flag changes the behavior id deployed with ArgoCD.
+# @default -- false
+argoCD: false
+
 global:
   # -- (string) Insert your Prowlarr, Sonarr, Radarr API key here (one to rule them all!). Do not remove the `&apikey` anchor!
   # @default -- No default value is configured for security reasons
