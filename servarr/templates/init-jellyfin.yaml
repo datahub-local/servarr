@@ -8,13 +8,13 @@ metadata:
   annotations:
     #{{- if not .Values.argoCD }}
     helm.sh/hook: post-install
-    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-delete-policy: hook-failed
     helm.sh/hook-weight: "30"
     #{{- end }}
 
     #{{- if .Values.argoCD }}
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/hook-delete-policy: HookFailed
     argocd.argoproj.io/sync-wave: "30"
     #{{- end }}
 spec:
