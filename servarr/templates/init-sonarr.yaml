@@ -13,8 +13,6 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookFailed
     argocd.argoproj.io/sync-wave: "10"
     #{{- end }}
 spec:

@@ -47,9 +47,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
-    argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "-5"
-    argocd.argoproj.io/hook-delete-policy: HookFailed
     #{{- end }}
   name: init-qbittorrent-python-script
 data:
