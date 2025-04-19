@@ -276,7 +276,6 @@ flaresolverr:
 | global.apikey | string | No default value is configured for security reasons | Insert your Prowlarr, Sonarr, Radarr API key here (one to rule them all!). Do not remove the `&apikey` anchor! |
 | global.certManagerClusterIssuer | string | No default value, leave empty if not required | Insert your cert manager cluster issuer, e.g.: letsencrypt-cloudflare. Do not remove the `&issuer` anchor! |
 | global.ingressClassName | string | nginx | Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error! |
-| global.storageClassName | string | `"network-block"` | Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor! |
 
 ### Prowlarr
 
@@ -341,6 +340,7 @@ flaresolverr:
 | argoCD | bool | false | The flag changes the behavior id deployed with ArgoCD. |
 | flaresolverr | object | `{}` |  |
 | global.annotations.key | string | `"value"` |  |
+| global.storageClassName | string | `"network-block"` |  |
 | jellyfin | object | `{}` |  |
 | jellyseerr | object | `{}` |  |
 | prowlarr | object | `{}` |  |
