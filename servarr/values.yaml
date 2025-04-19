@@ -7,8 +7,9 @@ global:
   # @default -- No default value is configured for security reasons
   # @section -- Global
   apikey: &apikey
-  # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
-  # @section -- Global
+    # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
+    # @section -- Global
+
   storageClassName: &storageClassName "network-block"
   # -- (string) Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error!
   # @default -- nginx
@@ -530,7 +531,7 @@ sonarr:
         containers:
           main:
             env:
-              SONARR__API_KEY: *apikey
+              SONARR__AUTH__APIKEY: *apikey
   # @ignore
   ingress:
     # @ignore
@@ -607,7 +608,7 @@ radarr:
         containers:
           main:
             env:
-              RADARR__API_KEY: *apikey
+              RADARR__AUTH__APIKEY: *apikey
   # @ignore
   ingress:
     # @ignore
@@ -966,7 +967,7 @@ prowlarr:
         containers:
           main:
             env:
-              PROWLARR__API_KEY: *apikey
+              PROWLARR__AUTH__APIKEY: *apikey
   # @ignore
   ingress:
     prowlarr-ing:

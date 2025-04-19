@@ -70,7 +70,7 @@ sonarr:
         containers:
           main:
             env:
-              SONARR__API_KEY: *apikey
+              SONARR__AUTH__APIKEY: *apikey
   ingress:
     sonarr-ing:
       annotations:
@@ -103,7 +103,7 @@ radarr:
         containers:
           main:
             env:
-              RADARR__API_KEY: *apikey
+              RADARR__AUTH__APIKEY: *apikey
   ingress:
     radarr-ing:
       annotations:
@@ -208,7 +208,7 @@ prowlarr:
         containers:
           main:
             env:
-              PROWLARR__API_KEY: *apikey
+              PROWLARR__AUTH__APIKEY: *apikey
   ingress:
     prowlarr-ing:
       annotations:
