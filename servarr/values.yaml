@@ -1024,7 +1024,6 @@ flaresolverr:
   # Fix current errors with Cloudfare
   image:
     repository: ghcr.io/thephaseless/byparr
-    pullPolicy: IfNotPresent
     tag: latest
 
   # @ignore
