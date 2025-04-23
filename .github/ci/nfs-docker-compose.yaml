@@ -1,0 +1,24 @@
+services:
+  nfs-server:
+    image: gists/nfs-server:2.6.4
+    container_name: nfs-server
+    ports:
+      - "2049:2049"
+    # https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities
+    cap_add:
+      - SYS_ADMIN
+      - SETPCAP
+    environment:
+      - "NFS_OPTION=fsid=0,rw,sync,insecure,all_squash,anonuid=0,anongid=0,no_subtree_check,nohide"
+    volumes:
+      - ${NFS_DIRECTORY}:/nfs-share
+    restart: always
+
+volumes:
+  nfs-data:
+    name: nfs-data
+
+networks:
+  default:
+    name: dev-cluster
+    external: true

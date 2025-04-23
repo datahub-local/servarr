@@ -1,0 +1,25 @@
+{
+  "packages": [
+    "argocd",
+    "docker",
+    "docker-compose",
+    "helmfile",
+    "k3d",
+    "k9s",
+    "kubectl",
+    "kubernetes-helm",
+    "nfs-utils"
+  ],
+  "shell": {
+    "scripts": {
+      "start_k8s": [
+        "./.github/ci/start_k8s.sh"
+      ],
+      "stop_k8s": [
+        "./.github/ci/stop_k8s.sh"
+      ],
+      "test_install": "helm upgrade --install --create-namespace --namespace servarr --values .github/ci/ci-values.yaml servarr servarr",
+      "test_delete": "kubectl delete ns servarr"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: install-nfs-utils
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: install-nfs-utils
+  template:
+    metadata:
+      labels:
+        name: install-nfs-utils
+    spec:
+      hostPID: true
+      hostNetwork: true
+      containers:
+        - name: installer
+          image: alpine:3.18
+          command:
+            - /bin/sh
+            - -c
+            - |
+              apk update && apk add nfs-utils && sleep 3600
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: root-mount
+              mountPath: /host
+              mountPropagation: Bidirectional
+      volumes:
+        - name: root-mount
+          hostPath:
+            path: /
+      restartPolicy: Always
