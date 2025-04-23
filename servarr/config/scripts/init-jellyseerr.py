@@ -1,9 +1,10 @@
 #!/usr/local/bin/python3
 
-import requests
-import os
 import logging
+import os
 from json import JSONDecodeError
+
+import requests
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -23,7 +24,6 @@ JELLYFIN_PORT = os.getenv("JELLYFIN_PORT")
 SONARR_HOST = os.getenv("SONARR_HOST")
 RADARR_HOST = os.getenv("RADARR_HOST")
 
-jellyfin_url = "http://{0}:{1}/".format(JELLYFIN_HOST, JELLYFIN_PORT)
 jellyseer_url = "http://{0}:{1}".format(JELLYSEERR_HOST, JELLYSEERR_PORT)
 
 session = requests.Session()
@@ -98,12 +98,15 @@ logger.info("Integrating Jellyfin")
 jellyfin_endpoint = "/api/v1/auth/jellyfin"
 
 jellyfin_body = {
-    "username": JELLYFIN_USERNAME,
-    "password": JELLYFIN_PASSWORD,
-    "hostname": jellyfin_url,
-    "email": JELLYFIN_EMAIL,
+  "username": JELLYFIN_USERNAME,
+  "email": JELLYFIN_EMAIL,
+  "password": JELLYFIN_PASSWORD,
+  "hostname": JELLYFIN_HOST,
+  "port": int(JELLYFIN_PORT),
+  "useSsl": False,
+  "urlBase": "",
+  "serverType":2
 }
-
 
 jellyfin_response = make_post(jellyfin_endpoint, body=jellyfin_body)
 

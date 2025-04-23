@@ -8,15 +8,14 @@ import hashlib
 
 MIN_PASS_LEN = 8
 QBITTORRENT_CONF_FILENAME = "qBittorrent.conf"
-QBITTORRENT_CONF_FILEPATH = "/mnt/qBittorrent/config"
+QBITTORRENT_CONF_FILEPATH = "/mnt/qBittorrent"
+QBITTORRENT_CONF_ABSOLUTE_PATH = QBITTORRENT_CONF_FILEPATH + os.sep + QBITTORRENT_CONF_FILENAME
 
 
 def create_file(file_content: str):
-    file_absolute_path = QBITTORRENT_CONF_FILEPATH + os.sep + QBITTORRENT_CONF_FILENAME
     os.umask(0o077)
-    with open(file_absolute_path, "w+") as fd:
+    with open(QBITTORRENT_CONF_ABSOLUTE_PATH, "w+") as fd:
         fd.write(file_content)
-    return file_absolute_path
 
 
 def qbittorrent_passwd(plain_passwd: str):
@@ -98,7 +97,7 @@ AutoDeleteAddedTorrentFile=Never
 Accepted=true
 
 [Meta]
-MigrationVersion=6
+MigrationVersion=8
 
 [Network]
 Proxy\\HostnameLookupEnabled=false
@@ -149,7 +148,7 @@ logger.info("Setting permissions on files and folders")
 try:
     # Not the pythonic way, but the simplest
     os.system("chown -R 568:568 /mnt/")
-    os.system("chmod 0644 /mnt/qBittorrent/config/qBittorrent.conf")
+    os.system(f"chmod 0644 {QBITTORRENT_CONF_ABSOLUTE_PATH}")
 except Exception:
     logger.exception("Error while setting permissions")
     sys.exit(1)

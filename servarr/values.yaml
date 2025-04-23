@@ -10,6 +10,7 @@ global:
     # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
     # @section -- Global
 
+
   storageClassName: &storageClassName "network-block"
   # -- (string) Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error!
   # @default -- nginx
@@ -903,7 +904,7 @@ qbittorrent:
         containers:
           main:
             env:
-              QBITTORRENT__USE_PROFILE: true
+              QBT_USE_PROFILE: true
   # @ignore
   ingress:
     qbittorrent-ing:
@@ -968,6 +969,7 @@ prowlarr:
           main:
             env:
               PROWLARR__AUTH__APIKEY: *apikey
+              PROWLARR__AUTH__METHOD: External
   # @ignore
   ingress:
     prowlarr-ing:
@@ -1018,6 +1020,13 @@ flaresolverr:
   metrics:
     main:
       enabled: *metricsEnabled
+  # @ignore
+  # Fix current errors with Cloudfare
+  image:
+    repository: ghcr.io/thephaseless/byparr
+    pullPolicy: IfNotPresent
+    tag: latest
+
   # @ignore
   persistence:
     config:
