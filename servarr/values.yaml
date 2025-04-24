@@ -533,6 +533,10 @@ sonarr:
           main:
             env:
               SONARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   # @ignore
   ingress:
     # @ignore
@@ -610,6 +614,10 @@ radarr:
           main:
             env:
               RADARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   # @ignore
   ingress:
     # @ignore
@@ -970,6 +978,10 @@ prowlarr:
             env:
               PROWLARR__AUTH__APIKEY: *apikey
               PROWLARR__AUTH__METHOD: External
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   # @ignore
   ingress:
     prowlarr-ing:

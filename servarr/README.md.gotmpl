@@ -71,6 +71,10 @@ sonarr:
           main:
             env:
               SONARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   ingress:
     sonarr-ing:
       annotations:
@@ -104,6 +108,10 @@ radarr:
           main:
             env:
               RADARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   ingress:
     radarr-ing:
       annotations:
@@ -209,6 +217,10 @@ prowlarr:
           main:
             env:
               PROWLARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
+            resources: *exportarrResources
   ingress:
     prowlarr-ing:
       annotations:
