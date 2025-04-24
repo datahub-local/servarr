@@ -536,7 +536,6 @@ sonarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   # @ignore
   ingress:
     # @ignore
@@ -617,7 +616,6 @@ radarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   # @ignore
   ingress:
     # @ignore
@@ -981,7 +979,6 @@ prowlarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   # @ignore
   ingress:
     prowlarr-ing:

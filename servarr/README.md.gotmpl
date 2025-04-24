@@ -74,7 +74,6 @@ sonarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   ingress:
     sonarr-ing:
       annotations:
@@ -111,7 +110,6 @@ radarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   ingress:
     radarr-ing:
       annotations:
@@ -220,7 +218,6 @@ prowlarr:
           exportarr:
             env:
               API_KEY: *apikey
-            resources: *exportarrResources
   ingress:
     prowlarr-ing:
       annotations:
