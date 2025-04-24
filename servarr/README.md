@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square) 
+![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.1](https://img.shields.io/badge/AppVersion-0.3.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -88,6 +88,9 @@ sonarr:
           main:
             env:
               SONARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
   ingress:
     sonarr-ing:
       annotations:
@@ -121,6 +124,9 @@ radarr:
           main:
             env:
               RADARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
   ingress:
     radarr-ing:
       annotations:
@@ -226,6 +232,9 @@ prowlarr:
           main:
             env:
               PROWLARR__AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              API_KEY: *apikey
   ingress:
     prowlarr-ing:
       annotations:
