@@ -2,15 +2,16 @@
 # @default -- false
 argoCD: false
 
+# @ignore
+debug: false
+
 global:
   # -- (string) Insert your Prowlarr, Sonarr, Radarr API key here (one to rule them all!). Do not remove the `&apikey` anchor!
   # @default -- No default value is configured for security reasons
   # @section -- Global
-  apikey: &apikey
+  apikey:
     # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
     # @section -- Global
-
-
   storageClassName: &storageClassName "network-block"
   # -- (string) Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error!
   # @default -- nginx
@@ -19,7 +20,15 @@ global:
   # -- (string) Insert your cert manager cluster issuer, e.g.: letsencrypt-cloudflare. Do not remove the `&issuer` anchor!
   # @default -- No default value, leave empty if not required
   # @section -- Global
-  certManagerClusterIssuer: &issuer
+  certManagerClusterIssuer: &issuer  
+  # -- (bool) This tag will set the auth method. It is valid for Radarr, Prowlarr, Jellyseerr. Valid values are "" | "External" | "Basic" | "Forms".
+  # @default -- 
+  # @section -- Global
+  authMethod:
+  # -- (bool) This tag will set the auth required. Valid values are  "DisabledForLocalAddresses" | "Enabled"
+  # @default -- DisabledForLocalAddresses
+  # @section -- Global
+  authRequired: DisabledForLocalAddresses
 
   annotations:
     key: value
@@ -81,6 +90,12 @@ dash:
   # @section -- Jellyfin
   # @default -- en
   preferredLanguage: "en"
+  # @ignore
+  apikey: &apikey '{{ .Values.global.apikey }}'
+  # @ignore
+  authMethod: &authMethod '{{ .Values.global.authMethod }}'
+  # @ignore
+  authRequired: &authRequired '{{ .Values.global.authRequired }}'
 
 torrent:
   # -- (string) username of the qBitTorrent admin user
@@ -533,6 +548,8 @@ sonarr:
           main:
             env:
               SONARR__AUTH__APIKEY: *apikey
+              SONARR__AUTH__METHOD: *authMethod
+              SONARR__AUTH__REQUIRED: *authRequired
           exportarr:
             env:
               API_KEY: *apikey
@@ -613,6 +630,8 @@ radarr:
           main:
             env:
               RADARR__AUTH__APIKEY: *apikey
+              RADARR__AUTH__METHOD: *authMethod
+              RADARR__AUTH__REQUIRED: *authRequired
           exportarr:
             env:
               API_KEY: *apikey
@@ -682,6 +701,7 @@ jellyfin:
   # # @default -- true
   # enabled: true
   # @ignore
+      
   metrics:
     main:
       enabled: *metricsEnabled
@@ -771,7 +791,14 @@ jellyfin:
         main:
           main:
             mountPath: /mnt/media
-
+  # # @ignore
+  # workload:
+  #   main:
+  #     podSpec:
+  #       containers:
+  #         main:
+  #           env:
+  #             JELLYFIN_PublishedServerUrl: "https://jellyfin.local"
 jellyseerr:
   # # -- Choose whether Jellyseerr should be installed or not.
   # # @section Services
@@ -815,6 +842,14 @@ jellyseerr:
         failureThreshold: 60
         successThreshold: 1
     pgVersion: 16
+  # @ignore
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              JELLYSEERR__AUTH__APIKEY: *apikey
   # @ignore
   ingress:
     jellyseerr-ing:
@@ -975,7 +1010,8 @@ prowlarr:
           main:
             env:
               PROWLARR__AUTH__APIKEY: *apikey
-              PROWLARR__AUTH__METHOD: External
+              PROWLARR__AUTH__METHOD: *authMethod
+              PROWLARR__AUTH__REQUIRED: *authRequired
           exportarr:
             env:
               API_KEY: *apikey

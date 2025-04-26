@@ -109,7 +109,10 @@ Proxy\\Profiles\\RSS=true
 General\\Locale=en
 MailNotification\\req_auth=true
 WebUI\\HostHeaderValidation=false
-WebUI\\LocalHostAuth=false
+{{- if eq .Values.global.authMethod "External" }}
+WebUI\\AuthSubnetWhitelistEnabled=true
+WebUI\\AuthSubnetWhitelist=0.0.0.0/0
+{{- end }}
 {{- if not (default .Values.qbittorrent.csrf_protection false) }}
 WebUI\\CSRFProtection=false
 WebUI\\ClickjackingProtection=false

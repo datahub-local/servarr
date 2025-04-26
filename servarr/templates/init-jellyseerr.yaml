@@ -66,6 +66,8 @@ spec:
             value: "{{ .Release.Name }}-sonarr"
           - name: RADARR_HOST
             value: "{{ .Release.Name }}-radarr"
+          - name: JELLYSEERR__AUTH__METHOD
+            value: "{{ $.Values.global.authMethod }}"
         command:
           - "/bin/sh"
           - "-ec"

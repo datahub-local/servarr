@@ -1,9 +1,11 @@
 #!/usr/local/bin/python3
 
-import requests
-import os, sys
 import logging
+import os
+import sys
 from json import JSONDecodeError
+
+import requests
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

@@ -1,8 +1,11 @@
+debug: true
+
 global:
-  apikey: &apikey "gs12345678fc4923f1dm45b5a71098s2"
+  apikey: &apikey "AABBCCDDEEFFGG"
   storageClassName: &storageClassName "nfs"
   ingressClassName: &ingressClassName "traefik"
   certManagerClusterIssuer: &issuer "selfsigned-cluster-issuer"
+  authMethod: External
 
 metrics:
   enabled: &metricsEnabled false
@@ -269,13 +272,6 @@ sonarr:
   metrics:
     main:
       enabled: *metricsEnabled
-  workload:
-    main:
-      podSpec:
-        containers:
-          main:
-            env:
-              SONARR__AUTH__APIKEY: *apikey
   ingress:
     sonarr-ing:
       enabled: true
@@ -335,13 +331,6 @@ radarr:
   metrics:
     main:
       enabled: *metricsEnabled
-  workload:
-    main:
-      podSpec:
-        containers:
-          main:
-            env:
-              RADARR__AUTH__APIKEY: *apikey
   ingress:
     radarr-ing:
       enabled: true
@@ -435,6 +424,14 @@ jellyfin:
         successThreshold: 1
     pgVersion: 16
   serviceProtocol: tcp
+  # @ignore
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              JELLYFIN_PublishedServerUrl: "https://jellyfin.media.local:8443/"
   ingress:
     jellyfin-ing:
       enabled: true
@@ -629,14 +626,6 @@ prowlarr:
   metrics:
     main:
       enabled: *metricsEnabled
-  workload:
-    main:
-      podSpec:
-        containers:
-          main:
-            env:
-              PROWLARR__AUTH__APIKEY: *apikey
-              PROWLARR__AUTH__METHOD: External
   ingress:
     prowlarr-ing:
       enabled: true

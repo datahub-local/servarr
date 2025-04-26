@@ -88,6 +88,7 @@ sonarr:
           main:
             env:
               SONARR__AUTH__APIKEY: *apikey
+              SONARR__AUTH__METHOD: External
           exportarr:
             env:
               API_KEY: *apikey

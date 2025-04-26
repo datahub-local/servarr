@@ -208,4 +208,12 @@ if enable_telegram:
 
     telegram_response = make_post(telegram_endpoint, body=telegram_body)
 
+external_auth_enabled = os.getenv("JELLYSEERR__AUTH__METHOD", '').lower() in ('external')
+
+if external_auth_enabled:
+    network_endpoint = "/api/v1/settings/network"
+    network_body = {"trustProxy":True}
+
+    network_response = make_post(network_endpoint, body=network_body)
+
 
