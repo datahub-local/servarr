@@ -1070,3 +1070,18 @@ flaresolverr:
   image:
     repository: ghcr.io/thephaseless/byparr
     tag: latest
+
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: emptyDir
+      size: 500Mi
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+        exportarr:
+          exportarr:
+            mountPath: /config
+            readOnly: true
