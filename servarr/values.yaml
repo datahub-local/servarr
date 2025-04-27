@@ -1070,20 +1070,3 @@ flaresolverr:
   image:
     repository: ghcr.io/thephaseless/byparr
     tag: latest
-
-  # @ignore
-  persistence:
-    config:
-      enabled: true
-      type: pvc
-      size: 500Mi
-      accessModes: ReadWriteMany
-      storageClass: *storageClassName
-      targetSelector:
-        main:
-          main:
-            mountPath: /config
-        exportarr:
-          exportarr:
-            mountPath: /config
-            readOnly: true
