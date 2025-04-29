@@ -726,6 +726,13 @@ jellyfin:
   # # @section Services
   # # @default -- true
   # enabled: true
+
+  # -- Set the app where Jellyfin will be publish. Must match ingress hostname
+  # @section Jellyfin
+  # @default -- https://jellyfin.local
+  chartContext:
+    appUrl: "https://jellyfin.local"
+
   # @ignore
   metrics:
     main:
