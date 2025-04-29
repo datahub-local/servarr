@@ -20,10 +20,12 @@ global:
   # -- (string) Insert your cert manager cluster issuer, e.g.: letsencrypt-cloudflare. Do not remove the `&issuer` anchor!
   # @default -- No default value, leave empty if not required
   # @section -- Global
-  certManagerClusterIssuer: &issuer  
-  # -- (bool) This tag will set the auth method. It is valid for Radarr, Prowlarr, Jellyseerr. Valid values are "" | "External" | "Basic" | "Forms".
-  # @default -- 
-  # @section -- Global
+  certManagerClusterIssuer: &issuer
+    # -- (bool) This tag will set the auth method. It is valid for Radarr, Prowlarr, Jellyseerr. Valid values are "" | "External" | "Basic" | "Forms".
+    # @default --
+    # @section -- Global
+
+
   authMethod:
   # -- (bool) This tag will set the auth required. Valid values are  "DisabledForLocalAddresses" | "Enabled"
   # @default -- DisabledForLocalAddresses
@@ -91,11 +93,11 @@ dash:
   # @default -- en
   preferredLanguage: "en"
   # @ignore
-  apikey: &apikey '{{ .Values.global.apikey }}'
+  apikey: &apikey "{{ .Values.global.apikey }}"
   # @ignore
-  authMethod: &authMethod '{{ .Values.global.authMethod }}'
+  authMethod: &authMethod "{{ .Values.global.authMethod }}"
   # @ignore
-  authRequired: &authRequired '{{ .Values.global.authRequired }}'
+  authRequired: &authRequired "{{ .Values.global.authRequired }}"
 
 torrent:
   # -- (string) username of the qBitTorrent admin user
@@ -550,6 +552,18 @@ sonarr:
               SONARR__AUTH__APIKEY: *apikey
               SONARR__AUTH__METHOD: *authMethod
               SONARR__AUTH__REQUIRED: *authRequired
+            probes:
+              liveness: &customProbeSonarr
+                enabled: true
+                type: exec
+                command:
+                  - /usr/bin/env
+                  - bash
+                  - -c
+                  - |
+                    curl --fail http://127.0.0.1:8989/ping
+              readiness: *customProbeSonarr
+              startup: *customProbeSonarr
           exportarr:
             env:
               API_KEY: *apikey
@@ -632,6 +646,18 @@ radarr:
               RADARR__AUTH__APIKEY: *apikey
               RADARR__AUTH__METHOD: *authMethod
               RADARR__AUTH__REQUIRED: *authRequired
+            probes:
+              liveness: &customProbeRadarr
+                enabled: true
+                type: exec
+                command:
+                  - /usr/bin/env
+                  - bash
+                  - -c
+                  - |
+                    curl --fail http://127.0.0.1:7878/ping
+              readiness: *customProbeRadarr
+              startup: *customProbeRadarr
           exportarr:
             env:
               API_KEY: *apikey
@@ -701,7 +727,6 @@ jellyfin:
   # # @default -- true
   # enabled: true
   # @ignore
-      
   metrics:
     main:
       enabled: *metricsEnabled
@@ -1012,6 +1037,18 @@ prowlarr:
               PROWLARR__AUTH__APIKEY: *apikey
               PROWLARR__AUTH__METHOD: *authMethod
               PROWLARR__AUTH__REQUIRED: *authRequired
+            probes:
+              liveness: &customProbeProwlarr
+                enabled: true
+                type: exec
+                command:
+                  - /usr/bin/env
+                  - bash
+                  - -c
+                  - |
+                    curl --fail http://127.0.0.1:9696/ping
+              readiness: *customProbeProwlarr
+              startup: *customProbeProwlarr
           exportarr:
             env:
               API_KEY: *apikey
