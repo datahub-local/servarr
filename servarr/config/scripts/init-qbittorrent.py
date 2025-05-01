@@ -84,11 +84,16 @@ FileLogger\\MaxSizeBytes=66560
 FileLogger\\Path=/config/qBittorrent/logs
 
 [BitTorrent]
+
 Session\\DefaultSavePath=/downloads
 Session\\ExcludedFileNames=
 Session\\Port=50413
 Session\\QueueingSystemEnabled=true
 Session\\TempPath=/downloads/temp
+Session\\GlobalMaxRatio=1.5
+Session\\GlobalMaxInactiveSeedingMinutes=120
+Session\\GlobalMaxSeedingMinutes=120
+Session\\ShareLimitAction=RemoveWithContent
 
 [Core]
 AutoDeleteAddedTorrentFile=Never
