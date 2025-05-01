@@ -64,7 +64,11 @@ spec:
             value: "{{ $.Values.notifications.telegram.bot_apitoken }}"
           - name: SONARR_HOST
             value: "{{ .Release.Name }}-sonarr"
+          - name: SONARR_EXTERNAL_URL
+            value: "{{ .Release.Name }}-radarr"
           - name: RADARR_HOST
+            value: "{{ .Release.Name }}-radarr"
+          - name: RADARR_EXTERNAL_URL
             value: "{{ .Release.Name }}-radarr"
           - name: JELLYSEERR__AUTH__METHOD
             value: "{{ $.Values.global.authMethod }}"

@@ -22,7 +22,11 @@ JELLYSEERR_PORT = os.getenv("JELLYSEERR_PORT")
 JELLYFIN_HOST = os.getenv("JELLYFIN_HOST")
 JELLYFIN_PORT = os.getenv("JELLYFIN_PORT")
 SONARR_HOST = os.getenv("SONARR_HOST")
+SONARR_PORT = int(os.getenv("SONARR_PORT", "8989"))
+SONARR_EXTERNAL_URL = os.getenv("SONARR_EXTERNAL_URL")
 RADARR_HOST = os.getenv("RADARR_HOST")
+RADARR_PORT = int(os.getenv("RADARR_PORT", "7878"))
+RADARR_EXTERNAL_URL = os.getenv("RADARR_EXTERNAL_URL")
 
 jellyseer_url = "http://{0}:{1}".format(JELLYSEERR_HOST, JELLYSEERR_PORT)
 
@@ -160,6 +164,9 @@ sonarr_body = {
     "tagRequests": True,
 }
 
+if SONARR_EXTERNAL_URL:
+    sonarr_body["externalUrl"] = SONARR_EXTERNAL_URL
+
 sonarr_response = make_post(sonarr_endpoint, body=sonarr_body)
 
 ############ RADARR
@@ -170,7 +177,7 @@ radarr_endpoint = "/api/v1/settings/radarr"
 radarr_body = {
     "name": "Radarr",
     "hostname": RADARR_HOST,
-    "port": 7878,
+    "port": RADARR_PORT,
     "apiKey": API_KEY,
     "useSsl": False,
     "activeProfileId": 4,
@@ -184,6 +191,10 @@ radarr_body = {
     "preventSearch": False,
     "tagRequests": True,
 }
+
+if RADARR_EXTERNAL_URL:
+    radarr_body["externalUrl"] = RADARR_EXTERNAL_URL
+
 
 radarr_response = make_post(radarr_endpoint, body=radarr_body)
 

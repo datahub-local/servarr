@@ -25,12 +25,15 @@ global:
     # @default --
     # @section -- Global
 
-
   authMethod:
   # -- (bool) This tag will set the auth required. Valid values are  "DisabledForLocalAddresses" | "Enabled"
   # @default -- DisabledForLocalAddresses
   # @section -- Global
   authRequired: DisabledForLocalAddresses
+  # -- (string) User a hostname pattern to use in the ingress instead of overriding each service, e.g.: "SERVICE.local". "SERVICE" should be included and it will be replace by the lowercase name of the service.
+  # @default -- https://SERVICE.local
+  # @section -- Global
+  ingressHostPattern: "SERVICE.local"
 
   annotations:
     key: value
@@ -579,13 +582,13 @@ sonarr:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: sonarr.local
+        - host: '{{ replace "SERVICE" "sonarr" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - sonarr.local
+            - '{{ replace "SERVICE" "sonarr" .Values.global.ingressHostPattern }}'
           secretName: sonarr-tls
       integrations:
         certManager:
@@ -673,13 +676,13 @@ radarr:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: radarr.local
+        - host: '{{ replace "SERVICE" "radarr" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - radarr.local
+            - '{{ replace "SERVICE" "radarr" .Values.global.ingressHostPattern }}'
           secretName: radarr-tls
       integrations:
         certManager:
@@ -727,11 +730,8 @@ jellyfin:
   # # @default -- true
   # enabled: true
 
-  # -- Set the app where Jellyfin will be publish. Must match ingress hostname
-  # @section Jellyfin
-  # @default -- https://jellyfin.local
   chartContext:
-    appUrl: "https://jellyfin.local"
+    appUrl: 'https://{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
 
   # @ignore
   metrics:
@@ -784,13 +784,13 @@ jellyfin:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: jellyfin.local
+        - host: '{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - jellyfin.local
+            - '{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
           secretName: jellyfin-tls
       integrations:
         certManager:
@@ -824,13 +824,13 @@ jellyfin:
           main:
             mountPath: /mnt/media
   # # @ignore
-  # workload:
-  #   main:
-  #     podSpec:
-  #       containers:
-  #         main:
-  #           env:
-  #             JELLYFIN_PublishedServerUrl: "https://jellyfin.local"
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              JELLYFIN_PublishedServerUrl: 'https://{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
 jellyseerr:
   # # -- Choose whether Jellyseerr should be installed or not.
   # # @section Services
@@ -893,13 +893,13 @@ jellyseerr:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: jellyseerr.local
+        - host: '{{ replace "SERVICE" "jellyseerr" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - jellyseerr.local
+            - '{{ replace "SERVICE" "jellyseerr" .Values.global.ingressHostPattern }}'
           secretName: jellyseerr-tls
       integrations:
         certManager:
@@ -989,13 +989,13 @@ qbittorrent:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: torrent.local
+        - host: '{{ replace "SERVICE" "torrent" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - torrent.local
+            - '{{ replace "SERVICE" "torrent" .Values.global.ingressHostPattern }}'
           secretName: torrent-tls
       integrations:
         certManager:
@@ -1070,13 +1070,13 @@ prowlarr:
         cert-manager.io/cluster-issuer: *issuer
       ingressClassName: *ingressClassName
       hosts:
-        - host: prowlarr.local
+        - host: '{{ replace "SERVICE" "prowlarr" .Values.global.ingressHostPattern }}'
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - prowlarr.local
+            - '{{ replace "SERVICE" "prowlarr" .Values.global.ingressHostPattern }}'
           secretName: prowlarr-tls
       integrations:
         certManager:
