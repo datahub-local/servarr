@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.4.5](https://img.shields.io/badge/Version-0.4.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.5](https://img.shields.io/badge/AppVersion-0.4.5-informational?style=flat-square) 
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.0](https://img.shields.io/badge/AppVersion-0.5.0-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -286,6 +286,7 @@ flaresolverr:
 | global.authRequired | bool | DisabledForLocalAddresses | This tag will set the auth required. Valid values are  "DisabledForLocalAddresses" | "Enabled" |
 | global.certManagerClusterIssuer | string | No default value, leave empty if not required | Insert your cert manager cluster issuer, e.g.: letsencrypt-cloudflare. Do not remove the `&issuer` anchor! |
 | global.ingressClassName | string | nginx | Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error! |
+| global.ingressHostPattern | string | https://SERVICE.local | User a hostname pattern to use in the ingress instead of overriding each service, e.g.: "SERVICE.local". "SERVICE" should be included and it will be replace by the lowercase name of the service. |
 | global.storageClassName | string | `"network-block"` | Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor! |
 
 ### Prowlarr
@@ -352,7 +353,7 @@ flaresolverr:
 | flaresolverr | object | `{}` |  |
 | global.annotations.key | string | `"value"` |  |
 | global.authMethod | string | `nil` |  |
-| jellyfin.chartContext | object | https://jellyfin.local | Set the app where Jellyfin will be publish. Must match ingress hostname @section Jellyfin |
+| jellyfin.chartContext.appUrl | string | `"https://{{ replace \"SERVICE\" \"jellyfin\" .Values.global.ingressHostPattern }}"` |  |
 | jellyseerr | object | `{}` |  |
 | prowlarr | object | `{}` |  |
 | radarr | object | `{}` |  |
