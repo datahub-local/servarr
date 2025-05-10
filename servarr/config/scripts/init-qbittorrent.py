@@ -93,7 +93,7 @@ Session\\TempPath=/downloads/temp
 Session\\GlobalMaxRatio=1.5
 Session\\GlobalMaxInactiveSeedingMinutes=120
 Session\\GlobalMaxSeedingMinutes=120
-Session\\ShareLimitAction=RemoveWithContent
+Session\\ShareLimitAction=StopActionIndex
 
 [Core]
 AutoDeleteAddedTorrentFile=Never
