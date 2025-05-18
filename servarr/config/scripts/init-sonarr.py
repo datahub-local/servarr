@@ -179,3 +179,38 @@ res = post(
 if res["code"] != 201:
     logger.error("There was an error while setting the Root Folder!")
     sys.exit(1)
+
+body = {
+    "autoUnmonitorPreviouslyDownloadedMovies": False,
+    "recycleBin": "",
+    "recycleBinCleanupDays": 7,
+    "downloadPropersAndRepacks": "preferAndUpgrade",
+    "createEmptyMovieFolders": False,
+    "deleteEmptyFolders": False,
+    "fileDate": "none",
+    "rescanAfterRefresh": "always",
+    "autoRenameFolders": False,
+    "pathsDefaultStatic": False,
+    "setPermissionsLinux": False,
+    "chmodFolder": "755",
+    "chownGroup": "",
+    "skipFreeSpaceCheckWhenImporting": False,
+    "minimumFreeSpaceWhenImporting": 100,
+    "copyUsingHardlinks": False,
+    "useScriptImport": False,
+    "scriptImportPath": "",
+    "importExtraFiles": False,
+    "extraFileExtensions": "srt",
+    "enableMediaInfo": True,
+    "id": 1,
+}
+
+res = post(
+    url="http://{}/api/v3/config/mediamanagement".format(SONARR_HOST),
+    headers=headers,
+    body=body,
+)
+
+if res["code"] != 201:
+    logger.error("There was an error while setting the Configure Media Management!")
+    sys.exit(1)
