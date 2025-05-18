@@ -135,7 +135,7 @@ body = {
     "LibraryOptions": {
         "EnableArchiveMediaFiles": False,
         "EnablePhotos": True,
-        "EnableRealtimeMonitor": True,
+        "EnableRealtimeMonitor": False,
         "ExtractChapterImagesDuringLibraryScan": True,
         "EnableChapterImageExtraction": True,
         "EnableInternetProviders": True,
