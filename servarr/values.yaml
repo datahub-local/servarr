@@ -35,8 +35,8 @@ global:
   # @section -- Global
   ingressHostPattern: "SERVICE.local"
 
-  annotations:
-    key: value
+  annotations: {}
+  # key: value
 
 tags:
   # -- (bool) This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr
