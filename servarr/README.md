@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.0](https://img.shields.io/badge/AppVersion-0.6.0-informational?style=flat-square) 
+![Version: 0.6.1](https://img.shields.io/badge/Version-0.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.1](https://img.shields.io/badge/AppVersion-0.6.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -351,7 +351,7 @@ flaresolverr:
 |-----|------|---------|-------------|
 | argoCD | bool | false | The flag changes the behavior id deployed with ArgoCD. |
 | flaresolverr | object | `{}` |  |
-| global.annotations.key | string | `"value"` |  |
+| global.annotations | object | `{}` |  |
 | global.authMethod | string | `nil` |  |
 | jellyfin.chartContext.appUrl | string | `"https://{{ replace \"SERVICE\" \"jellyfin\" .Values.global.ingressHostPattern }}"` |  |
 | jellyseerr | object | `{}` |  |
