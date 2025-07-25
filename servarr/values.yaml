@@ -1126,6 +1126,7 @@ flaresolverr:
   image:
     repository: ghcr.io/datahub-local/byparr
     tag: main
+    pullPolicy: Always
 
   # @ignore
   persistence:
