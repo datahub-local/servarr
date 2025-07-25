@@ -1124,7 +1124,7 @@ flaresolverr:
   # @ignore
   # Fix current errors with Cloudfare
   image:
-    repository: ghcr.io/datahub-local/byparr:main
+    repository: ghcr.io/datahub-local/byparr
     tag: main
 
   # @ignore
