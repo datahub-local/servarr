@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.6.2](https://img.shields.io/badge/Version-0.6.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.2](https://img.shields.io/badge/AppVersion-0.6.2-informational?style=flat-square) 
+![Version: 0.6.3](https://img.shields.io/badge/Version-0.6.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.3](https://img.shields.io/badge/AppVersion-0.6.3-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,13 +22,13 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://tccr.io/truecharts | flaresolverr | 15.5.1 |
-| oci://tccr.io/truecharts | jellyfin | 20.6.22 |
-| oci://tccr.io/truecharts | jellyseerr | 12.7.3 |
-| oci://tccr.io/truecharts | prowlarr | 18.22.1 |
-| oci://tccr.io/truecharts | qbittorrent | 22.5.2 |
-| oci://tccr.io/truecharts | radarr | 23.25.3 |
-| oci://tccr.io/truecharts | sonarr | 23.8.1 |
+| oci://tccr.io/truecharts | flaresolverr | 16.1.0 |
+| oci://tccr.io/truecharts | jellyfin | 21.1.1 |
+| oci://tccr.io/truecharts | jellyseerr | 13.1.0 |
+| oci://tccr.io/truecharts | prowlarr | 20.1.0 |
+| oci://tccr.io/truecharts | qbittorrent | 23.1.0 |
+| oci://tccr.io/truecharts | radarr | 24.1.1 |
+| oci://tccr.io/truecharts | sonarr | 24.1.0 |
 
 ---
 
