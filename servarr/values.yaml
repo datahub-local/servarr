@@ -1112,8 +1112,8 @@ flaresolverr:
   # @ignore
   # Fix current errors with Cloudfare
   image:
-    repository: ghcr.io/thephaseless/byparr
-    tag: latest
+    repository: ghcr.io/datahub-local/byparr:main
+    tag: main
 
   # @ignore
   persistence:
