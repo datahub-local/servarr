@@ -941,31 +941,43 @@ qbittorrent:
   # @default -- false
   csrf_protection: false
   addons:
-    # -- Addon configuration for the VPN
-    # @section -- Torrent
-    # @default -- See configuration below
-    vpn:
-      # -- (string) Type of the VPN to use, defaults to disabled. See: https://truecharts.org/guides/addons/vpn-setup/
-      # @section -- Torrent
-      # @default -- disabled
-      type: disabled
-      # -- (bool) The flag changes the behavior in case of a tunnel failure (for example, the VPN tunnel cannot be established because the credentials are incorrect). If set to true, a failed tunnel will result in a missing connection (qBitTorrent won't connect externally). If set to false, the connection will use the standard configuration (exposing the user IP).
-      # @section -- Torrent
-      # @default -- true
-      killSwitch: true
-      # -- (list) Which subnets to exclude from the VPN
-      # @section -- Torrent
-      # @default -- 192.168.0.1/24
-      excludedNetworks_IPv4:
-        - "192.168.0.1/24"
-      # -- (list) Ports to be mapped for external access
-      # @section -- Torrent
-      # @default -- [80, 8080, 443, 50513]
-      inputPorts: [80, 8080, 443, 50413]
-      # -- (map) Environment variables to inject into the sidecar container. See the related VPN config in TrueCharts
-      # @section -- Torrent
-      # @default -- Empty map
-      env: {}
+    # # -- Addon configuration for the VPN
+    # # @section -- Torrent
+    # # @default -- See configuration below
+    gluetun:
+      enabled: false
+
+      #
+      # EXAMPLE OpenVPN
+      #
+      # enabled: true
+      # container:
+      #   env:
+      #     FIREWALL: "on"
+      #     FIREWALL_OUTBOUND_SUBNETS: "192.168.178.0/24"
+      #     VPN_SERVICE_PROVIDER: "windscribe"
+      #     VPN_TYPE: "openvpn"
+      #     OPENVPN_USER: "username"
+      #     OPENVPN_PASSWORD: "password"
+      #     SERVER_REGIONS: "Canada East"
+      #     SERVER_CITIES: "Montreal"
+      #
+      # EXAMPLE Wireguard
+      #
+      # enabled: true
+      # container:
+      #   env:
+      #     FIREWALL: "on"
+      #     FIREWALL_OUTBOUND_SUBNETS: "192.168.178.0/24"
+      #     VPN_TYPE: "wireguard"
+      #     VPN_SERVICE_PROVIDER: "mullvad"
+      #     WIREGUARD_PRIVATE_KEY: "xxxxxxx"
+      #     FIREWALL_VPN_INPUT_PORTS: "59241"
+      #     WIREGUARD_ADDRESSES: "xxx.xxx.xxx.xxx/32"
+      #     SERVER_CITIES: "Torronto"
+      #     VPN_ENDPOINT_PORT: "51820"
+      #     WIREGUARD_PUBLIC_KEY: "xxxxxxxx"
+      #     VPN_ENDPOINT_IP: "xx.xx.xxx.xxx"
   # @ignore
   metrics:
     main:
