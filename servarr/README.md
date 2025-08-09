@@ -28,7 +28,7 @@ Servarr complete Helm Chart for Kubernetes
 | oci://tccr.io/truecharts | prowlarr | 20.1.0 |
 | oci://tccr.io/truecharts | qbittorrent | 23.1.0 |
 | oci://tccr.io/truecharts | radarr | 24.1.1 |
-| oci://tccr.io/truecharts | sonarr | 24.1.0 |
+| oci://tccr.io/truecharts | sonarr | 24.2.1 |
 
 ---
 
