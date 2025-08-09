@@ -61,7 +61,7 @@ dependencies:
       - tvseries
       - music
   - name: flaresolverr
-    version: "16.1.0"
+    version: "16.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: flaresolverr.enabled
     tags:
