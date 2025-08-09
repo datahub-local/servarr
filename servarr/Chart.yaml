@@ -38,7 +38,7 @@ dependencies:
       - tvseries
       - music
   - name: qbittorrent
-    version: "23.1.0"
+    version: "23.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: qbittorrent.enabled
     tags:
