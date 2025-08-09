@@ -21,10 +21,11 @@
       "bumpVersions": [
         {
           "filePatterns": [
-            "{{packageFileDir}}/Chart.{yaml,yml}"
+            "servarr/Chart.{yaml,yml}"
           ],
           "matchStrings": [
-            "version:\\s(?<version>[^\\s]+)"
+            "version:\\s(?<version>[^\\s]+)",
+            "appVersion:\\s(?<version>[^\\s]+)",
           ],
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
