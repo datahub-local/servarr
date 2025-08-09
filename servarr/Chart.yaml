@@ -2,7 +2,7 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.7.2
+version: 0.8.0
 appVersion: "0.7.2"
 keywords:
   - servarr
@@ -18,19 +18,19 @@ sources:
   - https://github.com/datahub-local/servarr
 dependencies:
   - name: sonarr
-    version: "24.1.0"
+    version: "24.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: sonarr.enabled
     tags:
       - tvseries
   - name: radarr
-    version: "24.1.1"
+    version: "24.2.2"
     repository: "oci://tccr.io/truecharts"
     # condition: radarr.enabled
     tags:
       - movies
   - name: prowlarr
-    version: "20.1.0"
+    version: "20.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: prowlarr.enabled
     tags:
@@ -38,7 +38,7 @@ dependencies:
       - tvseries
       - music
   - name: qbittorrent
-    version: "23.1.0"
+    version: "23.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: qbittorrent.enabled
     tags:
@@ -46,14 +46,14 @@ dependencies:
       - tvseries
       - music
   - name: jellyseerr
-    version: "13.1.0"
+    version: "13.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: jellyseerr.enabled
     tags:
       - movies
       - tvseries
   - name: jellyfin
-    version: "21.1.1"
+    version: "21.2.2"
     repository: "oci://tccr.io/truecharts"
     # condition: jellyfin.enabled
     tags:
@@ -61,7 +61,7 @@ dependencies:
       - tvseries
       - music
   - name: flaresolverr
-    version: "16.1.0"
+    version: "16.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: flaresolverr.enabled
     tags:
