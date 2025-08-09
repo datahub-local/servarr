@@ -3,7 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "dependencyDashboardApproval": false,
   "automerge": false,
   "prCreation": "immediate",
   "automergeStrategy": "squash",
@@ -18,7 +17,18 @@
         "patch"
       ],
       "groupName": "all non-major Helm dependencies",
-      "groupSlug": "all-minor-patch"
+      "groupSlug": "all-minor-patch",
+      "bumpVersions": [
+        {
+          "filePatterns": [
+            "{{packageFileDir}}/Chart.{yaml,yml}"
+          ],
+          "matchStrings": [
+            "version:\\s(?<version>[^\\s]+)"
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
+      ]
     }
   ]
 }
