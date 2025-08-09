@@ -6,6 +6,9 @@
   "packageRules": [
     {
       "automerge": true,
+      "prCreation": "immediate",
+      "dependencyDashboardApproval": false,
+      "automergeStrategy": "squash",
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "all non-major Helm dependencies",
       "groupSlug": "all-minor-patch"
