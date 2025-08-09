@@ -24,7 +24,7 @@ dependencies:
     tags:
       - tvseries
   - name: radarr
-    version: "24.1.1"
+    version: "24.2.1"
     repository: "oci://tccr.io/truecharts"
     # condition: radarr.enabled
     tags:
