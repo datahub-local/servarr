@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":semanticCommits"
   ],
   "automerge": false,
   "prCreation": "immediate",
@@ -25,7 +26,7 @@
           ],
           "matchStrings": [
             "version:\\s(?<version>[^\\s]+)",
-            "appVersion:\\s(?<version>[^\\s]+)",
+            "appVersion:\\s(?<version>[^\\s]+)"
           ],
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
