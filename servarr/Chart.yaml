@@ -2,7 +2,7 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.8.0
+version: 0.8.1
 appVersion: "0.7.2"
 keywords:
   - servarr
@@ -53,7 +53,7 @@ dependencies:
       - movies
       - tvseries
   - name: jellyfin
-    version: "21.2.2"
+    version: "21.2.3"
     repository: "oci://tccr.io/truecharts"
     # condition: jellyfin.enabled
     tags:
