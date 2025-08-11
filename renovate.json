@@ -4,6 +4,7 @@
     "config:recommended",
     ":semanticCommits"
   ],
+  "schedule": ["* * * * 6"],
   "automerge": false,
   "prCreation": "immediate",
   "automergeStrategy": "squash",
