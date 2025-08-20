@@ -26,7 +26,15 @@
             "servarr/Chart.{yaml,yml}"
           ],
           "matchStrings": [
-            "version:\\s(?<version>[^\\s]+)",
+            "version:\\s(?<version>[^\\s]+)"
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        },
+        {
+          "filePatterns": [
+            "servarr/Chart.{yaml,yml}"
+          ],
+          "matchStrings": [
             "appVersion:\\s(?<version>[^\\s]+)"
           ],
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
