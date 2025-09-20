@@ -10,6 +10,84 @@ entries:
           email: alvsanand@gmail.com
       artifacthub.io/prerelease: "false"
     apiVersion: v2
+    appVersion: 0.12.2
+    created: "2025-09-20T15:28:11.87922164Z"
+    dependencies:
+    - name: sonarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - tvseries
+      version: 24.6.1
+    - name: radarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      version: 24.6.1
+    - name: prowlarr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 20.6.1
+    - name: qbittorrent
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 23.5.1
+    - name: jellyseerr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 13.5.1
+    - name: jellyfin
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 21.5.1
+    - name: flaresolverr
+      repository: oci://tccr.io/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 16.6.1
+    description: Servarr complete Helm Chart for Kubernetes
+    digest: 2009adac123c3b889cda7e526d357fc2d43c2d65c29e40728d70e05994b65da1
+    home: https://github.com/datahub-local/servarr
+    keywords:
+    - servarr
+    - prowlarr
+    - radarr
+    - sonarr
+    - qbittorrent
+    - jellyseerr
+    - jellyfin
+    - flaresolverr
+    maintainers:
+    - email: alvsanand@gmail.com
+      name: alvsanand
+    name: servarr
+    sources:
+    - https://github.com/datahub-local/servarr
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/servarr-0.12.2/servarr-0.12.2.tgz
+    version: 0.12.2
+  - annotations:
+      artifacthub.io/alternativeName: servar
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/license: AGPL-3.0-or-later
+      artifacthub.io/maintainers: |
+        - name: alvsanand
+          email: alvsanand@gmail.com
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
     appVersion: 0.12.1
     created: "2025-09-20T14:23:50.224384792Z"
     dependencies:
@@ -2443,4 +2521,4 @@ entries:
     urls:
     - https://github.com/datahub-local/servarr/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-20T14:23:50.224719502Z"
+generated: "2025-09-20T15:28:11.879478793Z"
