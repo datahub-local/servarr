@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.12.1](https://img.shields.io/badge/Version-0.12.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.12.1](https://img.shields.io/badge/AppVersion-0.12.1-informational?style=flat-square) 
+![Version: 0.12.2](https://img.shields.io/badge/Version-0.12.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.12.2](https://img.shields.io/badge/AppVersion-0.12.2-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -26,7 +26,7 @@ Servarr complete Helm Chart for Kubernetes
 | oci://tccr.io/truecharts | jellyfin | 21.5.1 |
 | oci://tccr.io/truecharts | jellyseerr | 13.5.1 |
 | oci://tccr.io/truecharts | prowlarr | 20.6.1 |
-| oci://tccr.io/truecharts | qbittorrent | 23.5.0 |
+| oci://tccr.io/truecharts | qbittorrent | 23.5.1 |
 | oci://tccr.io/truecharts | radarr | 24.6.1 |
 | oci://tccr.io/truecharts | sonarr | 24.6.1 |
 
