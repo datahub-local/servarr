@@ -1124,7 +1124,7 @@ flaresolverr:
   # @ignore
   # Fix current errors with Cloudfare
   image:
-    repository: ghcr.io/datahub-local/byparr
+    repository: ghcr.io/thephaseless/byparr
     tag: main
     pullPolicy: Always
 
