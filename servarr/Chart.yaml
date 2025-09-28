@@ -2,8 +2,8 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.13.1
-appVersion: 0.13.1
+version: 0.14.0
+appVersion: 0.14.0
 keywords:
   - servarr
   - prowlarr
@@ -24,7 +24,7 @@ dependencies:
     tags:
       - tvseries
   - name: radarr
-    version: "24.7.0"
+    version: "25.0.0"
     repository: "oci://tccr.io/truecharts"
     # condition: radarr.enabled
     tags:
