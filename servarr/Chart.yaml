@@ -30,7 +30,7 @@ dependencies:
     tags:
       - movies
   - name: prowlarr
-    version: "20.12.3"
+    version: "21.0.0"
     repository: "oci://tccr.io/truecharts"
     # condition: prowlarr.enabled
     tags:
