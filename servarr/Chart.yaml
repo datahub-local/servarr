@@ -53,7 +53,7 @@ dependencies:
       - movies
       - tvseries
   - name: jellyfin
-    version: "21.12.7"
+    version: "22.0.2"
     repository: "oci://tccr.io/truecharts"
     # condition: jellyfin.enabled
     tags:
