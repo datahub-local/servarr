@@ -22,13 +22,13 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://tccr.io/truecharts | flaresolverr | 16.14.6 |
+| oci://tccr.io/truecharts | flaresolverr | 16.12.6 |
 | oci://tccr.io/truecharts | jellyfin | 22.2.11 |
 | oci://tccr.io/truecharts | jellyseerr | 13.13.7 |
-| oci://tccr.io/truecharts | prowlarr | 20.12.5 |
-| oci://tccr.io/truecharts | qbittorrent | 23.11.3 |
-| oci://tccr.io/truecharts | radarr | 25.5.4 |
-| oci://tccr.io/truecharts | sonarr | 24.12.5 |
+| oci://tccr.io/truecharts | prowlarr | 21.3.7 |
+| oci://tccr.io/truecharts | qbittorrent | 24.2.7 |
+| oci://tccr.io/truecharts | radarr | 26.3.6 |
+| oci://tccr.io/truecharts | sonarr | 25.2.6 |
 
 ---
 
