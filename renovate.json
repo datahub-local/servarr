@@ -4,7 +4,9 @@
     "config:recommended",
     ":semanticCommits"
   ],
-  "schedule": ["* * * * 6"],
+  "schedule": [
+    "* * * * 6"
+  ],
   "automerge": false,
   "prCreation": "immediate",
   "automergeStrategy": "squash",
@@ -15,11 +17,12 @@
   "packageRules": [
     {
       "matchUpdateTypes": [
+        "major",
         "minor",
         "patch"
       ],
-      "groupName": "all non-major Helm dependencies",
-      "groupSlug": "all-minor-patch",
+      "groupName": "all Helm dependencies",
+      "groupSlug": "all",
       "bumpVersions": [
         {
           "filePatterns": [
