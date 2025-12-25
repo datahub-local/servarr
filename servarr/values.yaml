@@ -1,3 +1,5 @@
+# https://github.com/trueforge-org/truecharts/blob/master/charts/library/common/values.yaml
+
 # -- (bool) The flag changes the behavior id deployed with ArgoCD.
 # @default -- false
 argoCD: false
@@ -24,6 +26,7 @@ global:
     # -- (bool) This tag will set the auth method. It is valid for Radarr, Prowlarr, Jellyseerr. Valid values are "" | "External" | "Basic" | "Forms".
     # @default --
     # @section -- Global
+
 
   authMethod:
   # -- (bool) This tag will set the auth required. Valid values are  "DisabledForLocalAddresses" | "Enabled"
@@ -576,7 +579,7 @@ sonarr:
     sonarr-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
@@ -670,7 +673,7 @@ radarr:
     radarr-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
@@ -778,7 +781,7 @@ jellyfin:
     jellyfin-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
@@ -887,7 +890,7 @@ jellyseerr:
     jellyseerr-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
@@ -995,7 +998,7 @@ qbittorrent:
     qbittorrent-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
@@ -1076,7 +1079,7 @@ prowlarr:
     prowlarr-ing:
       enabled: true
       primary: true
-      required: true
+      required: false
       expandObjectName: false
       annotations:
         cert-manager.io/cluster-issuer: *issuer
