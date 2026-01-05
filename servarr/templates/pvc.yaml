@@ -1,11 +1,15 @@
-{{- $is_downloads_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.downloads.name) }}
+{{- $downloads_pvc_name := .Values.volumes.downloads.name }}
+{{- $is_downloads_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace $downloads_pvc_name) }}
 {{- if or .Values.argoCD (not $is_downloads_pvc_present) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{.Values.volumes.downloads.name}}
+  name: {{ $downloads_pvc_name }}
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
     #{{- if not .Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
@@ -15,6 +19,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "-5"
     #{{- end }}
 spec:
@@ -26,13 +31,17 @@ spec:
       storage: {{.Values.volumes.downloads.size}}
 {{- end }}
 ---
-{{- $is_media_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.media.name) }}
+{{- $media_pvc_name := .Values.volumes.media.name }}
+{{- $is_media_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace $media_pvc_name) }}
 {{- if or .Values.argoCD (not $is_media_pvc_present) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{.Values.volumes.media.name}}
+  name: {{ $media_pvc_name }}
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
     #{{- if not .Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
@@ -42,6 +51,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "-5"
     #{{- end }}
 spec:
@@ -53,13 +63,17 @@ spec:
       storage: {{.Values.volumes.media.size}}
 {{- end }}
 ---
-{{- $is_torrentconfig_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace .Values.volumes.torrentConfig.name) }}
+{{- $torrentconfig_pvc_name := .Values.volumes.torrentConfig.name }}
+{{- $is_torrentconfig_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace $torrentconfig_pvc_name) }}
 {{- if or .Values.argoCD (not $is_torrentconfig_pvc_present) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{.Values.volumes.torrentConfig.name}}
+  name: {{ $torrentconfig_pvc_name }}
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
     #{{- if not .Values.argoCD }}
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-5"
@@ -69,6 +83,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "-5"
     #{{- end }}
 spec:
@@ -78,4 +93,36 @@ spec:
   resources:
     requests:
       storage: {{.Values.volumes.torrentConfig.size}}
+{{- end }}
+---
+{{- $initconfig_pvc_name := .Values.volumes.initConfig.name }}
+{{- $is_initconfig_pvc_present := (lookup "v1" "PersistentVolumeClaim" .Release.Namespace $initconfig_pvc_name) }}
+{{- if or .Values.argoCD (not $is_initconfig_pvc_present) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $initconfig_pvc_name }}
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
+    #{{- if not .Values.argoCD }}
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    #{{- if not .Values.debug }}
+    helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
+    #{{- end }}
+
+    #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "-5"
+    #{{- end }}
+spec:
+  storageClassName: {{.Values.volumes.storageClass}}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{.Values.volumes.initConfig.size}}
 {{- end }}

@@ -1,14 +1,13 @@
 {
   "packages": [
-    "argocd",
-    "docker",
-    "docker-compose",
-    "helmfile",
-    "k3d",
-    "k9s",
-    "kubectl",
-    "kubernetes-helm",
-    "nfs-utils"
+    "k3d@latest",
+    "k9s@latest",
+    "kubernetes-helm@latest",
+    "helmfile@latest"
+  ],
+  "init_hook": [
+    "helm plugin install https://github.com/databus23/helm-diff 2> /dev/null || true",
+    "helm plugin install https://github.com/helm-unittest/helm-unittest.git 2> /dev/null || true"
   ],
   "shell": {
     "scripts": {
@@ -19,7 +18,7 @@
         "./.github/ci/stop_k8s.sh"
       ],
       "test_install": "helm upgrade --install --create-namespace --namespace servarr --values .github/ci/ci-values.yaml servarr servarr",
-      "test_delete": "kubectl delete ns servarr"
+      "test_delete": "kubectl delete ns servarr || true"
     }
   }
 }

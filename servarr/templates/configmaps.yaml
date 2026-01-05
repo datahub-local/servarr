@@ -1,45 +1,11 @@
 apiVersion: v1
 kind: ConfigMap 
 metadata:
-  name: init-jellyseerr-python-scripts
-data:
-{{ ( tpl (.Files.Glob "config/scripts/init-jellyseerr.py" ).AsConfig . ) | indent 2 }}
----
-apiVersion: v1
-kind: ConfigMap 
-metadata:
-  name: init-radarr-script
-data:
-{{ ( tpl (.Files.Glob "config/scripts/init-radarr.py" ).AsConfig . ) | indent 2 }}
----
-apiVersion: v1
-kind: ConfigMap 
-metadata:
-  name: init-sonarr-script
-data:
-{{ ( tpl (.Files.Glob "config/scripts/init-sonarr.py" ).AsConfig . ) | indent 2 }}
----
-apiVersion: v1
-kind: ConfigMap 
-metadata:
-  name: init-prowlarr-script
-data:
-{{ ( tpl (.Files.Glob "config/scripts/init-prowlarr.py" ).AsConfig . ) | indent 2 }}
-{{ if .Values.indexers }}
-  indexers.json: {{ $.Values.indexers | toJson | quote}}
-{{ end }}
----
-apiVersion: v1
-kind: ConfigMap 
-metadata:
-  name: init-jellyfin-script
-data:
-{{ ( tpl (.Files.Glob "config/scripts/init-jellyfin.py" ).AsConfig . ) | indent 2 }}
----
-apiVersion: v1
-kind: ConfigMap 
-metadata:
+  name: {{ include "servarr.fullname" . }}-init-scripts
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
     #{{- if not .Values.argoCD }}
     helm.sh/hook: pre-install
     helm.sh/hook-weight: "-5"
@@ -49,8 +15,11 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "-5"
     #{{- end }}
-  name: init-qbittorrent-python-script
 data:
-{{ ( tpl (.Files.Glob "config/scripts/init-qbittorrent.py" ).AsConfig . ) | indent 2 }}
+{{ ( tpl (.Files.Glob "config/scripts/*" ).AsConfig . ) | indent 2 }}
+{{ if .Values.indexers }}
+  indexers.json: {{ $.Values.indexers | toJson | quote}}
+{{ end }}
