@@ -1,18 +1,7 @@
 #!/usr/local/bin/python3
 
-import logging
 import os
-import sys
-from json import JSONDecodeError
-
-import requests
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-log_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-console_handler.setFormatter(log_format)
-logger.addHandler(console_handler)
+from utils import post, step, logger
 
 RADARR_HOST = os.getenv("RADARR_HOST")
 API_KEY = os.getenv("API_KEY")
@@ -21,155 +10,137 @@ TORRENT_USERNAME = os.getenv("TORRENT_ADMIN")
 TORRENT_PASSWORD = os.getenv("TORRENT_PASSWORD")
 
 
-def post(url: str, headers: dict, body: dict):
-    """
-    Handle POST requests towards an url, logging both
-    the details before sending it and the response.
+@step("radarr_qbittorrent")
+def setup_qbittorrent():
+    logger.info("Setup qBitTorrent in Radarr")
 
-    Parameters
-    ----------
-    url : str
-        HTTP request URL as string
-    headers : dict
-        HTTP headers to be used in the request
-    body : dict
-        Request body needed for the POST
-    """
+    headers = {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+        "x-requested-with": "XMLHttpRequest",
+    }
 
-    logger.debug(
-        " ".join(
-            [
-                "POST",
-                url,
-                ", ".join(f"{key}: {value}" for key, value in headers.items()),
-                str(body),
-            ]
-        )
+    body = {
+        "enable": True,
+        "protocol": "torrent",
+        "priority": 1,
+        "removeCompletedDownloads": True,
+        "removeFailedDownloads": True,
+        "name": "qBittorrent",
+        "fields": [
+            {"name": "host", "value": TORRENT_SERVICE},
+            {"name": "port", "value": "10095"},
+            {"name": "useSsl", "value": False},
+            {"name": "urlBase"},
+            {"name": "username", "value": TORRENT_USERNAME},
+            {"name": "password", "value": TORRENT_PASSWORD},
+            {"name": "movieCategory", "value": "radarr"},
+            {"name": "movieImportedCategory"},
+            {"name": "recentMoviePriority", "value": 0},
+            {"name": "olderMoviePriority", "value": 0},
+            {"name": "initialState", "value": 0},
+            {"name": "sequentialOrder", "value": False},
+            {"name": "firstAndLast", "value": False},
+            {"name": "contentLayout", "value": 0},
+        ],
+        "implementationName": "qBittorrent",
+        "implementation": "QBittorrent",
+        "configContract": "QBittorrentSettings",
+        "infoLink": "https://wiki.servarr.com/radarr/supported#qbittorrent",
+        "tags": [],
+    }
+
+    post(
+        url="http://{}/api/v3/downloadclient".format(RADARR_HOST),
+        headers=headers,
+        body=body,
     )
 
-    response = requests.post(url=url, json=body, headers=headers)
 
-    logger.debug(
-        " ".join(
-            ["Status Code:", str(response.status_code), "Response body:", response.text]
-        )
+@step("radarr_remote_path_mapping")
+def setup_remote_path_mapping():
+    logger.info("Setup Remote Path Mapping")
+
+    headers = {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+        "x-requested-with": "XMLHttpRequest",
+    }
+
+    body = {
+        "host": TORRENT_SERVICE,
+        "remotePath": "/downloads",
+        "localPath": "/mnt/downloads/",
+    }
+
+    post(
+        url="http://{}/api/v3/remotepathmapping".format(RADARR_HOST),
+        headers=headers,
+        body=body,
     )
 
-    try:
-        return {"code": response.status_code, "response": response.json()}
-    except JSONDecodeError:
-        return {"code": response.status_code, "response": response.text}
+
+@step("radarr_root_folder")
+def setup_root_folder():
+    logger.info("Setup Root Folder")
+
+    headers = {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+        "x-requested-with": "XMLHttpRequest",
+    }
+
+    body = {"path": "/mnt/media/"}
+
+    post(
+        url="http://{}/api/v3/rootFolder".format(RADARR_HOST),
+        headers=headers,
+        body=body,
+    )
 
 
-logger.info("Setup qBitTorrent in Radarr")
+@step("radarr_media_management")
+def setup_media_management():
+    headers = {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+        "x-requested-with": "XMLHttpRequest",
+    }
 
-headers = {
-    "content-type": "application/json",
-    "x-api-key": API_KEY,
-    "x-requested-with": "XMLHttpRequest",
-}
+    body = {
+        "autoUnmonitorPreviouslyDownloadedMovies": False,
+        "recycleBin": "",
+        "recycleBinCleanupDays": 7,
+        "downloadPropersAndRepacks": "preferAndUpgrade",
+        "createEmptyMovieFolders": False,
+        "deleteEmptyFolders": False,
+        "fileDate": "none",
+        "rescanAfterRefresh": "always",
+        "autoRenameFolders": False,
+        "pathsDefaultStatic": False,
+        "setPermissionsLinux": False,
+        "chmodFolder": "755",
+        "chownGroup": "",
+        "skipFreeSpaceCheckWhenImporting": False,
+        "minimumFreeSpaceWhenImporting": 100,
+        "copyUsingHardlinks": False,
+        "useScriptImport": False,
+        "scriptImportPath": "",
+        "importExtraFiles": False,
+        "extraFileExtensions": "srt",
+        "enableMediaInfo": True,
+        "id": 1,
+    }
 
-body = {
-    "enable": True,
-    "protocol": "torrent",
-    "priority": 1,
-    "removeCompletedDownloads": True,
-    "removeFailedDownloads": True,
-    "name": "qBittorrent",
-    "fields": [
-        {"name": "host", "value": TORRENT_SERVICE},
-        {"name": "port", "value": "10095"},
-        {"name": "useSsl", "value": False},
-        {"name": "urlBase"},
-        {"name": "username", "value": TORRENT_USERNAME},
-        {"name": "password", "value": TORRENT_PASSWORD},
-        {"name": "movieCategory", "value": "radarr"},
-        {"name": "movieImportedCategory"},
-        {"name": "recentMoviePriority", "value": 0},
-        {"name": "olderMoviePriority", "value": 0},
-        {"name": "initialState", "value": 0},
-        {"name": "sequentialOrder", "value": False},
-        {"name": "firstAndLast", "value": False},
-        {"name": "contentLayout", "value": 0},
-    ],
-    "implementationName": "qBittorrent",
-    "implementation": "QBittorrent",
-    "configContract": "QBittorrentSettings",
-    "infoLink": "https://wiki.servarr.com/radarr/supported#qbittorrent",
-    "tags": [],
-}
+    post(
+        url="http://{}/api/v3/config/mediamanagement".format(RADARR_HOST),
+        headers=headers,
+        body=body,
+        method="PUT",
+    )
 
-res = post(
-    url="http://{}/api/v3/downloadclient".format(RADARR_HOST),
-    headers=headers,
-    body=body,
-)
 
-if res["code"] != 201:
-    logger.error("There was an error while setting qBitTorrent in Radarr!")
-    sys.exit(1)
-
-logger.info("Setup Remote Path Mapping")
-
-body = {
-    "host": TORRENT_SERVICE,
-    "remotePath": "/downloads",
-    "localPath": "/mnt/downloads/",
-}
-
-res = post(
-    url="http://{}/api/v3/remotepathmapping".format(RADARR_HOST),
-    headers=headers,
-    body=body,
-)
-
-if res["code"] != 201:
-    logger.error("There was an error while setting the Remote Path Mapping!")
-    sys.exit(1)
-
-logger.info("Setup Root Folder")
-
-body = {"path": "/mnt/media/"}
-
-res = post(
-    url="http://{}/api/v3/rootFolder".format(RADARR_HOST), headers=headers, body=body
-)
-
-if res["code"] != 201:
-    logger.error("There was an error while setting the Root Folder!")
-    sys.exit(1)
-
-body = {
-    "autoUnmonitorPreviouslyDownloadedMovies": False,
-    "recycleBin": "",
-    "recycleBinCleanupDays": 7,
-    "downloadPropersAndRepacks": "preferAndUpgrade",
-    "createEmptyMovieFolders": False,
-    "deleteEmptyFolders": False,
-    "fileDate": "none",
-    "rescanAfterRefresh": "always",
-    "autoRenameFolders": False,
-    "pathsDefaultStatic": False,
-    "setPermissionsLinux": False,
-    "chmodFolder": "755",
-    "chownGroup": "",
-    "skipFreeSpaceCheckWhenImporting": False,
-    "minimumFreeSpaceWhenImporting": 100,
-    "copyUsingHardlinks": False,
-    "useScriptImport": False,
-    "scriptImportPath": "",
-    "importExtraFiles": False,
-    "extraFileExtensions": "srt",
-    "enableMediaInfo": True,
-    "id": 1,
-}
-
-res = post(
-    url="http://{}/api/v3/config/mediamanagement".format(RADARR_HOST),
-    headers=headers,
-    body=body,
-)
-
-if res["code"] != 201:
-    logger.error("There was an error while setting the Configure Media Management!")
-    sys.exit(1)
+setup_qbittorrent()
+setup_remote_path_mapping()
+setup_root_folder()
+setup_media_management()

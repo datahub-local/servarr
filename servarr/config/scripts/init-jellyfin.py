@@ -1,18 +1,7 @@
 #!/usr/local/bin/python3
 
-import logging
 import os
-import sys
-from json import JSONDecodeError
-
-import requests
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-log_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(log_format)
-logger.addHandler(console_handler)
+from utils import post, get, step, logger
 
 JELLYFIN_HOST = os.getenv("JELLYFIN_HOST")
 JELLYFIN_USERNAME = os.getenv("JELLYFIN_USERNAME")
@@ -20,273 +9,170 @@ JELLYFIN_PASSWORD = os.getenv("JELLYFIN_PASSWORD")
 COUNTRY_CODE = os.getenv("COUNTRY_CODE")
 PREFERRED_LANGUAGE = os.getenv("PREFERRED_LANGUAGE")
 
-def post(url: str, headers: dict, body: dict):
-    """
-    Handle POST requests towards an url, logging both
-    the details before sending it and the response.
 
-    Parameters
-    ----------
-    url : str
-        HTTP request URL as string
-    headers : dict
-        HTTP headers to be used in the request
-    body : dict
-        Request body needed for the POST
-    """
-
-    logger.debug(" ".join([
-        "POST",
-        url,
-        ", ".join(f'{key}: {value}' for key,value in headers.items()),
-        str(body)
-    ]))
-
-    response = requests.post(
-        url=url,
-        json=body,
-        headers=headers
-    )
-
-    logger.debug(" ".join([
-        "Status Code:",
-        str(response.status_code),
-        "Response body:",
-        response.text
-    ]))
-
-    try:
-        return {"code": response.status_code, "response": response.json()}
-    except JSONDecodeError:
-        return {"code": response.status_code, "response": response.text}
-
-def setup_location():   
+def setup_location_logic():
     logger.info("Setup Location")
 
-    headers = {
-        "Content-Type": "application/json"
-    }
+    headers = {"Content-Type": "application/json"}
 
     body = {
         "UICulture": "en-US",
         "MetadataCountryCode": COUNTRY_CODE,
-        "PreferredMetadataLanguage": PREFERRED_LANGUAGE
+        "PreferredMetadataLanguage": PREFERRED_LANGUAGE,
     }
 
-    res = post(
+    post(
         url="http://{}/Startup/Configuration".format(JELLYFIN_HOST),
         headers=headers,
-        body=body
+        body=body,
     )
-    
-    if res["code"] != 204:
-        logger.error("There was an error while setting the location!")
-        sys.exit(1)
 
-setup_location()
 
-headers = {
-    "Content-Type": "application/json"
-}
+@step("jellyfin_setup_location_1")
+def setup_location_1():
+    setup_location_logic()
 
-# The following GET seems to be required, otherwise
-# Jellyfin will be mad at us.
 
-logger.info("Ping GET user endpoint")
+@step("jellyfin_setup_user")
+def setup_user():
+    headers = {"Content-Type": "application/json"}
+    logger.info("Ping GET user endpoint")
 
-logger.debug(" ".join([
-    "GET",
-    "http://{}/Startup/User".format(JELLYFIN_HOST),
-    ", ".join(f'{key}: {value}' for key,value in headers.items()),
-]))
+    get(url="http://{}/Startup/User".format(JELLYFIN_HOST), headers=headers)
 
-response = requests.get(
-    url="http://{}/Startup/User".format(JELLYFIN_HOST),
-    headers=headers
-)
+    logger.info("Setup the new user")
 
-logger.debug(" ".join([
-    "Status Code:",
-    str(response.status_code),
-    "Response body:",
-    response.text
-]))
+    body = {"Name": JELLYFIN_USERNAME, "Password": JELLYFIN_PASSWORD}
 
-logger.info("Setup the new user")
+    post(url="http://{}/Startup/User".format(JELLYFIN_HOST), headers=headers, body=body)
 
-body = {
-    "Name": JELLYFIN_USERNAME,
-    "Password": JELLYFIN_PASSWORD
-}
 
-res = post(
-    url="http://{}/Startup/User".format(JELLYFIN_HOST),
-    headers=headers,
-    body=body
-)
+@step("jellyfin_setup_library")
+def setup_library():
+    headers = {"Content-Type": "application/json"}
+    logger.info("Setup the library")
 
-if res["code"] != 204:
-    logger.error("There was an error while setting the user {}!".format(JELLYFIN_USERNAME))
-    sys.exit(1)
-
-logger.info("Setup the library")
-
-body = {
-    "LibraryOptions": {
-        "EnableArchiveMediaFiles": False,
-        "EnablePhotos": True,
-        "EnableRealtimeMonitor": False,
-        "ExtractChapterImagesDuringLibraryScan": True,
-        "EnableChapterImageExtraction": True,
-        "EnableInternetProviders": True,
-        "SaveLocalMetadata": True,
-        "EnableAutomaticSeriesGrouping": False,
-        "PreferredMetadataLanguage": PREFERRED_LANGUAGE,
-        "MetadataCountryCode": COUNTRY_CODE,
-        "SeasonZeroDisplayName": "Specials",
-        "AutomaticRefreshIntervalDays": 0,
-        "EnableEmbeddedTitles": False,
-        "EnableEmbeddedEpisodeInfos": False,
-        "AllowEmbeddedSubtitles": "AllowAll",
-        "SkipSubtitlesIfEmbeddedSubtitlesPresent": False,
-        "SkipSubtitlesIfAudioTrackMatches": False,
-        "SaveSubtitlesWithMedia": True,
-        "RequirePerfectSubtitleMatch": True,
-        "AutomaticallyAddToCollection": False,
-        "MetadataSavers": [],
-        "TypeOptions": [
-            {
-                "Type": "Series",
-                "MetadataFetchers": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "MetadataFetcherOrder": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "ImageFetchers": [
-                    "TheMovieDb"
-                ],
-                "ImageFetcherOrder": [
-                    "TheMovieDb"
-                ]
-            },
-            {
-                "Type": "Season",
-                "MetadataFetchers": [
-                    "TheMovieDb"
-                ],
-                "MetadataFetcherOrder": [
-                    "TheMovieDb"
-                ],
-                "ImageFetchers": [
-                    "TheMovieDb"
-                ],
-                "ImageFetcherOrder": [
-                    "TheMovieDb"
-                ]
-            },
-            {
-                "Type": "Episode",
-                "MetadataFetchers": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "MetadataFetcherOrder": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "ImageFetchers": [
-                    "TheMovieDb",
-                    "The Open Movie Database",
-                    "Embedded Image Extractor",
-                    "Screen Grabber"
-                ],
-                "ImageFetcherOrder": [
-                    "TheMovieDb",
-                    "The Open Movie Database",
-                    "Embedded Image Extractor",
-                    "Screen Grabber"
-                ]
-            },
-            {
-                "Type": "Movie",
-                "MetadataFetchers": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "MetadataFetcherOrder": [
-                    "TheMovieDb",
-                    "The Open Movie Database"
-                ],
-                "ImageFetchers": [
-                    "TheMovieDb",
-                    "The Open Movie Database",
-                    "Embedded Image Extractor",
-                    "Screen Grabber"
-                ],
-                "ImageFetcherOrder": [
-                    "TheMovieDb",
-                    "The Open Movie Database",
-                    "Embedded Image Extractor",
-                    "Screen Grabber"
-                ]
-            }
-        ],
-        "LocalMetadataReaderOrder": [
-            "Nfo"
-        ],
-        "SubtitleDownloadLanguages": [],
-        "DisabledSubtitleFetchers": [],
-        "SubtitleFetcherOrder": [],
-        "PathInfos": [
-            {
-                "Path": "/mnt/media"
-            }
-        ]
+    body = {
+        "LibraryOptions": {
+            "EnableArchiveMediaFiles": False,
+            "EnablePhotos": True,
+            "EnableRealtimeMonitor": False,
+            "ExtractChapterImagesDuringLibraryScan": True,
+            "EnableChapterImageExtraction": True,
+            "EnableInternetProviders": True,
+            "SaveLocalMetadata": True,
+            "EnableAutomaticSeriesGrouping": False,
+            "PreferredMetadataLanguage": PREFERRED_LANGUAGE,
+            "MetadataCountryCode": COUNTRY_CODE,
+            "SeasonZeroDisplayName": "Specials",
+            "AutomaticRefreshIntervalDays": 0,
+            "EnableEmbeddedTitles": False,
+            "EnableEmbeddedEpisodeInfos": False,
+            "AllowEmbeddedSubtitles": "AllowAll",
+            "SkipSubtitlesIfEmbeddedSubtitlesPresent": False,
+            "SkipSubtitlesIfAudioTrackMatches": False,
+            "SaveSubtitlesWithMedia": True,
+            "RequirePerfectSubtitleMatch": True,
+            "AutomaticallyAddToCollection": False,
+            "MetadataSavers": [],
+            "TypeOptions": [
+                {
+                    "Type": "Series",
+                    "MetadataFetchers": ["TheMovieDb", "The Open Movie Database"],
+                    "MetadataFetcherOrder": ["TheMovieDb", "The Open Movie Database"],
+                    "ImageFetchers": ["TheMovieDb"],
+                    "ImageFetcherOrder": ["TheMovieDb"],
+                },
+                {
+                    "Type": "Season",
+                    "MetadataFetchers": ["TheMovieDb"],
+                    "MetadataFetcherOrder": ["TheMovieDb"],
+                    "ImageFetchers": ["TheMovieDb"],
+                    "ImageFetcherOrder": ["TheMovieDb"],
+                },
+                {
+                    "Type": "Episode",
+                    "MetadataFetchers": ["TheMovieDb", "The Open Movie Database"],
+                    "MetadataFetcherOrder": ["TheMovieDb", "The Open Movie Database"],
+                    "ImageFetchers": [
+                        "TheMovieDb",
+                        "The Open Movie Database",
+                        "Embedded Image Extractor",
+                        "Screen Grabber",
+                    ],
+                    "ImageFetcherOrder": [
+                        "TheMovieDb",
+                        "The Open Movie Database",
+                        "Embedded Image Extractor",
+                        "Screen Grabber",
+                    ],
+                },
+                {
+                    "Type": "Movie",
+                    "MetadataFetchers": ["TheMovieDb", "The Open Movie Database"],
+                    "MetadataFetcherOrder": ["TheMovieDb", "The Open Movie Database"],
+                    "ImageFetchers": [
+                        "TheMovieDb",
+                        "The Open Movie Database",
+                        "Embedded Image Extractor",
+                        "Screen Grabber",
+                    ],
+                    "ImageFetcherOrder": [
+                        "TheMovieDb",
+                        "The Open Movie Database",
+                        "Embedded Image Extractor",
+                        "Screen Grabber",
+                    ],
+                },
+            ],
+            "LocalMetadataReaderOrder": ["Nfo"],
+            "SubtitleDownloadLanguages": [],
+            "DisabledSubtitleFetchers": [],
+            "SubtitleFetcherOrder": [],
+            "PathInfos": [{"Path": "/mnt/media"}],
+        }
     }
-}
 
-res = post(
-    url="http://{}/Library/VirtualFolders?refreshLibrary=false&name=Library".format(JELLYFIN_HOST),
-    headers=headers,
-    body=body
-)
+    post(
+        url="http://{}/Library/VirtualFolders?refreshLibrary=false&name=Library".format(
+            JELLYFIN_HOST
+        ),
+        headers=headers,
+        body=body,
+    )
 
-if res["code"] != 204:
-    logger.error("There was an error while setting the library!")
-    sys.exit(1)
 
-logger.debug("For some reason we have to setup the location twice..")
+@step("jellyfin_setup_location_2")
+def setup_location_2():
+    logger.debug("For some reason we have to setup the location twice..")
 
-setup_location()
+    setup_location_logic()
 
-logger.info("Setup the remote access")
 
-body = {
-    "EnableRemoteAccess": True,
-    "EnableAutomaticPortMapping": False
-}
+@step("jellyfin_setup_remote_access")
+def setup_remote_access():
+    headers = {"Content-Type": "application/json"}
+    logger.info("Setup the remote access")
 
-res = post(
-    url="http://{}/Startup/RemoteAccess".format(JELLYFIN_HOST),
-    headers=headers,
-    body=body
-)
+    body = {"EnableRemoteAccess": True, "EnableAutomaticPortMapping": False}
 
-if res["code"] != 204:
-    logger.error("There was an error while setting the remote access!")
-    sys.exit(1)
+    post(
+        url="http://{}/Startup/RemoteAccess".format(JELLYFIN_HOST),
+        headers=headers,
+        body=body,
+    )
 
-logger.info("Finalize the setup")
 
-res = post(
-    url="http://{}/Startup/Complete".format(JELLYFIN_HOST),
-    headers={},
-    body={}
-)
+@step("jellyfin_finalize")
+def finalize():
+    logger.info("Finalize the setup")
 
-if res["code"] != 204:
-    logger.error("There was an error while finalizing the Jellyfin setup!")
-    sys.exit(1)
+    post(url="http://{}/Startup/Complete".format(JELLYFIN_HOST), headers={}, body={})
+
+
+setup_location_1()
+setup_user()
+setup_library()
+setup_location_2()
+setup_remote_access()
+finalize()

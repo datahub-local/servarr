@@ -1,0 +1,80 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "servarr.fullname" . }}-init-pre-deploymen
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
+    {{- with .Values.init.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    #{{- if not .Values.argoCD }}
+    helm.sh/hook: pre-install
+    #{{- if not .Values.debug }}
+    helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
+    helm.sh/hook-weight: "-3"
+    #{{- end }}
+
+    #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "-3"
+    #{{- end }}
+spec:
+  backoffLimit: {{ .Values.init.job.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.init.job.activeDeadlineSeconds }}
+  template:
+    metadata:
+      name: "{{ include "servarr.fullname" . }}-config-prepare"
+      labels:
+        {{- include "servarr.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      {{- with .Values.init.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.init.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: qbt-config-injector
+          image: {{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
+          env:
+            - name: STATE_FILE_PATH
+              value: "/state/qbittorrent_init_state.json"
+            - name: TORRENT_USERNAME
+              value: {{.Values.torrent.username}}
+            - name: TORRENT_PASSWORD
+              value: {{.Values.torrent.password}}
+          command:
+            - "/bin/sh"
+            - "-ec"
+          args:
+            - "pip install -r /scripts/requirements.txt && python3 -u /scripts/init-qbittorrent.py 2>&1;"
+          volumeMounts:
+            - name: torrent-config-volume
+              mountPath: /mnt
+            - name: init-state
+              mountPath: /state
+            - name: init-script
+              mountPath: /scripts
+      volumes:
+        - name: torrent-config-volume
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.torrentConfig.name}}
+        - name: init-state
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.initConfig.name}}
+        - name: init-script
+          configMap:
+            name: {{ include "servarr.fullname" . }}-init-scripts
+            defaultMode: 0644
+            # items:
+            # - key: qBittorrent.conf
+            #   path: qBittorrent.conf

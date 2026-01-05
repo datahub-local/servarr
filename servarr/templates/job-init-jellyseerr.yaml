@@ -2,42 +2,61 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: jellyseer-init
+  name: {{ include "servarr.fullname" . }}-jellyseer-init
   labels:
-    release: "{{ .Release.Name }}"
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
+    {{- with .Values.init.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     #{{- if not .Values.argoCD }}
-    helm.sh/hook: post-install
+    helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-delete-policy:  hook-failed
     helm.sh/hook-weight: "40"
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "40"
     #{{- end }}
 spec:
-  backoffLimit: 1
+  backoffLimit: {{ .Values.init.job.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.init.job.activeDeadlineSeconds }}
   template:
     metadata:
-      name: "{{.Release.Name}}-jellyseer-finalizer"
+      name: "{{ include "servarr.fullname" . }}-jellyseer-finalizer"
       labels:
-        app: "{{ .Release.Name }}"
+        {{- include "servarr.selectorLabels" . | nindent 8 }}
     spec:
       restartPolicy: Never
+      {{- with .Values.init.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.init.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         - name: wait-for-jellyseerr
-          image: busybox:1.37.0
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.init.waitFor.image.repository }}:{{ .Values.init.waitFor.image.tag }}
+          imagePullPolicy: {{ .Values.init.waitFor.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.waitFor.resources | nindent 12 }}
           command:
             - "sh"
             - "-c"
             - "until wget --spider -S -T 10 \"http://{{ .Release.Name }}-jellyseerr.{{ .Release.Namespace }}.svc.cluster.local:10241\" 2>&1 | grep -qw '200\\|301\\|302' > /dev/null ; do echo Waiting for servarr-jellyseerr ; sleep 5 ; done ; sleep 10 ;"
       containers:
       - name: initialize-jellyseer
-        image: python:3.10
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+        imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+        resources:
+          {{- toYaml .Values.init.resources | nindent 10 }}
         env:
+          - name: STATE_FILE_PATH
+            value: "/state/jellyseerr_init_state.json"
           - name: PYTHONUNBUFFERED
             value: "1"
           - name: JELLYSEERR_HOST
@@ -76,13 +95,18 @@ spec:
           - "/bin/sh"
           - "-ec"
         args:
-          - "pip install requests && python3 -u /mnt/init-jellyseerr.py 2>&1;"
+          - "pip install -r /scripts/requirements.txt && python3 -u /scripts/init-jellyseerr.py 2>&1;"
         volumeMounts:
-          - mountPath: "/mnt"
+          - mountPath: "/scripts"
             name: python-script
+          - mountPath: "/state"
+            name: init-state
       volumes:
+        - name: init-state
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.initConfig.name}}
         - name: python-script
           configMap:
-            name: init-jellyseerr-python-scripts
+            name: {{ include "servarr.fullname" . }}-init-scripts
 
 {{- end }}

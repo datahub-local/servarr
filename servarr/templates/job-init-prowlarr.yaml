@@ -1,13 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: prowlarr-init
+  name: {{ include "servarr.fullname" . }}-prowlarr-init
   labels:
-    release: "{{ .Release.Name }}"
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    {{- include "servarr.labels" . | nindent 4 }}
   annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
+    {{- with .Values.init.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     #{{- if not .Values.argoCD }}
-    helm.sh/hook: post-install
+    helm.sh/hook: post-install,post-upgrade
     #{{- if not .Values.debug }}
     helm.sh/hook-delete-policy: hook-failed
     #{{- end }}
@@ -15,21 +18,33 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/sync-wave: "20"
     #{{- end }}
 spec:
-  backoffLimit: 1
+  backoffLimit: {{ .Values.init.job.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.init.job.activeDeadlineSeconds }}
   template:
     metadata:
-      name: "{{.Release.Name}}-prowlarr-finalizer"
+      name: "{{ include "servarr.fullname" . }}-prowlarr-finalizer"
       labels:
-        app: "{{ .Release.Name }}"
+        {{- include "servarr.selectorLabels" . | nindent 8 }}
     spec:
       restartPolicy: Never
+      {{- with .Values.init.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.init.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         - name: wait-for-prowlarr
-          image: busybox:1.37.0
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.init.waitFor.image.repository }}:{{ .Values.init.waitFor.image.tag }}
+          imagePullPolicy: {{ .Values.init.waitFor.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.waitFor.resources | nindent 12 }}
           command:
             [
               "sh",
@@ -38,9 +53,13 @@ spec:
             ]
       containers:
         - name: initialize-prowlarr
-          image: python:3.10
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
           env:
+            - name: STATE_FILE_PATH
+              value: "/state/prowlarr_init_state.json"
             - name: PYTHONUNBUFFERED
               value: "1"
             - name: PROWLARR_HOST
@@ -65,11 +84,16 @@ spec:
             - "/bin/sh"
             - "-ec"
           args:
-            - "pip install requests && python3 -u /mnt/init-prowlarr.py 2>&1;"
+            - "pip install -r /scripts/requirements.txt && python3 -u /scripts/init-prowlarr.py 2>&1;"
           volumeMounts:
-            - mountPath: "/mnt"
+            - mountPath: "/scripts"
               name: python-script-and-indexers
+            - mountPath: "/state"
+              name: init-state
       volumes:
+        - name: init-state
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.initConfig.name}}
         - name: python-script-and-indexers
           configMap:
-            name: init-prowlarr-script
+            name: {{ include "servarr.fullname" . }}-init-scripts
