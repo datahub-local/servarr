@@ -15,7 +15,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "-5"
     #{{- end }}
 data:
