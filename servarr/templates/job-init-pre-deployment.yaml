@@ -10,7 +10,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
     #{{- if not .Values.argoCD }}
-    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: "-3"
     #{{- if not .Values.debug }}
     helm.sh/hook-delete-policy: hook-failed
@@ -18,7 +18,7 @@ metadata:
     #{{- end }}
 
     #{{- if .Values.argoCD }}
-    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-3"
     #{{- end }}
 spec:
