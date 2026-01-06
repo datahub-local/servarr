@@ -129,7 +129,7 @@ def setup_library():
             "SubtitleDownloadLanguages": [],
             "DisabledSubtitleFetchers": [],
             "SubtitleFetcherOrder": [],
-            "PathInfos": [{"Path": "/mnt/media"}],
+            "PathInfos": [{"Path": "/data"}],
         }
     }
 
