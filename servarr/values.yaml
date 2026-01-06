@@ -137,7 +137,7 @@ dash:
   # @default -- en
   preferredLanguage: "en"
   # @ignore
-  apikey: &apikey '{{ .Values.global.apikey }}'
+  apikey: &apikey "{{ .Values.global.apikey }}"
   # @ignore
   authMethod: &authMethod "{{ .Values.global.authMethod }}"
   # @ignore
@@ -384,7 +384,6 @@ indexers:
       supportsSearch: true
       tags:
         - 1
-  
 
 volumes:
   # @ignore
