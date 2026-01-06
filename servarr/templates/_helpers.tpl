@@ -1,9 +1,8 @@
 {{/*
-Get or Generate API Key
+Validate and Get API Key
 */}}
 {{- define "servarr.apiKey" -}}
-{{- $apiKey := . | default "" -}}
-{{- if $apiKey -}}
+{{- $apiKey := .Values.global.apikey | default "" -}}
 {{- if or (lt (len $apiKey) 20) (gt (len $apiKey) 32) -}}
 {{- fail (printf "API Key must be between 20 and 32 characters long, got %d characters" (len $apiKey)) -}}
 {{- end -}}
@@ -11,9 +10,6 @@ Get or Generate API Key
 {{- fail "API Key must be a hexadecimal string" -}}
 {{- end -}}
 {{- $apiKey -}}
-{{- else -}}
-{{- printf "%s-servarr-api-key" .Release.Name | sha256sum | trunc 32 -}}
-{{- end -}}
 {{- end -}}
 
 {{/*
