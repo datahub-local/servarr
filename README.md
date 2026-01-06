@@ -28,13 +28,6 @@ $ git clone https://github.com/datahub-local/servarr.git && cd servarr
 ```shell
 $ helm dependency update
 ```
-
-> [!TIP]
-> If the previous command fails or goes in timeout (or takes too much), try adding the truecharts Helm repository:
-> ```shell
-> $ helm repo add truecharts oci://tccr.io/truecharts
-> ```
-> and then execute again the `helm dependency update` command.
   
 3. Prepare your [`values.yaml`](#values)
 4. Try it in your cluster to check that everything is fine (replace the `servarr/` with the chart folder if your workdir is different):
