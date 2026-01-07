@@ -160,7 +160,7 @@ AutoDownloader\\DownloadRepacks=true
 
 @step("generate_library_folder")
 def generate_library_folder():
-    logger.info("Generate library folder: {}".format(LI))
+    logger.info("Generate library folder: {}".format(LIBRARY_PATH))
 
     if not os.path.exists(LIBRARY_PATH):
         logger.warning("{0} does not exists, will create it".format(LIBRARY_PATH))
