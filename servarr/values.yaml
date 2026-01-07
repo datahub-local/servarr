@@ -617,6 +617,7 @@ radarr:
           main:
             mountPath: /mnt/downloads
 
+# https://github.com/trueforge-org/truecharts/blob/master/charts/stable/jellyfin/values.yaml
 jellyfin:
   # # -- Choose whether Jellyfin should be installed or not.
   # # @section Services
@@ -724,6 +725,7 @@ jellyfin:
   # # @ignore
   workload:
     main:
+      type: StatefulSet
       podSpec:
         containers:
           main:
