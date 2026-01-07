@@ -4,20 +4,16 @@ import base64
 import hashlib
 import os
 import sys
-from utils import step, logger
+
+from utils import create_dir, create_file, logger, step
 
 MIN_PASS_LEN = 8
 QBITTORRENT_CONF_FILENAME = "qBittorrent.conf"
-QBITTORRENT_CONF_FILEPATH = "/mnt/qBittorrent"
+QBITTORRENT_CONF_FILEPATH = "/mnt/torrentConfig/qBittorrent"
 QBITTORRENT_CONF_ABSOLUTE_PATH = (
     QBITTORRENT_CONF_FILEPATH + os.sep + QBITTORRENT_CONF_FILENAME
 )
-
-
-def create_file(file_content: str):
-    os.umask(0o077)
-    with open(QBITTORRENT_CONF_ABSOLUTE_PATH, "w+") as fd:
-        fd.write(file_content)
+LIBRARY_PATH = os.getenv("LIBRARY_PATH", "/mnt/media/library")
 
 
 def qbittorrent_passwd(plain_passwd: str):
@@ -43,7 +39,7 @@ logger.info("The Job will configure qBitTorrent credentials")
 
 
 @step("qbittorrent_generate_config")
-def generate_config():
+def qbittorrent_generate_config():
     logger.info("Checking credentials")
     if TORRENT_USERNAME in [None, ""]:
         logger.error("Empty username passed")
@@ -146,7 +142,7 @@ AutoDownloader\\DownloadRepacks=true
 
     logger.info("Saving file to PVC")
     try:
-        create_file(conf_rendered)
+        create_file(QBITTORRENT_CONF_ABSOLUTE_PATH, conf_rendered)
     except Exception:
         logger.exception("Could not create file")
         sys.exit(1)
@@ -162,6 +158,20 @@ AutoDownloader\\DownloadRepacks=true
         sys.exit(1)
 
 
-generate_config()
+@step("generate_library_folder")
+def generate_library_folder():
+    logger.info("Generate library folder: {}".format(LI))
+
+    if not os.path.exists(LIBRARY_PATH):
+        logger.warning("{0} does not exists, will create it".format(LIBRARY_PATH))
+        try:
+            create_dir(LIBRARY_PATH)
+        except Exception:
+            logger.exception("Could not create directory: {0}".format(LIBRARY_PATH))
+            sys.exit(1)
+
+
+qbittorrent_generate_config()
+generate_library_folder()
 
 logger.info("Job ended.")

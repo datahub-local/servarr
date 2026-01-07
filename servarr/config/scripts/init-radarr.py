@@ -8,7 +8,7 @@ API_KEY = os.getenv("API_KEY")
 TORRENT_SERVICE = os.getenv("TORRENT_SERVICE")
 TORRENT_USERNAME = os.getenv("TORRENT_ADMIN")
 TORRENT_PASSWORD = os.getenv("TORRENT_PASSWORD")
-MEDIA_PATH = os.getenv("MEDIA_PATH", "/mnt/media/library")
+LIBRARY_PATH = os.getenv("LIBRARY_PATH", "/mnt/media/library")
 
 
 @step("radarr_qbittorrent")
@@ -91,7 +91,7 @@ def setup_root_folder():
         "x-requested-with": "XMLHttpRequest",
     }
 
-    body = {"path": "{}/".format(MEDIA_PATH)}
+    body = {"path": "{}/".format(LIBRARY_PATH)}
 
     post(
         url="http://{}/api/v3/rootFolder".format(RADARR_HOST),

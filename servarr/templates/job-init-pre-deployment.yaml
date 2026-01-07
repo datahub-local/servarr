@@ -56,10 +56,12 @@ spec:
             - "/bin/sh"
             - "-ec"
           args:
-            - "pip install -r /scripts/requirements.txt && python3 -u /scripts/init-qbittorrent.py 2>&1;"
+            - "pip install -r /scripts/requirements.txt && python3 -u /scripts/job-init-pre-deployment.py 2>&1;"
           volumeMounts:
             - name: torrent-config-volume
-              mountPath: /mnt
+              mountPath: /mnt/torrentConfig
+            - name: media-volume
+              mountPath: /mnt/media
             - name: init-state
               mountPath: /state
             - name: init-script
@@ -68,6 +70,9 @@ spec:
         - name: torrent-config-volume
           persistentVolumeClaim:
             claimName: {{.Values.volumes.torrentConfig.name}}
+        - name: media-volume
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.media.name}}
         - name: init-state
           persistentVolumeClaim:
             claimName: {{.Values.volumes.initConfig.name}}

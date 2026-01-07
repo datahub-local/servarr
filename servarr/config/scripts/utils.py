@@ -20,6 +20,31 @@ def get_logger():
     return logger
 
 
+def create_file(file: str, file_content: str, mask: int = 0o077):
+    """
+    Docstring for create_file
+
+    :param file: Description
+    :type file: str
+    :param file_content: Description
+    :type file_content: str
+    """
+    os.umask(mask)
+    with open(file, "w+") as fd:
+        fd.write(file_content)
+
+
+def create_dir(dir: str):
+    """
+    Docstring for create_dir
+
+    :param dir: Description
+    :type dir: str
+    """
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+
 def post(
     url: str,
     headers: dict = None,
