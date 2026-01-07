@@ -19,6 +19,7 @@ SONARR_EXTERNAL_URL = os.getenv("SONARR_EXTERNAL_URL")
 RADARR_HOST = os.getenv("RADARR_HOST")
 RADARR_PORT = int(os.getenv("RADARR_PORT", "7878"))
 RADARR_EXTERNAL_URL = os.getenv("RADARR_EXTERNAL_URL")
+MEDIA_PATH = os.getenv("MEDIA_PATH", "/mnt/media/library")
 
 jellyseer_url = "http://{0}:{1}".format(JELLYSEERR_HOST, JELLYSEERR_PORT)
 
@@ -105,11 +106,11 @@ def setup_sonarr():
         "activeProfileId": 4,
         "activeLanguageProfileId": 1,
         "activeProfileName": "HD-1080p",
-        "activeDirectory": "/mnt/media",
+        "activeDirectory": MEDIA_PATH,
         "activeAnimeProfileId": 4,
         "activeAnimeLanguageProfileId": 1,
         "activeAnimeProfileName": "HD-1080p",
-        "activeAnimeDirectory": "/mnt/media",
+        "activeAnimeDirectory": MEDIA_PATH,
         "tags": [],
         "animeTags": [],
         "is4k": False,
@@ -142,7 +143,7 @@ def setup_radarr():
         "useSsl": False,
         "activeProfileId": 4,
         "activeProfileName": "HD-1080p",
-        "activeDirectory": "/mnt/media",
+        "activeDirectory": MEDIA_PATH,
         "is4k": False,
         "minimumAvailability": "released",
         "tags": [],

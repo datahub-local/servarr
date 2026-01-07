@@ -8,6 +8,7 @@ JELLYFIN_USERNAME = os.getenv("JELLYFIN_USERNAME")
 JELLYFIN_PASSWORD = os.getenv("JELLYFIN_PASSWORD")
 COUNTRY_CODE = os.getenv("COUNTRY_CODE")
 PREFERRED_LANGUAGE = os.getenv("PREFERRED_LANGUAGE")
+MEDIA_PATH = os.getenv("MEDIA_PATH", "/data/library")
 
 
 def setup_location_logic():
@@ -129,7 +130,7 @@ def setup_library():
             "SubtitleDownloadLanguages": [],
             "DisabledSubtitleFetchers": [],
             "SubtitleFetcherOrder": [],
-            "PathInfos": [{"Path": "/data"}],
+            "PathInfos": [{"Path": MEDIA_PATH}],
         }
     }
 
