@@ -75,6 +75,8 @@ spec:
             value: "{{ $.Values.dash.password }}"
           - name: JELLYFIN_EMAIL
             value: "{{ $.Values.dash.mail }}"
+          - name: JELLYFIN_EXTERNAL_URL
+            value: 'https://{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
           - name: API_KEY
             value: "{{ $.Values.global.apikey }}"
           - name: TELEGRAM_NOTIFICATION_ENABLED
@@ -86,11 +88,11 @@ spec:
           - name: SONARR_HOST
             value: "{{ .Release.Name }}-sonarr"
           - name: SONARR_EXTERNAL_URL
-            value: "{{ .Release.Name }}-radarr"
+            value: 'https://{{ replace "SERVICE" "sonarr" .Values.global.ingressHostPattern }}'
           - name: RADARR_HOST
             value: "{{ .Release.Name }}-radarr"
           - name: RADARR_EXTERNAL_URL
-            value: "{{ .Release.Name }}-radarr"
+            value: 'https://{{ replace "SERVICE" "radarr" .Values.global.ingressHostPattern }}'
           - name: JELLYSEERR__AUTH__METHOD
             value: "{{ $.Values.global.authMethod }}"
         command:

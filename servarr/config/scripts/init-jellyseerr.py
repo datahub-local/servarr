@@ -12,6 +12,7 @@ JELLYSEERR_HOST = os.getenv("JELLYSEERR_HOST")
 JELLYSEERR_PORT = os.getenv("JELLYSEERR_PORT")
 JELLYFIN_HOST = os.getenv("JELLYFIN_HOST")
 JELLYFIN_PORT = os.getenv("JELLYFIN_PORT")
+JELLYFIN_EXTERNAL_URL = os.getenv("JELLYFIN_EXTERNAL_URL")
 SONARR_HOST = os.getenv("SONARR_HOST")
 SONARR_PORT = int(os.getenv("SONARR_PORT", "8989"))
 SONARR_EXTERNAL_URL = os.getenv("SONARR_EXTERNAL_URL")
@@ -56,6 +57,7 @@ def setup_jellyfin():
         "port": int(JELLYFIN_PORT),
         "useSsl": False,
         "urlBase": "",
+        "externalHostname": JELLYFIN_EXTERNAL_URL,
         "serverType": 2,
     }
 
@@ -115,13 +117,13 @@ def setup_sonarr():
         "enableSeasonFolders": True,
         "syncEnabled": False,
         "preventSearch": False,
-        "tagRequests": True,
+        "tagRequests": False,
     }
 
     if SONARR_EXTERNAL_URL:
         sonarr_body["externalUrl"] = SONARR_EXTERNAL_URL
 
-    sonarr_response = make_post(sonarr_endpoint, body=sonarr_body)
+    make_post(sonarr_endpoint, body=sonarr_body)
 
 
 ############ RADARR
@@ -147,13 +149,13 @@ def setup_radarr():
         "isDefault": True,
         "syncEnabled": False,
         "preventSearch": False,
-        "tagRequests": True,
+        "tagRequests": False,
     }
 
     if RADARR_EXTERNAL_URL:
         radarr_body["externalUrl"] = RADARR_EXTERNAL_URL
 
-    radarr_response = make_post(radarr_endpoint, body=radarr_body)
+    make_post(radarr_endpoint, body=radarr_body)
 
 
 ############ FINALIZE
@@ -166,7 +168,7 @@ def finalize():
     finalize_endpoint = "/api/v1/settings/initialize"
     finalize_body = {}
 
-    finalize_response = make_post(finalize_endpoint, body=finalize_body)
+    make_post(finalize_endpoint, body=finalize_body)
 
 
 enable_telegram = os.getenv("TELEGRAM_NOTIFICATION_ENABLED", "False").lower() in (
@@ -188,7 +190,7 @@ def setup_telegram():
         "sendSilently": False,
     }
 
-    telegram_response = make_post(telegram_endpoint, body=telegram_body)
+    make_post(telegram_endpoint, body=telegram_body)
 
 
 external_auth_enabled = os.getenv("JELLYSEERR__AUTH__METHOD", "").lower() in (
@@ -201,7 +203,7 @@ def setup_external_auth():
     network_endpoint = "/api/v1/settings/network"
     network_body = {"trustProxy": True}
 
-    network_response = make_post(network_endpoint, body=network_body)
+    make_post(network_endpoint, body=network_body)
 
 
 setup_jellyfin()
