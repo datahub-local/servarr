@@ -623,6 +623,11 @@ jellyfin:
   # # @default -- true
   # enabled: true
 
+  # @ignore
+  image:
+    repository: ghcr.io/jellyfin/jellyfin
+    tag: 10.10.7
+
   chartContext:
     appUrl: 'https://{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
 
@@ -1015,7 +1020,6 @@ flaresolverr:
     main:
       enabled: *metricsEnabled
   # @ignore
-  # Fix current errors with Cloudfare
   image:
     repository: ghcr.io/flaresolverr/flaresolverr
     tag: latest
