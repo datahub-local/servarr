@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.22.2](https://img.shields.io/badge/Version-0.22.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.2](https://img.shields.io/badge/AppVersion-0.22.2-informational?style=flat-square) 
+![Version: 0.22.3](https://img.shields.io/badge/Version-0.22.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.3](https://img.shields.io/badge/AppVersion-0.22.3-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -284,7 +284,8 @@ flaresolverr:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | dash.preferredSubtitlesLanguages | string | en,es | Insert the Bazarr preferred subtitles languages (comma separated) |
-| dash.preferredSubtitlesProviders | string | gestdown,subdivx | Insert the Bazarr preferred subtitles providers (comma separated) |
+| dash.preferredSubtitlesProviders | string | No default value. Example: "opensubtitlescom" | Insert the Bazarr preferred subtitles providers (comma separated) |
+| dash.preferredSubtitlesProvidersSettings | string | No default value | Insert the Bazarr preferred subtitles providers settings (comma separated). Example: "opensubtitlescom-username=some_username,opensubtitlescom-password=some_password,opensubtitlescom-include_ai_translated=true" |
 
 ### Global
 

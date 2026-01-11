@@ -78,6 +78,8 @@ spec:
               value: "{{ $.Values.dash.preferredSubtitlesLanguages }}"
             - name: PREFERRED_SUBTITLES_PROVIDERS
               value: "{{ $.Values.dash.preferredSubtitlesProviders }}"
+            - name: PREFERRED_SUBTITLES_PROVIDERS_SETTINGS
+              value: "{{ $.Values.dash.preferredSubtitlesProvidersSettings }}"
           command:
             - "/bin/sh"
             - "-ec"

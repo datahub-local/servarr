@@ -10,12 +10,15 @@ SONARR_HOST = os.getenv("SONARR_HOST")
 SONARR_API_KEY = os.getenv("SONARR_API_KEY")
 RADARR_HOST = os.getenv("RADARR_HOST")
 RADARR_API_KEY = os.getenv("RADARR_API_KEY")
-PREFERRED_SUBTITLES_LANGUAGES = os.getenv("PREFERRED_SUBTITLES_LANGUAGES", "en").split(
+PREFERRED_SUBTITLES_LANGUAGES = os.getenv("PREFERRED_SUBTITLES_LANGUAGES", "").split(
     ","
 )
-PREFERRED_SUBTITLES_PROVIDERS = os.getenv("PREFERRED_SUBTITLES_PROVIDERS", "en").split(
+PREFERRED_SUBTITLES_PROVIDERS = os.getenv("PREFERRED_SUBTITLES_PROVIDERS", "").split(
     ","
 )
+PREFERRED_SUBTITLES_PROVIDERS_SETTINGS = os.getenv(
+    "PREFERRED_SUBTITLES_PROVIDERS_SETTINGS", ""
+).split(",")
 
 
 @step("bazarr_subtitles_languages")
@@ -47,6 +50,10 @@ def setup_subtitles_languages_profiles():
     logger.info(
         "Setup Bazarr subtitles languages: {}".format(PREFERRED_SUBTITLES_LANGUAGES)
     )
+
+    if not PREFERRED_SUBTITLES_LANGUAGES:
+        logger.info("No preferred subtitles languages provided, skipping")
+        return
 
     headers = {
         "x-api-key": API_KEY,
@@ -101,6 +108,10 @@ def setup_subtitles_providers():
         "Setup Bazarr subtitles providers: {}".format(PREFERRED_SUBTITLES_PROVIDERS)
     )
 
+    if not PREFERRED_SUBTITLES_PROVIDERS:
+        logger.info("No preferred subtitles providers provided, skipping")
+        return
+
     headers = {
         "x-api-key": API_KEY,
     }
@@ -113,6 +124,27 @@ def setup_subtitles_providers():
         ("settings-general-enabled_providers", provider)
         for provider in PREFERRED_SUBTITLES_PROVIDERS
     ]
+
+    if not PREFERRED_SUBTITLES_PROVIDERS_SETTINGS:
+        logger.info("No preferred subtitles providers settings provided, skipping")
+    else:
+        logger.info(
+            "Adding preferred subtitle providers settings: {}".format(
+                PREFERRED_SUBTITLES_PROVIDERS_SETTINGS
+            )
+        )
+
+        for setting in PREFERRED_SUBTITLES_PROVIDERS_SETTINGS:
+            key_value = setting.split("=", 1)
+            if len(key_value) == 2:
+                key, value = key_value
+                body.append((f"settings-{key}", value))
+            else:
+                logger.warning(
+                    "Invalid provider setting format (expected key=value): {}".format(
+                        setting
+                    )
+                )
 
     post(
         url="http://{}/api/system/settings".format(BAZARR_HOST),
