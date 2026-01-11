@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 
+import json
 import os
 from utils import post, step, logger
 
@@ -32,6 +33,59 @@ def setup_subtitles_languages():
     )
 
     body = [("languages-enabled", lang) for lang in PREFERRED_SUBTITLES_LANGUAGES]
+
+    post(
+        url="http://{}/api/system/settings".format(BAZARR_HOST),
+        headers=headers,
+        data=body,
+        method="POST",
+    )
+
+
+@step("bazarr_subtitles_languages_profiles")
+def setup_subtitles_languages_profiles():
+    logger.info(
+        "Setup Bazarr subtitles languages: {}".format(PREFERRED_SUBTITLES_LANGUAGES)
+    )
+
+    headers = {
+        "x-api-key": API_KEY,
+    }
+
+    logger.info(
+        "Adding preferred subtitle language: {}".format(PREFERRED_SUBTITLES_LANGUAGES)
+    )
+
+    body = [
+        (
+            "languages-profiles",
+            json.dumps(
+                [
+                    {
+                        "profileId": 1,
+                        "name": "default",
+                        "items": [
+                            {
+                                "id": idx,
+                                "language": lang,
+                                "audio_exclude": "False",
+                                "audio_only_include": "False",
+                                "hi": "False",
+                                "forced": "False",
+                            }
+                            for idx, lang in enumerate(
+                                PREFERRED_SUBTITLES_LANGUAGES, start=1
+                            )
+                        ],
+                        "cutoff": 65535,
+                        "mustContain": [],
+                        "mustNotContain": [],
+                        "originalFormat": False,
+                    }
+                ]
+            ),
+        )
+    ]
 
     post(
         url="http://{}/api/system/settings".format(BAZARR_HOST),
@@ -132,6 +186,7 @@ def setup_radarr():
 
 if __name__ == "__main__":
     setup_subtitles_languages()
+    setup_subtitles_languages_profiles()
     setup_subtitles_providers()
     setup_sonarr()
     setup_radarr()
