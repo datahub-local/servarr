@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.21.0](https://img.shields.io/badge/AppVersion-0.21.0-informational?style=flat-square) 
+![Version: 0.22.0](https://img.shields.io/badge/Version-0.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,6 +22,7 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
+| oci://oci.trueforge.org/truecharts | bazarr | 23.2.6 |
 | oci://oci.trueforge.org/truecharts | flaresolverr | 16.14.6 |
 | oci://oci.trueforge.org/truecharts | jellyfin | 22.2.13 |
 | oci://oci.trueforge.org/truecharts | jellyseerr | 13.13.7 |
@@ -29,7 +30,6 @@ Servarr complete Helm Chart for Kubernetes
 | oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.7 |
 | oci://oci.trueforge.org/truecharts | radarr | 26.3.6 |
 | oci://oci.trueforge.org/truecharts | sonarr | 25.2.6 |
-| oci://oci.trueforge.org/truecharts | bazarr | 23.2.6 |
 
 ---
 
@@ -279,6 +279,13 @@ flaresolverr:
 | dash.preferredLanguage | string | en | Insert the Jellyfin preferred language |
 | dash.username | string | No default value | Insert the Jellyfin username (will be used also for Jellyseerr) |
 
+### Bazarr
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dash.preferredSubtitlesLanguages | string | en,es | Insert the Bazarr preferred subtitles languages (comma separated) |
+| dash.preferredSubtitlesProviders | string | gestdown,subdivx | Insert the Bazarr preferred subtitles providers (comma separated) |
+
 ### Global
 
 | Key | Type | Default | Description |
@@ -322,9 +329,9 @@ flaresolverr:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| tags.movies | bool | true | This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr |
+| tags.movies | bool | true | This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr |
 | tags.music | bool | true | This tag will deploy: Prowlarr, QBitTorrent, Jellyfin, Flaresolverr |
-| tags.tvseries | bool | true | This tag will deploy: Sonarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr |
+| tags.tvseries | bool | true | This tag will deploy: Sonarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr |
 
 ### Storage
 
@@ -348,6 +355,7 @@ flaresolverr:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | argoCD | bool | false | The flag changes the behavior id deployed with ArgoCD. |
+| bazarr | object | `{}` |  |
 | extraResources | list | `[]` | Extra resources to deploy |
 | flaresolverr.workload.main.podSpec.containers.main.probes.liveness.path | string | `"/health"` |  |
 | flaresolverr.workload.main.podSpec.containers.main.probes.readiness.path | string | `"/health"` |  |
