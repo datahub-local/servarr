@@ -53,3 +53,23 @@ charts/*
 
 # do not push kubeconfig clusters
 *.kubeconfig
+
+# IDE / Misc
+.vscode/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+.env
+.env.*

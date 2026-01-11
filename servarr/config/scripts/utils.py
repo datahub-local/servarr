@@ -48,7 +48,8 @@ def create_dir(dir: str):
 def post(
     url: str,
     headers: dict = None,
-    body: dict = None,
+    data: dict | list = None,
+    json: dict = None,
     session=None,
     method: str = "POST",
 ):
@@ -62,8 +63,10 @@ def post(
         HTTP request URL as string
     headers : dict
         HTTP headers to be used in the request
-    body : dict
-        Request body needed for the POST
+    data : dict | list
+        Request data body needed for the POST
+    json : dict | list
+        Request JSON body needed for the POST
     session : requests.Session
         Optional session to use for the request
     method : str
@@ -72,21 +75,29 @@ def post(
     if headers is None:
         headers = {}
 
+    if data is not None:
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+    elif json is not None:
+        headers["Content-Type"] = "application/json"
+
     logger.debug(
         " ".join(
             [
                 "POST",
                 url,
-                ", ".join(f"{key}: {value}" for key, value in headers.items()),
-                str(body),
+                str(data if data is not None else json),
             ]
         )
     )
 
     if session:
-        response = session.request(method=method, url=url, json=body, headers=headers)
+        response = session.request(
+            method=method, data=data, url=url, json=json, headers=headers
+        )
     else:
-        response = requests.request(method=method, url=url, json=body, headers=headers)
+        response = requests.request(
+            method=method, url=url, data=data, json=json, headers=headers
+        )
 
     logger.debug(
         " ".join(
@@ -121,15 +132,7 @@ def get(url: str, headers: dict = None, session=None):
     if headers is None:
         headers = {}
 
-    logger.debug(
-        " ".join(
-            [
-                "GET",
-                url,
-                ", ".join(f"{key}: {value}" for key, value in headers.items()),
-            ]
-        )
-    )
+    logger.debug(" ".join(["GET", url]))
 
     if session:
         response = session.get(url=url, headers=headers)
@@ -153,18 +156,24 @@ def get(url: str, headers: dict = None, session=None):
 
 
 def load_state():
-    if os.path.exists(STATE_FILE_PATH):
-        try:
-            with open(STATE_FILE_PATH, "r") as f:
-                return json.load(f)
-        except JSONDecodeError:
-            return {}
+    try:
+        if os.path.exists(STATE_FILE_PATH):
+            try:
+                with open(STATE_FILE_PATH, "r") as f:
+                    return json.load(f)
+            except JSONDecodeError:
+                return {}
+    except Exception as e:
+        logger.error(f"Failed to load state[{STATE_FILE_PATH}]: {e}")
     return {}
 
 
 def save_state(state):
-    with open(STATE_FILE_PATH, "w") as f:
-        json.dump(state, f)
+    try:
+        with open(STATE_FILE_PATH, "w") as f:
+            json.dump(state, f)
+    except Exception as e:
+        logger.error(f"Failed to save state[{STATE_FILE_PATH}]: {e}")
 
 
 def is_step_completed(step_name):

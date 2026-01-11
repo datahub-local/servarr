@@ -20,14 +20,13 @@ def setup_flaresolverr_tags():
     logger.info("Setup Flaresolverr tags in Prowlarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
 
     body = {"label": "flare"}
 
-    post(url="http://{}/api/v1/tag".format(PROWLARR_HOST), headers=headers, body=body)
+    post(url="http://{}/api/v1/tag".format(PROWLARR_HOST), headers=headers, json=body)
 
 
 @step("prowlarr_radarr")
@@ -35,7 +34,6 @@ def setup_radarr():
     logger.info("Setup Radarr in Prowlarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
         "X-Prowlarr-Client": "true",
@@ -75,7 +73,7 @@ def setup_radarr():
     post(
         url="http://{}/api/v1/applications".format(PROWLARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -84,7 +82,6 @@ def setup_sonarr():
     logger.info("Setup Sonarr in Prowlarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
         "X-Prowlarr-Client": "true",
@@ -114,7 +111,7 @@ def setup_sonarr():
     post(
         url="http://{}/api/v1/applications".format(PROWLARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -123,7 +120,6 @@ def setup_qbittorrent():
     logger.info("Setup qBitTorrent in Prowlarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -159,7 +155,7 @@ def setup_qbittorrent():
     post(
         url="http://{}/api/v1/downloadclient".format(PROWLARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -168,7 +164,6 @@ def setup_flaresolverr():
     logger.info("Setup Flaresolverr in Prowlarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -192,8 +187,9 @@ def setup_flaresolverr():
     post(
         url="http://{}/api/v1/indexerProxy".format(PROWLARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
+
 
 def setup_indexers():
     indexersFile = "/scripts/indexers.json"
@@ -204,7 +200,6 @@ def setup_indexers():
             indexers = json.load(file)
 
         headers = {
-            "Content-Type": "application/json",
             "X-Api-Key": API_KEY,
             "X-Prowlarr-Client": "true",
             "X-Requested-With": "XMLHttpRequest",

@@ -14,7 +14,7 @@ LIBRARY_PATH = os.getenv("LIBRARY_PATH", "/data/library")
 def setup_location_logic():
     logger.info("Setup Location")
 
-    headers = {"Content-Type": "application/json"}
+    headers = {}
 
     body = {
         "UICulture": "en-US",
@@ -25,7 +25,7 @@ def setup_location_logic():
     post(
         url="http://{}/Startup/Configuration".format(JELLYFIN_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -36,7 +36,7 @@ def setup_location_1():
 
 @step("jellyfin_setup_user")
 def setup_user():
-    headers = {"Content-Type": "application/json"}
+    headers = {}
     logger.info("Ping GET user endpoint")
 
     get(url="http://{}/Startup/User".format(JELLYFIN_HOST), headers=headers)
@@ -45,12 +45,12 @@ def setup_user():
 
     body = {"Name": JELLYFIN_USERNAME, "Password": JELLYFIN_PASSWORD}
 
-    post(url="http://{}/Startup/User".format(JELLYFIN_HOST), headers=headers, body=body)
+    post(url="http://{}/Startup/User".format(JELLYFIN_HOST), headers=headers, json=body)
 
 
 @step("jellyfin_setup_library")
 def setup_library():
-    headers = {"Content-Type": "application/json"}
+    headers = {}
     logger.info("Setup the library")
 
     body = {
@@ -139,7 +139,7 @@ def setup_library():
             JELLYFIN_HOST
         ),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -152,7 +152,7 @@ def setup_location_2():
 
 @step("jellyfin_setup_remote_access")
 def setup_remote_access():
-    headers = {"Content-Type": "application/json"}
+    headers = {}
     logger.info("Setup the remote access")
 
     body = {"EnableRemoteAccess": True, "EnableAutomaticPortMapping": False}
@@ -160,7 +160,7 @@ def setup_remote_access():
     post(
         url="http://{}/Startup/RemoteAccess".format(JELLYFIN_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -168,7 +168,7 @@ def setup_remote_access():
 def finalize():
     logger.info("Finalize the setup")
 
-    post(url="http://{}/Startup/Complete".format(JELLYFIN_HOST), headers={}, body={})
+    post(url="http://{}/Startup/Complete".format(JELLYFIN_HOST), headers={}, json={})
 
 
 setup_location_1()

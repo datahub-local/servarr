@@ -684,3 +684,46 @@ flaresolverr:
           exportarr:
             mountPath: /config
             readOnly: true
+
+bazarr:
+  metrics:
+    main:
+      enabled: *metricsEnabled
+  ingress:
+    bazarr-ing:
+      enabled: true
+      primary: true
+      required: true
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: bazarr.media.local
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - bazarr.media.local
+          secretName: bazarr-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+        exportarr:
+          exportarr:
+            mountPath: /config
+            readOnly: true
