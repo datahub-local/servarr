@@ -3,7 +3,8 @@
     "k3d@latest",
     "k9s@latest",
     "kubernetes-helm@latest",
-    "helmfile@latest"
+    "helmfile@latest",
+    "uv@latest"
   ],
   "init_hook": [
     "helm plugin install https://github.com/databus23/helm-diff 2> /dev/null || true",
@@ -11,13 +12,16 @@
   ],
   "shell": {
     "scripts": {
-      "start_k8s": [
+      "test_start_k8s": [
         "./.github/ci/start_k8s.sh"
       ],
-      "stop_k8s": [
+      "test_stop_k8s": [
         "./.github/ci/stop_k8s.sh"
       ],
-      "test_install": "helm upgrade --install --create-namespace --namespace servarr --values .github/ci/ci-values.yaml servarr servarr",
+      "test_setup_python": [
+        "uv venv .venv && uv pip install -r servarr/config/scripts/requirements.txt"
+      ],
+      "test_install": "helm upgrade --install --dependency-update --create-namespace --namespace servarr --values .github/ci/ci-values.yaml servarr servarr",
       "test_delete": "kubectl delete ns servarr || true"
     }
   }

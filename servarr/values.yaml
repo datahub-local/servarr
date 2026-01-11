@@ -80,11 +80,11 @@ init:
   annotations: {}
 
 tags:
-  # -- (bool) This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr
+  # -- (bool) This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr
   # @default -- true
   # @section -- Tags
   movies: true
-  # -- (bool) This tag will deploy: Sonarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr
+  # -- (bool) This tag will deploy: Sonarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr
   # @default -- true
   # @section -- Tags
   tvseries: true
@@ -136,6 +136,14 @@ dash:
   # @section -- Jellyfin
   # @default -- en
   preferredLanguage: "en"
+  # -- (string) Insert the Bazarr preferred subtitles languages (comma separated)
+  # @section -- Bazarr
+  # @default -- en,es
+  preferredSubtitlesLanguages: "en,es"
+  # -- (string) Insert the Bazarr preferred subtitles providers (comma separated)
+  # @section -- Bazarr
+  # @default -- gestdown,subdivx
+  preferredSubtitlesProviders: "gestdown,subdivx"
   # @ignore
   apikey: &apikey "{{ .Values.global.apikey }}"
   # @ignore
@@ -1054,6 +1062,77 @@ flaresolverr:
                 path: /health
               startup:
                 path: /health
+
+# https://github.com/trueforge-org/truecharts/blob/master/charts/stable/bazarr/values.yaml
+bazarr:
+  # # -- Choose whether Bazarr should be installed or not.
+  # # @section Services
+  # # @default -- true
+  # enabled: true
+  # @ignore
+  metrics:
+    main:
+      enabled: *metricsEnabled
+  # @ignore
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              DYNACONF_AUTH__APIKEY: *apikey
+          exportarr:
+            env:
+              APIKEY: *apikey
+  # @ignore
+  ingress:
+    bazarr-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "bazarr" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "bazarr" .Values.global.ingressHostPattern }}'
+          secretName: bazarr-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+        exportarr:
+          exportarr:
+            mountPath: /config
+            readOnly: true
+    # @ignore
+    media:
+      enabled: true
+      type: pvc
+      existingClaim: *media-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /mnt/media
 
 # -- Extra resources to deploy
 extraResources: []

@@ -29,6 +29,7 @@ Servarr complete Helm Chart for Kubernetes
 | oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.7 |
 | oci://oci.trueforge.org/truecharts | radarr | 26.3.6 |
 | oci://oci.trueforge.org/truecharts | sonarr | 25.2.6 |
+| oci://oci.trueforge.org/truecharts | bazarr | 23.2.6 |
 
 ---
 

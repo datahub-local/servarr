@@ -16,7 +16,6 @@ def setup_qbittorrent():
     logger.info("Setup qBitTorrent in Radarr")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -54,7 +53,7 @@ def setup_qbittorrent():
     post(
         url="http://{}/api/v3/downloadclient".format(RADARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -63,7 +62,6 @@ def setup_remote_path_mapping():
     logger.info("Setup Remote Path Mapping")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -77,7 +75,7 @@ def setup_remote_path_mapping():
     post(
         url="http://{}/api/v3/remotepathmapping".format(RADARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
@@ -86,7 +84,6 @@ def setup_root_folder():
     logger.info("Setup Root Folder")
 
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -96,14 +93,13 @@ def setup_root_folder():
     post(
         url="http://{}/api/v3/rootFolder".format(RADARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
     )
 
 
 @step("radarr_media_management")
 def setup_media_management():
     headers = {
-        "content-type": "application/json",
         "x-api-key": API_KEY,
         "x-requested-with": "XMLHttpRequest",
     }
@@ -136,7 +132,7 @@ def setup_media_management():
     post(
         url="http://{}/api/v3/config/mediamanagement".format(RADARR_HOST),
         headers=headers,
-        body=body,
+        json=body,
         method="PUT",
     )
 

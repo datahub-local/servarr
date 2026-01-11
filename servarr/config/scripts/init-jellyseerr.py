@@ -35,7 +35,7 @@ def make_get(endpoint=""):
 
 def make_post(endpoint="", body=None):
     url = "{0}{1}".format(jellyseer_url, endpoint)
-    res = post(url=url, body=body, session=session)
+    res = post(url=url, json=body, session=session)
     return res["response"]
 
 
