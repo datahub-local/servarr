@@ -31,10 +31,7 @@ def setup_subtitles_languages():
         "Adding preferred subtitle language: {}".format(PREFERRED_SUBTITLES_LANGUAGES)
     )
 
-    body = [
-        ("settings-general-enabled_languages", lang)
-        for lang in PREFERRED_SUBTITLES_LANGUAGES
-    ]
+    body = [("languages-enabled", lang) for lang in PREFERRED_SUBTITLES_LANGUAGES]
 
     post(
         url="http://{}/api/system/settings".format(BAZARR_HOST),
