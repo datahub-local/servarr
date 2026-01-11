@@ -142,8 +142,13 @@ dash:
   preferredSubtitlesLanguages: "en,es"
   # -- (string) Insert the Bazarr preferred subtitles providers (comma separated)
   # @section -- Bazarr
-  # @default -- gestdown,subdivx
-  preferredSubtitlesProviders: "gestdown,subdivx"
+  # @default -- No default value. Example: "opensubtitlescom"
+  preferredSubtitlesProviders: ""
+  # -- (string) Insert the Bazarr preferred subtitles providers settings (comma separated). Example: "opensubtitlescom-username=some_username,opensubtitlescom-password=some_password,opensubtitlescom-include_ai_translated=true"
+  # @section -- Bazarr
+  # @default -- No default value
+  preferredSubtitlesProvidersSettings: ""
+
   # @ignore
   apikey: &apikey "{{ .Values.global.apikey }}"
   # @ignore
