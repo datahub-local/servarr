@@ -19,19 +19,19 @@ sources:
   - https://github.com/datahub-local/servarr
 dependencies:
   - name: sonarr
-    version: "25.2.6"
+    version: "25.2.8"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: sonarr.enabled
     tags:
       - tvseries
   - name: radarr
-    version: "26.3.6"
+    version: "26.3.8"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: radarr.enabled
     tags:
       - movies
   - name: prowlarr
-    version: "21.3.7"
+    version: "21.3.9"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: prowlarr.enabled
     tags:
@@ -39,7 +39,7 @@ dependencies:
       - tvseries
       - music
   - name: qbittorrent
-    version: "24.2.7"
+    version: "24.2.8"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: qbittorrent.enabled
     tags:
@@ -47,14 +47,14 @@ dependencies:
       - tvseries
       - music
   - name: jellyseerr
-    version: "13.13.7"
+    version: "13.13.8"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyseerr.enabled
     tags:
       - movies
       - tvseries
   - name: jellyfin
-    version: "22.2.13"
+    version: "22.2.16"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyfin.enabled
     tags:
@@ -62,7 +62,7 @@ dependencies:
       - tvseries
       - music
   - name: flaresolverr
-    version: "16.14.6"
+    version: "16.14.7"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: flaresolverr.enabled
     tags:
@@ -70,7 +70,7 @@ dependencies:
       - tvseries
       - music
   - name: bazarr
-    version: "23.2.6"
+    version: "23.2.8"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: bazarr.enabled
     tags:
