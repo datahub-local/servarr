@@ -640,7 +640,7 @@ jellyfin:
   # @ignore
   image:
     repository: ghcr.io/jellyfin/jellyfin
-    tag: 10.11.5
+    tag: 10.11.6
 
   chartContext:
     appUrl: 'https://{{ replace "SERVICE" "jellyfin" .Values.global.ingressHostPattern }}'
