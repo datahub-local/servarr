@@ -2,8 +2,8 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.22.8
-appVersion: 0.22.8
+version: 0.22.9
+appVersion: 0.22.9
 keywords:
   - servarr
   - prowlarr
@@ -19,19 +19,19 @@ sources:
   - https://github.com/datahub-local/servarr
 dependencies:
   - name: sonarr
-    version: "25.2.18"
+    version: "25.2.19"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: sonarr.enabled
     tags:
       - tvseries
   - name: radarr
-    version: "26.3.18"
+    version: "26.3.19"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: radarr.enabled
     tags:
       - movies
   - name: prowlarr
-    version: "21.3.19"
+    version: "21.3.20"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: prowlarr.enabled
     tags:
@@ -39,7 +39,7 @@ dependencies:
       - tvseries
       - music
   - name: qbittorrent
-    version: "24.2.20"
+    version: "24.2.21"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: qbittorrent.enabled
     tags:
@@ -47,14 +47,14 @@ dependencies:
       - tvseries
       - music
   - name: jellyseerr
-    version: "13.13.20"
+    version: "13.13.22"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyseerr.enabled
     tags:
       - movies
       - tvseries
   - name: jellyfin
-    version: "22.2.28"
+    version: "22.2.31"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyfin.enabled
     tags:
@@ -62,7 +62,7 @@ dependencies:
       - tvseries
       - music
   - name: flaresolverr
-    version: "16.14.16"
+    version: "16.14.17"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: flaresolverr.enabled
     tags:
@@ -70,7 +70,7 @@ dependencies:
       - tvseries
       - music
   - name: bazarr
-    version: "23.2.18"
+    version: "23.2.20"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: bazarr.enabled
     tags:
