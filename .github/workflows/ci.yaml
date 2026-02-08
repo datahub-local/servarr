@@ -20,13 +20,6 @@ jobs:
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.11.0
 
-      - name: Fetch cached dependencies charts
-        id: cache-charts
-        uses: actions/cache/restore@v4
-        with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
-
       - name: Run chart-testing (lint)
         env:
           CACHE_HIT: ${{ steps.cache-charts.outputs.cache-hit == 'true' }}
@@ -36,14 +29,6 @@ jobs:
             extraArgs="--skip-helm-dependencies"
           fi
           devbox run lint_chart -- $extraArgs
-
-      - name: Save dependencies charts in the cache
-        if: ${{ steps.cache-charts.outputs.cache-hit != 'true' }}
-        id: cache-charts-save
-        uses: actions/cache/save@v4
-        with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
 
   test:
     runs-on: ubuntu-latest
@@ -92,13 +77,6 @@ jobs:
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.11.0
-
-      - name: Fetch cached dependencies charts
-        id: cache-charts
-        uses: actions/cache/restore@v4
-        with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
 
       - name: Helm Dependency update
         if: ${{ steps.cache-charts.outputs.cache-hit != 'true' }}
