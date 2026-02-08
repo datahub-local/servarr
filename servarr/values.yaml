@@ -1149,30 +1149,7 @@ audiobookshelf:
   # # @section Services
   # # @default -- true
   # enabled: true
-  # @ignore
-  ingress:
-    audiobookshelf-ing:
-      enabled: true
-      primary: true
-      required: false
-      expandObjectName: false
-      annotations:
-        cert-manager.io/cluster-issuer: *issuer
-      ingressClassName: *ingressClassName
-      hosts:
-        - host: '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
-          secretName: audiobookshelf-tls
-      integrations:
-        certManager:
-          enabled: false
-        traefik:
-          enabled: false
+
   # @ignore
   persistence:
     config:
@@ -1203,6 +1180,35 @@ audiobookshelf:
         main:
           main:
             mountPath: /metadata
+    # @ignore
+    addons:
+      codeserver:
+        enabled: false
+
+  # @ignore
+  ingress:
+    audiobookshelf-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          secretName: audiobookshelf-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
 
 # https://github.com/TheDragonShaman/AuralArchive
 auralarchive:
