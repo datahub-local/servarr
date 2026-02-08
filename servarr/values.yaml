@@ -1180,10 +1180,10 @@ audiobookshelf:
         main:
           main:
             mountPath: /metadata
-    # @ignore
-    addons:
-      codeserver:
-        enabled: false
+  # @ignore
+  addons:
+    codeserver:
+      enabled: false
 
   # @ignore
   ingress:
