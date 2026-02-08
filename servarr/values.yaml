@@ -414,7 +414,7 @@ volumes:
     name: &downloads-volume downloads-volume
     # -- Size of the downloads volume, in Kubernets format
     # @section -- Storage
-    size: 100Gi
+    size: 1Gi
   # -- configuration of the volume used for media storage (i.e.: where movies and tv shows file will be permanently stored)
   # @section -- Storage
   # @default -- See the sub fields
@@ -661,8 +661,8 @@ jellyfin:
     serviceType: ClusterIP
     persistenceType: pvc
     pvcRetain: false
-    pvcSize: 100Gi
-    vctSize: 100Gi
+    pvcSize: 1Gi
+    vctSize: 1Gi
     accessModes:
       - ReadWriteMany
     vctAccessModes:
@@ -765,8 +765,8 @@ jellyseerr:
     serviceType: ClusterIP
     persistenceType: pvc
     pvcRetain: false
-    pvcSize: 100Gi
-    vctSize: 100Gi
+    pvcSize: 1Gi
+    vctSize: 1Gi
     accessModes:
       - ReadWriteMany
     vctAccessModes:
@@ -1158,8 +1158,8 @@ audiobookshelf:
     serviceType: ClusterIP
     persistenceType: pvc
     pvcRetain: false
-    pvcSize: 100Gi
-    vctSize: 100Gi
+    pvcSize: 1Gi
+    vctSize: 1Gi
     accessModes:
       - ReadWriteMany
     vctAccessModes:
@@ -1246,6 +1246,41 @@ auralarchive:
   # # @section Services
   # # @default -- true
   # enabled: true
+
+  # @ignore
+  fallbackDefaults:
+    storageClass:
+    probeType: http
+    serviceProtocol: tcp
+    serviceType: ClusterIP
+    persistenceType: pvc
+    pvcRetain: false
+    pvcSize: 1Gi
+    vctSize: 1Gi
+    accessModes:
+      - ReadWriteMany
+    vctAccessModes:
+      - ReadWriteMany
+    probeTimeouts:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 1
+      readiness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+      startup:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 60
+        successThreshold: 1
+
   # @ignore
   redis:
     enabled: false
