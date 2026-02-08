@@ -1151,6 +1151,40 @@ audiobookshelf:
   # enabled: true
 
   # @ignore
+  fallbackDefaults:
+    storageClass:
+    probeType: http
+    serviceProtocol: tcp
+    serviceType: ClusterIP
+    persistenceType: pvc
+    pvcRetain: false
+    pvcSize: 100Gi
+    vctSize: 100Gi
+    accessModes:
+      - ReadWriteMany
+    vctAccessModes:
+      - ReadWriteMany
+    probeTimeouts:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 1
+      readiness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+      startup:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 60
+        successThreshold: 1
+
+  # @ignore
   persistence:
     config:
       enabled: true
