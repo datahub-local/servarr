@@ -727,3 +727,117 @@ bazarr:
           exportarr:
             mountPath: /config
             readOnly: true
+
+audiobookshelf:
+  ingress:
+    audiobookshelf-ing:
+      enabled: true
+      primary: true
+      required: true
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: audiobookshelf.media.local
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - audiobookshelf.media.local
+          secretName: audiobookshelf-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    audiobooks:
+      enabled: true
+      type: pvc
+      existingClaim: *media-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /audiobooks
+    metadata:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /metadata
+
+auralarchive:
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              DOCKER_CONTAINER: "true"
+              ABS_SYNC_PAGE_SIZE: "500"
+  ingress:
+    auralarchive-ing:
+      enabled: true
+      primary: true
+      required: true
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: auralarchive.media.local
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - auralarchive.media.local
+          secretName: auralarchive-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    downloads:
+      enabled: true
+      type: pvc
+      existingClaim: *downloads-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /downloads
+    import:
+      enabled: true
+      type: emptyDir
+      size: 1Gi
+      targetSelector:
+        main:
+          main:
+            mountPath: /import

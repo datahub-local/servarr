@@ -7,7 +7,7 @@ KUBECONFIG_CONTEXT="k3d-${K3D_CLUSTER_NAME}"
 export NFS_DIRECTORY=/tmp/k3d_data
 
 echo "[+] Checking k3d cluster status..."
-if ! k3d cluster list | grep -q "${K3D_CLUSTER_NAME}"; then
+if ! k3d cluster list "${K3D_CLUSTER_NAME}" | grep -q "${K3D_CLUSTER_NAME}"; then
   echo "[✓] k3d cluster already deleted."
 else
   k3d cluster delete "${K3D_CLUSTER_NAME}" || (

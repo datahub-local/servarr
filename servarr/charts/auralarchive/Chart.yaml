@@ -1,0 +1,17 @@
+apiVersion: v2
+name: auralarchive
+description: AuralArchive - Audiobook library management and acquisition system
+type: application
+version: 0.1.0
+appVersion: 0.01.1
+home: https://github.com/TheDragonShaman/AuralArchive
+sources:
+  - https://github.com/TheDragonShaman/AuralArchive
+keywords:
+  - audiobooks
+  - auralarchive
+  - audiobookshelf
+dependencies:
+  - name: common
+    version: "28.29.50"
+    repository: "oci://oci.trueforge.org/truecharts"

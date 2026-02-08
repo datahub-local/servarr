@@ -8,7 +8,7 @@ export NFS_DIRECTORY=/tmp/k3d_data
 export NFS_SERVER=nfs-server
 
 echo "[+] Checking k3d cluster status..."
-if ! k3d cluster list | grep -q "$K3D_CLUSTER_NAME"; then
+if ! k3d cluster list "$K3D_CLUSTER_NAME" | grep -q "$K3D_CLUSTER_NAME"; then
   echo "[+] Creating k3d cluster..."
   
   k3d cluster create "$K3D_CLUSTER_NAME" --config .github/ci/k3d-config.yaml

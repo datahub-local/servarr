@@ -92,6 +92,10 @@ tags:
   # @default -- true
   # @section -- Tags
   music: true
+  # -- (bool) This tag will deploy: Audiobookshelf, AuralArchive
+  # @default -- true
+  # @section -- Tags
+  audiobooks: true
 
 metrics:
   # -- Anchor to set wether to deploy the export sidecar pods or not. Requires the Prometheus stack. Do not remove the `&metricsEnabled` anchor!
@@ -1138,6 +1142,137 @@ bazarr:
         main:
           main:
             mountPath: /mnt/media
+
+# https://github.com/trueforge-org/truecharts/blob/master/charts/stable/audiobookshelf/values.yaml
+audiobookshelf:
+  # # -- Choose whether Audiobookshelf should be installed or not.
+  # # @section Services
+  # # @default -- true
+  # enabled: true
+  # @ignore
+  ingress:
+    audiobookshelf-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          secretName: audiobookshelf-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    audiobooks:
+      enabled: true
+      type: pvc
+      existingClaim: *media-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /audiobooks
+    metadata:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /metadata
+
+# https://github.com/TheDragonShaman/AuralArchive
+auralarchive:
+  # # -- Choose whether AuralArchive should be installed or not.
+  # # @section Services
+  # # @default -- true
+  # enabled: true
+  # @ignore
+  workload:
+    main:
+      podSpec:
+        containers:
+          main:
+            env:
+              DOCKER_CONTAINER: "true"
+              ABS_SYNC_PAGE_SIZE: "500"
+  # @ignore
+  ingress:
+    auralarchive-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          secretName: auralarchive-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    # @ignore
+    downloads:
+      enabled: true
+      type: pvc
+      existingClaim: *downloads-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /downloads
+    # @ignore
+    import:
+      enabled: true
+      type: emptyDir
+      size: 1Gi
+      targetSelector:
+        main:
+          main:
+            mountPath: /import
 
 # -- Extra resources to deploy
 extraResources: []

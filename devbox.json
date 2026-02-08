@@ -4,7 +4,8 @@
     "k9s@latest",
     "kubernetes-helm@latest",
     "helmfile@latest",
-    "uv@latest"
+    "uv@latest",
+    "chart-testing@latest"
   ],
   "init_hook": [
     "helm plugin install https://github.com/databus23/helm-diff 2> /dev/null || true",
@@ -12,17 +13,25 @@
   ],
   "shell": {
     "scripts": {
-      "test_start_k8s": [
+      "debug_k8s": [
+        "./.github/ci/debug_k8s.sh"
+      ],
+      "start_k8s": [
         "./.github/ci/start_k8s.sh"
       ],
-      "test_stop_k8s": [
+      "stop_k8s": [
         "./.github/ci/stop_k8s.sh"
       ],
-      "test_setup_python": [
+      "test_k8s": [
+        "./.github/ci/test_k8s.sh"
+      ],
+      "setup_python": [
         "uv venv .venv && uv pip install -r servarr/config/scripts/requirements.txt"
       ],
       "test_install": "helm upgrade --install --dependency-update --create-namespace --namespace servarr --values .github/ci/ci-values.yaml servarr servarr",
-      "test_delete": "kubectl delete ns servarr || true"
+      "test_delete": "kubectl delete ns --force servarr || true",
+      "lint_chart": "ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false",
+      "unittest": "helm unittest servarr"
     }
   }
 }

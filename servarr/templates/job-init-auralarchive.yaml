@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "servarr.fullname" . }}-auralarchive-init
+  labels:
+    {{- include "servarr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "servarr.annotations" . | nindent 4 }}
+    {{- with .Values.init.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    #{{- if not .Values.argoCD }}
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "45"
+    #{{- if not .Values.debug }}
+    helm.sh/hook-delete-policy: hook-failed
+    #{{- end }}
+    #{{- end }}
+
+    #{{- if .Values.argoCD }}
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "45"
+    #{{- end }}
+spec:
+  backoffLimit: {{ .Values.init.job.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.init.job.activeDeadlineSeconds }}
+  template:
+    metadata:
+      name: "{{ include "servarr.fullname" . }}-auralarchive-finalizer"
+      labels:
+        {{- include "servarr.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      {{- with .Values.init.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.init.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: wait-for-auralarchive
+          image: {{ .Values.init.waitFor.image.repository }}:{{ .Values.init.waitFor.image.tag }}
+          imagePullPolicy: {{ .Values.init.waitFor.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.waitFor.resources | nindent 12 }}
+          command:
+            [
+              "sh",
+              "-c",
+              "until wget --spider -S -T 10 \"http://{{ .Release.Name }}-auralarchive.{{ .Release.Namespace }}.svc.cluster.local:8765/health\" 2>&1 | grep -qw '200\\|301\\|302' > /dev/null ; do echo Waiting for servarr-auralarchive ; sleep 5 ; done ; sleep 10 ;",
+            ]
+      containers:
+        - name: initialize-auralarchive
+          image: {{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
+          env:
+            - name: STATE_FILE_PATH
+              value: "/state/auralarchive_init_state.json"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: AURALARCHIVE_HOST
+              value: "{{ .Release.Name }}-auralarchive.{{ .Release.Namespace }}.svc.cluster.local:8765"
+            - name: AUDIOBOOKSHELF_HOST
+              value: "{{ .Release.Name }}-audiobookshelf.{{ .Release.Namespace }}.svc.cluster.local:10223"
+            - name: AUDIOBOOKSHELF_API_KEY
+              value: ""
+            - name: QBITTORRENT_HOST
+              value: "{{ .Release.Name }}-qbittorrent.{{ .Release.Namespace }}.svc.cluster.local:10095"
+            - name: QBITTORRENT_USERNAME
+              value: "{{ $.Values.torrent.username }}"
+            - name: QBITTORRENT_PASSWORD
+              value: "{{ $.Values.torrent.password }}"
+          command:
+            - "/bin/sh"
+            - "-ec"
+          args:
+            - "pip install -r /scripts/requirements.txt && python3 -u /scripts/init-auralarchive.py 2>&1;"
+          volumeMounts:
+            - mountPath: "/scripts"
+              name: python-script
+            - mountPath: "/state"
+              name: init-state
+      volumes:
+        - name: init-state
+          persistentVolumeClaim:
+            claimName: {{.Values.volumes.initConfig.name}}
+        - name: python-script
+          configMap:
+            name: {{ include "servarr.fullname" . }}-init-scripts
