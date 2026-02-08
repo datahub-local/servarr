@@ -1180,10 +1180,6 @@ audiobookshelf:
         main:
           main:
             mountPath: /metadata
-  # @ignore
-  addons:
-    codeserver:
-      enabled: false
 
   # @ignore
   ingress:
@@ -1244,30 +1240,6 @@ auralarchive:
               DOCKER_CONTAINER: "true"
               ABS_SYNC_PAGE_SIZE: "500"
   # @ignore
-  ingress:
-    auralarchive-ing:
-      enabled: true
-      primary: true
-      required: false
-      expandObjectName: false
-      annotations:
-        cert-manager.io/cluster-issuer: *issuer
-      ingressClassName: *ingressClassName
-      hosts:
-        - host: '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
-          secretName: auralarchive-tls
-      integrations:
-        certManager:
-          enabled: false
-        traefik:
-          enabled: false
-  # @ignore
   persistence:
     config:
       enabled: true
@@ -1297,6 +1269,36 @@ auralarchive:
         main:
           main:
             mountPath: /import
+
+  # @ignore
+  addons:
+    codeserver:
+      enabled: false
+
+  # @ignore
+  ingress:
+    auralarchive-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          secretName: auralarchive-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
 
 # -- Extra resources to deploy
 extraResources: []
