@@ -3,6 +3,29 @@ image:
   tag: latest
   pullPolicy: Always
 
+# @ignore
+argoCD: false
+# @ignore
+debug: false
+# @ignore
+redis:
+  enabled: false
+# @ignore
+postgresql:
+  enabled: false
+# @ignore
+mariadb:
+  enabled: false
+# @ignore
+mongodb:
+  enabled: false
+# @ignore
+clickhouse:
+  enabled: false
+# @ignore
+solr:
+  enabled: false
+
 securityContext:
   container:
     readOnlyRootFilesystem: false

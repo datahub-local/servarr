@@ -1211,6 +1211,24 @@ auralarchive:
   # # @default -- true
   # enabled: true
   # @ignore
+  redis:
+    enabled: false
+  # @ignore
+  postgresql:
+    enabled: false
+  # @ignore
+  mariadb:
+    enabled: false
+  # @ignore
+  mongodb:
+    enabled: false
+  # @ignore
+  clickhouse:
+    enabled: false
+  # @ignore
+  solr:
+    enabled: false
+  # @ignore
   workload:
     main:
       podSpec:
