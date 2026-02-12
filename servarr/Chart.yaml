@@ -84,12 +84,13 @@ dependencies:
     # condition: audiobookshelf.enabled
     tags:
       - audiobooks
-  - name: auralarchive
-    version: "0.1.0"
-    repository: "file://charts/auralarchive"
+  - name: common
+    version: "28.29.50"
+    repository: "oci://oci.trueforge.org/truecharts"
     # condition: auralarchive.enabled
     tags:
       - audiobooks
+    alias: auralarchive
 annotations:
   artifacthub.io/alternativeName: servar
   artifacthub.io/category: integration-delivery

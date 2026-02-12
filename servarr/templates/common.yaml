@@ -1,0 +1,14 @@
+{{- if .Values.common }}
+{{/* Make sure all variables are set properly */}}
+{{- include "tc.v1.common.loader.init" (dict "Values" .Values.common "Release" .Release "Chart" (dict "Name" "common") "Files" .Files "Template" .Template) }}
+
+{{- $newMiddlewares :=  list "tc-opencors-chain" }}
+{{- if .Values.common.ingress }}
+  {{- if .Values.common.ingress.main }}
+    {{- $_ := set .Values.common.ingress.main "fixedMiddlewares" $newMiddlewares -}}
+  {{- end }}
+{{- end }}
+
+{{/* Render the templates */}}
+{{ include "tc.v1.common.loader.apply" (dict "Values" .Values.common "Release" .Release "Chart" (dict "Name" "common") "Files" .Files "Template" .Template) }}
+{{- end }}

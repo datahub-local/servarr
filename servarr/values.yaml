@@ -11,9 +11,9 @@ global:
   # -- (string) Insert your Prowlarr, Sonarr, Radarr API key here (one to rule them all!). Must be 20 to 32 hexadecimal characters.
   # @default -- It is obligatory to set this value
   # @section -- Global
-  apikey:
-    # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
-    # @section -- Global
+  apikey: "bb8f28d76ee36FA0CAF60DA41E63E182"
+  # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
+  # @section -- Global
   storageClassName: &storageClassName "network-block"
   # -- (string) Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error!
   # @default -- nginx
@@ -1242,11 +1242,32 @@ audiobookshelf:
 
 # https://github.com/TheDragonShaman/AuralArchive
 auralarchive:
+  # @ignore
+  nameOverride: auralarchive
+
   # # -- Choose whether AuralArchive should be installed or not.
   # # @section Services
   # # @default -- true
   # enabled: true
 
+  # @ignore
+  image:
+    repository: ghcr.io/thedragonshaman/auralarchive
+    tag: v0.1.2
+    pullPolicy: Always
+  # @ignore
+  securityContext:
+    container:
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+      runAsUser: 0
+      runAsGroup: 0
+  # @ignore
+  service:
+    main:
+      ports:
+        main:
+          port: 8765
   # @ignore
   redis:
     enabled: false
@@ -1274,6 +1295,7 @@ auralarchive:
             env:
               DOCKER_CONTAINER: "true"
               ABS_SYNC_PAGE_SIZE: "500"
+              PORT: "8765"
   # @ignore
   persistence:
     config:

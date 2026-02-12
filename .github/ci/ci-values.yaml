@@ -1,7 +1,7 @@
 debug: true
 
 global:
-  apikey: &apikey "bb8f28d76ee36FA0CAF60DA41E63E182"
+  apikey: "bb8f28d76ee36FA0CAF60DA41E63E182"
   storageClassName: &storageClassName "nfs"
   ingressClassName: &ingressClassName "traefik"
   certManagerClusterIssuer: &issuer "selfsigned-cluster-issuer"
