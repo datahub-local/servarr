@@ -5,12 +5,11 @@
     "kubernetes-helm@latest",
     "helmfile@latest",
     "uv@latest",
-    "chart-testing@latest"
+    "chart-testing@latest",
+    "kubernetes-helmPlugins.helm-diff",
+    "kubernetes-helmPlugins.helm-unittest"
   ],
-  "init_hook": [
-    "helm plugin install https://github.com/databus23/helm-diff 2> /dev/null || true",
-    "helm plugin install https://github.com/helm-unittest/helm-unittest.git 2> /dev/null || true"
-  ],
+  "init_hook": [],
   "shell": {
     "scripts": {
       "debug_k8s": [
