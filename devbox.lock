@@ -1,6 +1,54 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "chart-testing@latest": {
+      "last_modified": "2026-01-23T17:20:52Z",
+      "resolved": "github:NixOS/nixpkgs/a1bab9e494f5f4939442a57a58d0449a109593fe#chart-testing",
+      "source": "devbox-search",
+      "version": "3.14.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vkb9yhmkhxgjimd8yxwg38309ag5ggn3-chart-testing-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/vkb9yhmkhxgjimd8yxwg38309ag5ggn3-chart-testing-3.14.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kz80w68cms063fg5wad6c45fwbngipd2-chart-testing-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/kz80w68cms063fg5wad6c45fwbngipd2-chart-testing-3.14.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d0i55qxlz021lzb1ganp0qjn713lzbyl-chart-testing-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/d0i55qxlz021lzb1ganp0qjn713lzbyl-chart-testing-3.14.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/i4g510wlzzxpy27g85nk9brj7i064gyb-chart-testing-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/i4g510wlzzxpy27g85nk9brj7i064gyb-chart-testing-3.14.0"
+        }
+      }
+    },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "last_modified": "2026-02-11T21:01:36Z",
       "resolved": "github:NixOS/nixpkgs/2343bbb58f99267223bc2aac4fc9ea301a155a16?lastModified=1770843696"
