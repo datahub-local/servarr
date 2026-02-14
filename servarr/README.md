@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.22.9](https://img.shields.io/badge/Version-0.22.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.9](https://img.shields.io/badge/AppVersion-0.22.9-informational?style=flat-square) 
+![Version: 0.22.11](https://img.shields.io/badge/Version-0.22.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.11](https://img.shields.io/badge/AppVersion-0.22.11-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,14 +22,14 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://oci.trueforge.org/truecharts | bazarr | 23.2.20 |
+| oci://oci.trueforge.org/truecharts | bazarr | 23.2.21 |
 | oci://oci.trueforge.org/truecharts | flaresolverr | 16.14.17 |
-| oci://oci.trueforge.org/truecharts | jellyfin | 22.2.31 |
-| oci://oci.trueforge.org/truecharts | jellyseerr | 13.13.22 |
-| oci://oci.trueforge.org/truecharts | prowlarr | 21.3.20 |
-| oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.21 |
-| oci://oci.trueforge.org/truecharts | radarr | 26.3.19 |
-| oci://oci.trueforge.org/truecharts | sonarr | 25.2.19 |
+| oci://oci.trueforge.org/truecharts | jellyfin | 22.2.33 |
+| oci://oci.trueforge.org/truecharts | jellyseerr | 13.13.23 |
+| oci://oci.trueforge.org/truecharts | prowlarr | 21.3.21 |
+| oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.22 |
+| oci://oci.trueforge.org/truecharts | radarr | 26.3.20 |
+| oci://oci.trueforge.org/truecharts | sonarr | 25.2.20 |
 
 ---
 

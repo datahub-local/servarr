@@ -32,19 +32,19 @@ maintainers:
     email: alvsanand@gmail.com
 dependencies:
   - name: sonarr
-    version: "25.2.19"
+    version: "25.2.20"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: sonarr.enabled
     tags:
       - tvseries
   - name: radarr
-    version: "26.3.19"
+    version: "26.3.20"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: radarr.enabled
     tags:
       - movies
   - name: prowlarr
-    version: "21.3.20"
+    version: "21.3.21"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: prowlarr.enabled
     tags:
@@ -52,7 +52,7 @@ dependencies:
       - tvseries
       - music
   - name: qbittorrent
-    version: "24.2.21"
+    version: "24.2.22"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: qbittorrent.enabled
     tags:
@@ -60,14 +60,14 @@ dependencies:
       - tvseries
       - music
   - name: jellyseerr
-    version: "13.13.22"
+    version: "13.13.23"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyseerr.enabled
     tags:
       - movies
       - tvseries
   - name: jellyfin
-    version: "22.2.31"
+    version: "22.2.33"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyfin.enabled
     tags:
@@ -83,7 +83,7 @@ dependencies:
       - tvseries
       - music
   - name: bazarr
-    version: "23.2.20"
+    version: "23.2.21"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: bazarr.enabled
     tags:
