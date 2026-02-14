@@ -4,8 +4,7 @@
     "k9s@latest",
     "kubernetes-helm@latest",
     "helmfile@latest",
-    "uv@latest",
-    "chart-testing@latest"
+    "uv@latest"
   ],
   "init_hook": [],
   "shell": {
