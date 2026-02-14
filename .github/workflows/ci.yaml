@@ -36,6 +36,9 @@ jobs:
       - name: Run Unit Tests
         run: devbox run unittest
 
+      - name: Helm Dependency update
+        run: devbox run helm dependency update servarr/ --debug
+
       - name: Helm Template
         run: devbox run helm template servarr servarr/ --debug -f .github/ci/ci-values.yaml
 
@@ -51,6 +54,9 @@ jobs:
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
+
+      - name: Helm Dependency update
+        run: devbox run helm dependency update servarr/ --debug
 
       - name: Start cluster and deploy dependencies
         run: devbox run start_k8s
@@ -72,6 +78,9 @@ jobs:
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
+
+      - name: Helm Dependency update
+        run: devbox run helm dependency update servarr/ --debug
 
       - name: Create Package
         run: devbox run helm package servarr/
