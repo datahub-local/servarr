@@ -1185,6 +1185,11 @@ audiobookshelf:
         successThreshold: 1
 
   # @ignore
+  addons:
+    codeserver:
+      enabled: false
+
+  # @ignore
   persistence:
     config:
       enabled: true
@@ -1280,6 +1285,11 @@ auralarchive:
         timeoutSeconds: 2
         failureThreshold: 60
         successThreshold: 1
+
+  # @ignore
+  addons:
+    codeserver:
+      enabled: false
 
   # @ignore
   persistence:
