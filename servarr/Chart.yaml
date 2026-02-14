@@ -19,6 +19,17 @@ keywords:
 home: https://github.com/datahub-local/servarr
 sources:
   - https://github.com/datahub-local/servarr
+annotations:
+  artifacthub.io/alternativeName: servar
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: AGPL-3.0-or-later
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/maintainers: |
+    - name: alvsanand
+      email: alvsanand@gmail.com
+maintainers:
+  - name: alvsanand
+    email: alvsanand@gmail.com
 dependencies:
   - name: sonarr
     version: "25.2.19"
@@ -84,22 +95,9 @@ dependencies:
     # condition: audiobookshelf.enabled
     tags:
       - audiobooks
-  - name: common
-    version: "28.29.50"
-    repository: "oci://oci.trueforge.org/truecharts"
+  - name: auralarchive
+    version: "0.1.0"
+    repository: "file://charts/auralarchive"
     # condition: auralarchive.enabled
     tags:
       - audiobooks
-    alias: auralarchive
-annotations:
-  artifacthub.io/alternativeName: servar
-  artifacthub.io/category: integration-delivery
-  artifacthub.io/license: AGPL-3.0-or-later
-  artifacthub.io/prerelease: "false"
-  artifacthub.io/maintainers: |
-    - name: alvsanand
-      email: alvsanand@gmail.com
-
-maintainers:
-  - name: alvsanand
-    email: alvsanand@gmail.com

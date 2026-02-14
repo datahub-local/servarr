@@ -64,6 +64,10 @@ spec:
               value: "1"
             - name: AURALARCHIVE_HOST
               value: "{{ .Release.Name }}-auralarchive.{{ .Release.Namespace }}.svc.cluster.local:8765"
+            - name: AURALARCHIVE_USERNAME
+              value: "{{ $.Values.dash.username }}"
+            - name: AURALARCHIVE_PASSWORD
+              value: "{{ $.Values.dash.password }}"
             - name: AUDIOBOOKSHELF_HOST
               value: "{{ .Release.Name }}-audiobookshelf.{{ .Release.Namespace }}.svc.cluster.local:10223"
             - name: AUDIOBOOKSHELF_API_KEY

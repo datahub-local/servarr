@@ -56,15 +56,14 @@ jobs:
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Start cluster and deploy
+      - name: Start cluster and deploy dependencies
         run: devbox run start_k8s
 
-      - name: Run verification tests
-        run: devbox run test_k8s
+      - name: Deploy test chart
+        run: devbox run test_install
 
-      - name: Collect debug info on failure
-        if: failure()
-        run: devbox run debug_k8s
+      - name: Run test verification
+        run: devbox run test_check
 
   package:
     runs-on: ubuntu-latest

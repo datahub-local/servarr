@@ -1242,60 +1242,45 @@ audiobookshelf:
 
 # https://github.com/TheDragonShaman/AuralArchive
 auralarchive:
-  # @ignore
-  nameOverride: auralarchive
-
   # # -- Choose whether AuralArchive should be installed or not.
   # # @section Services
   # # @default -- true
   # enabled: true
 
   # @ignore
-  image:
-    repository: ghcr.io/thedragonshaman/auralarchive
-    tag: v0.1.2
-    pullPolicy: Always
-  # @ignore
-  securityContext:
-    container:
-      readOnlyRootFilesystem: false
-      runAsNonRoot: false
-      runAsUser: 0
-      runAsGroup: 0
-  # @ignore
-  service:
-    main:
-      ports:
-        main:
-          port: 8765
-  # @ignore
-  redis:
-    enabled: false
-  # @ignore
-  postgresql:
-    enabled: false
-  # @ignore
-  mariadb:
-    enabled: false
-  # @ignore
-  mongodb:
-    enabled: false
-  # @ignore
-  clickhouse:
-    enabled: false
-  # @ignore
-  solr:
-    enabled: false
-  # @ignore
-  workload:
-    main:
-      podSpec:
-        containers:
-          main:
-            env:
-              DOCKER_CONTAINER: "true"
-              ABS_SYNC_PAGE_SIZE: "500"
-              PORT: "8765"
+  fallbackDefaults:
+    storageClass:
+    probeType: http
+    serviceProtocol: tcp
+    serviceType: ClusterIP
+    persistenceType: pvc
+    pvcRetain: false
+    pvcSize: 100Gi
+    vctSize: 100Gi
+    accessModes:
+      - ReadWriteMany
+    vctAccessModes:
+      - ReadWriteMany
+    probeTimeouts:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 1
+      readiness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+      startup:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 60
+        successThreshold: 1
+
   # @ignore
   persistence:
     config:
@@ -1308,7 +1293,6 @@ auralarchive:
         main:
           main:
             mountPath: /config
-    # @ignore
     downloads:
       enabled: true
       type: pvc
@@ -1317,7 +1301,7 @@ auralarchive:
         main:
           main:
             mountPath: /downloads
-    # @ignore
+
     import:
       enabled: true
       type: emptyDir

@@ -1,14 +1,43 @@
 #!/usr/local/bin/python3
 
 import os
-from utils import post, get, step, logger
+from utils import post, step, logger
 
 AURALARCHIVE_HOST = os.getenv("AURALARCHIVE_HOST")
+AURALARCHIVE_USERNAME = os.getenv("AURALARCHIVE_USERNAME")
+AURALARCHIVE_PASSWORD = os.getenv("AURALARCHIVE_PASSWORD")
 AUDIOBOOKSHELF_HOST = os.getenv("AUDIOBOOKSHELF_HOST")
 AUDIOBOOKSHELF_API_KEY = os.getenv("AUDIOBOOKSHELF_API_KEY", "")
 QBITTORRENT_HOST = os.getenv("QBITTORRENT_HOST")
 QBITTORRENT_USERNAME = os.getenv("QBITTORRENT_USERNAME")
 QBITTORRENT_PASSWORD = os.getenv("QBITTORRENT_PASSWORD")
+
+
+@step("auralarchive_setup_user")
+def setup_user():
+    """Create initial admin user in AuralArchive, matching Jellyfin init behavior."""
+    if not AURALARCHIVE_USERNAME or not AURALARCHIVE_PASSWORD:
+        logger.info(
+            "AuralArchive admin credentials not configured, skipping user setup"
+        )
+        return
+
+    logger.info("Setting up AuralArchive admin user")
+
+    body = {
+        "username": AURALARCHIVE_USERNAME,
+        "password": AURALARCHIVE_PASSWORD,
+        "confirm_password": AURALARCHIVE_PASSWORD,
+        "accept_terms": "on",
+    }
+
+    post(
+        url="http://{}/auth/setup".format(AURALARCHIVE_HOST),
+        headers={},
+        data=body,
+    )
+
+    logger.info("AuralArchive admin user setup completed")
 
 
 @step("auralarchive_configure_audiobookshelf")
@@ -133,6 +162,28 @@ def test_download_client():
     logger.info("Download client connection test result: {}".format(result))
 
 
+@step("auralarchive_enable_automatic_downloads")
+def enable_automatic_downloads():
+    """Enable automatic downloads in AuralArchive search automation settings."""
+    if not QBITTORRENT_HOST:
+        logger.info("qBittorrent host not configured, skipping automatic downloads")
+        return
+
+    logger.info("Enabling automatic downloads")
+
+    body = {
+        "auto_download_enabled": True,
+    }
+
+    post(
+        url="http://{}/settings/api/search/config".format(AURALARCHIVE_HOST),
+        headers={},
+        json=body,
+    )
+
+    logger.info("Automatic downloads enabled")
+
+
 @step("auralarchive_configure_media_management")
 def configure_media_management():
     """Configure media management paths."""
@@ -154,8 +205,10 @@ def configure_media_management():
 
 
 if __name__ == "__main__":
+    setup_user()
     configure_audiobookshelf()
     test_audiobookshelf()
     configure_download_client()
     test_download_client()
+    enable_automatic_downloads()
     configure_media_management()

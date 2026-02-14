@@ -16,6 +16,8 @@ else
   echo "[✓] k3d cluster already exists."
 fi
 
+(helm plugin install https://github.com/databus23/helm-diff || true)
+
 echo "[+] Setting kubectl context to ${KUBECONFIG_CONTEXT}..."
 kubectl config use-context "${KUBECONFIG_CONTEXT}" || (echo ERROR && exit 1)
 
