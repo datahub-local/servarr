@@ -10,7 +10,7 @@ dependencies:
   version: 21.3.21
 - name: qbittorrent
   repository: oci://oci.trueforge.org/truecharts
-  version: 24.2.22
+  version: 24.2.23
 - name: jellyseerr
   repository: oci://oci.trueforge.org/truecharts
   version: 13.13.23
@@ -29,5 +29,5 @@ dependencies:
 - name: auralarchive
   repository: file://charts/auralarchive
   version: 0.1.0
-digest: sha256:ba728927f1972888f61734b697766ace3c3f9dbce09e8c3ed71329aa61815779
-generated: "2026-02-15T07:47:03.685412221+01:00"
+digest: sha256:2973019fc9cd4c50e34e89ab6e19e1eb574f5715f9423f6da74016174a7f4c72
+generated: "2026-02-15T14:48:54.990100061Z"
