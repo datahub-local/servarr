@@ -14,19 +14,34 @@
   "includePaths": [
     "servarr/**"
   ],
+  "enabledManagers": [
+    "helmv3",
+    "helm-values",
+    "dockerfile"
+  ],
   "packageRules": [
     {
+      "matchManagers": [
+        "helmv3",
+        "helm-values",
+        "dockerfile"
+      ],
+      "matchDatasources": [
+        "helm",
+        "docker"
+      ],
       "matchUpdateTypes": [
         "major",
         "minor",
         "patch"
       ],
-      "groupName": "all Helm dependencies",
+      "groupName": "all Helm/Docker dependencies",
       "groupSlug": "all",
       "bumpVersions": [
         {
           "filePatterns": [
-            "servarr/Chart.{yaml,yml}"
+            "servarr/Chart.{yaml,yml}",
+            "servarr/charts/**/Chart.{yaml,yml}"
           ],
           "matchStrings": [
             "version:\\s(?<version>[^\\s]+)"
@@ -35,7 +50,8 @@
         },
         {
           "filePatterns": [
-            "servarr/Chart.{yaml,yml}"
+            "servarr/Chart.{yaml,yml}",
+            "servarr/charts/**/Chart.{yaml,yml}"
           ],
           "matchStrings": [
             "appVersion:\\s(?<version>[^\\s]+)"
