@@ -14,15 +14,28 @@
   "includePaths": [
     "servarr/**"
   ],
+  "enabledManagers": [
+    "helmv3",
+    "helm-values"
+  ],
   "packageRules": [
     {
+      "matchManagers": [
+        "helmv3"
+      ],
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchFileNames": [
+        "servarr/Chart.{yaml,yml}"
+      ],
       "matchUpdateTypes": [
         "major",
         "minor",
         "patch"
       ],
-      "groupName": "all Helm dependencies",
-      "groupSlug": "all",
+      "groupName": "main chart Helm dependencies",
+      "groupSlug": "main-chart",
       "bumpVersions": [
         {
           "filePatterns": [
@@ -36,6 +49,64 @@
         {
           "filePatterns": [
             "servarr/Chart.{yaml,yml}"
+          ],
+          "matchStrings": [
+            "appVersion:\\s(?<version>[^\\s]+)"
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
+      ]
+    },
+    {
+      "matchManagers": [
+        "helmv3"
+      ],
+      "matchDatasources": [
+        "helm"
+      ],
+      "matchFileNames": [
+        "servarr/charts/**/Chart.{yaml,yml}"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "groupName": "subchart Helm dependencies",
+      "groupSlug": "subchart-helm",
+      "bumpVersions": [
+        {
+          "filePatterns": [
+            "servarr/charts/**/Chart.{yaml,yml}"
+          ],
+          "matchStrings": [
+            "version:\\s(?<version>[^\\s]+)"
+          ],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
+      ]
+    },
+    {
+      "matchManagers": [
+        "helm-values"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchFileNames": [
+        "servarr/charts/**/values.{yaml,yml}"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "groupName": "subchart Docker dependencies",
+      "groupSlug": "subchart-docker",
+      "bumpVersions": [
+        {
+          "filePatterns": [
+            "servarr/charts/**/Chart.{yaml,yml}"
           ],
           "matchStrings": [
             "appVersion:\\s(?<version>[^\\s]+)"

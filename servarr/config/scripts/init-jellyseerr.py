@@ -33,13 +33,13 @@ def make_get(endpoint=""):
     return res["response"]
 
 
-def make_post(endpoint="", body=None):
+def make_post(endpoint="", json=None):
     url = "{0}{1}".format(jellyseer_url, endpoint)
-    res = post(url=url, json=body, session=session)
+    res = post(url=url, json=json, session=session)
     return res["response"]
 
 
-logger.info("Initizalizing JellySeer")
+logger.info("Initizalizing JellySeerr")
 
 ########## JELLYFIN INTEGRATION
 
@@ -63,7 +63,7 @@ def setup_jellyfin():
     }
 
     try:
-        jellyfin_response = make_post(jellyfin_endpoint, body=jellyfin_body)
+        jellyfin_response = make_post(jellyfin_endpoint, json=jellyfin_body)
 
         logger.debug("Fetching info from response..")
         token = jellyfin_response["jellyfinAuthToken"]
@@ -124,7 +124,7 @@ def setup_sonarr():
     if SONARR_EXTERNAL_URL:
         sonarr_body["externalUrl"] = SONARR_EXTERNAL_URL
 
-    make_post(sonarr_endpoint, body=sonarr_body)
+    make_post(sonarr_endpoint, json=sonarr_body)
 
 
 ############ RADARR
@@ -156,7 +156,7 @@ def setup_radarr():
     if RADARR_EXTERNAL_URL:
         radarr_body["externalUrl"] = RADARR_EXTERNAL_URL
 
-    make_post(radarr_endpoint, body=radarr_body)
+    make_post(radarr_endpoint, json=radarr_body)
 
 
 ############ FINALIZE
@@ -169,7 +169,7 @@ def finalize():
     finalize_endpoint = "/api/v1/settings/initialize"
     finalize_body = {}
 
-    make_post(finalize_endpoint, body=finalize_body)
+    make_post(finalize_endpoint, json=finalize_body)
 
 
 enable_telegram = os.getenv("TELEGRAM_NOTIFICATION_ENABLED", "False").lower() in (
@@ -191,7 +191,7 @@ def setup_telegram():
         "sendSilently": False,
     }
 
-    make_post(telegram_endpoint, body=telegram_body)
+    make_post(telegram_endpoint, json=telegram_body)
 
 
 external_auth_enabled = os.getenv("JELLYSEERR__AUTH__METHOD", "").lower() in (
@@ -204,7 +204,7 @@ def setup_external_auth():
     network_endpoint = "/api/v1/settings/network"
     network_body = {"trustProxy": True}
 
-    make_post(network_endpoint, body=network_body)
+    make_post(network_endpoint, json=network_body)
 
 
 setup_jellyfin()

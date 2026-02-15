@@ -46,7 +46,6 @@
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,helm,git,ssh
 
-Chart.lock
 my-values.yaml
 
 charts/*
