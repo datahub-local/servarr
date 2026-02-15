@@ -110,6 +110,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Run helm-docs and push to the same branch
         uses: losisin/helm-docs-github-action@v1
