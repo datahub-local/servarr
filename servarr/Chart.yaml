@@ -32,7 +32,7 @@ maintainers:
     email: alvsanand@gmail.com
 dependencies:
   - name: sonarr
-    version: "25.2.20"
+    version: "25.2.22"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: sonarr.enabled
     tags:
