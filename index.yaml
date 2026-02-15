@@ -10,6 +10,103 @@ entries:
           email: alvsanand@gmail.com
       artifacthub.io/prerelease: "false"
     apiVersion: v2
+    appVersion: 0.23.0
+    created: "2026-02-15T12:24:43.126264964Z"
+    dependencies:
+    - name: sonarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - tvseries
+      version: 25.2.20
+    - name: radarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      version: 26.3.20
+    - name: prowlarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 21.3.21
+    - name: qbittorrent
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 24.2.22
+    - name: jellyseerr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 13.13.23
+    - name: jellyfin
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 22.2.33
+    - name: flaresolverr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 16.14.17
+    - name: bazarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 23.2.21
+    - name: audiobookshelf
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - audiobooks
+      version: 12.20.14
+    - name: auralarchive
+      repository: file://charts/auralarchive
+      tags:
+      - audiobooks
+      version: 0.1.0
+    description: Servarr complete Helm Chart for Kubernetes
+    digest: 1011bd9baa74c458f3eb182ae2810f817914efcae8019ce6fb0925e1e5fb608c
+    home: https://github.com/datahub-local/servarr
+    keywords:
+    - servarr
+    - prowlarr
+    - radarr
+    - sonarr
+    - qbittorrent
+    - jellyseerr
+    - jellyfin
+    - flaresolverr
+    - bazarr
+    - audiobookshelf
+    - auralarchive
+    maintainers:
+    - email: alvsanand@gmail.com
+      name: alvsanand
+    name: servarr
+    sources:
+    - https://github.com/datahub-local/servarr
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/servarr-0.23.0/servarr-0.23.0.tgz
+    version: 0.23.0
+  - annotations:
+      artifacthub.io/alternativeName: servar
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/license: AGPL-3.0-or-later
+      artifacthub.io/maintainers: |
+        - name: alvsanand
+          email: alvsanand@gmail.com
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
     appVersion: 0.22.11
     created: "2026-02-14T13:59:29.186981635Z"
     dependencies:
@@ -5803,4 +5900,4 @@ entries:
     urls:
     - https://github.com/datahub-local/servarr/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-14T13:59:29.187329738Z"
+generated: "2026-02-15T12:24:43.126501096Z"
