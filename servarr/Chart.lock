@@ -25,9 +25,9 @@ dependencies:
   version: 23.2.21
 - name: audiobookshelf
   repository: oci://oci.trueforge.org/truecharts
-  version: 12.20.14
+  version: 12.20.15
 - name: auralarchive
   repository: file://charts/auralarchive
   version: 0.1.0
-digest: sha256:ba728927f1972888f61734b697766ace3c3f9dbce09e8c3ed71329aa61815779
-generated: "2026-02-15T07:47:03.685412221+01:00"
+digest: sha256:3de3f32b5cd796917445a6065c9d5abd679a272bd1a0d434da416ee35747df75
+generated: "2026-02-15T14:47:03.5132868Z"
