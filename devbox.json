@@ -10,29 +10,29 @@
   "init_hook": [],
   "shell": {
     "scripts": {
-      "start_k8s": [
+      "start-k8s": [
         "./.github/ci/start_k8s.sh"
       ],
-      "stop_k8s": [
+      "stop-k8s": [
         "./.github/ci/stop_k8s.sh"
       ],
-      "test_k8s": [
+      "test-k8s": [
         "./.github/ci/test_k8s.sh"
       ],
-      "setup_python": [
+      "setup-python": [
         "uv venv .venv && uv pip install -r servarr/config/scripts/requirements.txt"
       ],
-      "test_check": [
+      "test-check": [
         "./.github/ci/test_check.sh"
       ],
-      "test_install": [
+      "test-install": [
         "./.github/ci/test_install.sh"
       ],
-      "test_delete": "kubectl delete ns --force servarr || true",
+      "test-delete": "kubectl delete ns --force servarr || true",
       "init-charts": [
         "./.github/ci/init_charts.sh"
       ],
-      "lint_chart": "ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false",
+      "lint-chart": "ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false",
       "unittest": "(helm plugin install https://github.com/helm-unittest/helm-unittest || true) && helm unittest servarr"
     }
   }

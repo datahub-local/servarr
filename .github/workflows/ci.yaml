@@ -24,7 +24,7 @@ jobs:
         run: devbox run init-charts
 
       - name: Run chart-testing (lint)
-        run: devbox run lint_chart
+        run: devbox run lint-chart
 
       # - name: Setup upterm session
       #   uses: owenthereal/action-upterm@v1
@@ -66,20 +66,23 @@ jobs:
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
 
       - name: Helm Dependency build
         run: devbox run init-charts
 
       - name: Start cluster and deploy dependencies
-        run: devbox run start_k8s
+        run: devbox run start-k8s
 
       - name: Deploy test chart
-        run: devbox run test_install
+        run: devbox run test-install
 
       - name: Run test verification
-        run: devbox run test_check
+        run: devbox run test-check
 
   package:
     runs-on: ubuntu-latest
