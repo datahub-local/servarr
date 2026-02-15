@@ -25,13 +25,6 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: devbox run lint-chart
-
-      # - name: Setup upterm session
-      #   uses: owenthereal/action-upterm@v1
-      #   if: ${{ failure() }}
-      #   with:
-      #     limit-access-to-actor: true
-      #     wait-timeout-minutes: 5
   test:
     runs-on: ubuntu-latest
     needs: lint
@@ -83,6 +76,13 @@ jobs:
 
       - name: Run test verification
         run: devbox run test-check
+
+      - name: Setup upterm session
+        uses: owenthereal/action-upterm@v1
+        if: ${{ failure() }}
+        with:
+          limit-access-to-actor: true
+          wait-timeout-minutes: 5
 
   package:
     runs-on: ubuntu-latest
