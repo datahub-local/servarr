@@ -2,7 +2,11 @@
 
 set -euo pipefail
 
+CURRENT_DIR="$(dirname "$(realpath "$0")")"
+
 NAMESPACE="servarr"
 
-helm upgrade --install --dependency-update --create-namespace --namespace "$NAMESPACE" \
-  --values .github/ci/ci-values.yaml servarr servarr
+"$CURRENT_DIR/init_charts.sh"
+
+helm upgrade --install --create-namespace --namespace "$NAMESPACE" \
+  --values $CURRENT_DIR/ci-values.yaml servarr servarr

@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+CURRENT_DIR="$(dirname "$(realpath "$0")")"
+
 K3D_CLUSTER_NAME="dev-cluster"
 KUBECONFIG_CONTEXT="k3d-${K3D_CLUSTER_NAME}"
 export NFS_DIRECTORY=/tmp/k3d_data
@@ -16,6 +18,6 @@ else
   echo "[✓] k3d cluster deleted."
 fi
 
-docker compose -f .github/ci/nfs-docker-compose.yaml down
+docker compose -f "$CURRENT_DIR/nfs-docker-compose.yaml" down
 sudo rm -Rf "$NFS_DIRECTORY"
 echo "[✓] nfs server deleted."
