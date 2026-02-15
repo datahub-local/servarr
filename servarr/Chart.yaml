@@ -83,7 +83,7 @@ dependencies:
       - tvseries
       - music
   - name: bazarr
-    version: "23.2.21"
+    version: "23.2.22"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: bazarr.enabled
     tags:
