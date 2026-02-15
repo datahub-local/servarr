@@ -60,7 +60,7 @@ dependencies:
       - tvseries
       - music
   - name: jellyseerr
-    version: "13.13.23"
+    version: "13.13.24"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: jellyseerr.enabled
     tags:
