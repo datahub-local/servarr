@@ -199,7 +199,7 @@ def step(step_name, exit_on_failure=True):
                     logger.info(f"Completed step: {step_name}")
                     return result
                 except Exception as e:
-                    logger.error(f"Error occurred in step {step_name}: {e}")
+                    logger.exception(f"Error occurred in step {step_name}", exc_info=e)
                     if exit_on_failure:
                         exit(1)
                     else:

@@ -11,9 +11,9 @@ global:
   # -- (string) Insert your Prowlarr, Sonarr, Radarr API key here (one to rule them all!). Must be 20 to 32 hexadecimal characters.
   # @default -- It is obligatory to set this value
   # @section -- Global
-  apikey:
-    # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
-    # @section -- Global
+  apikey: "bb8f28d76ee36FA0CAF60DA41E63E182"
+  # -- (string) Insert your storage class here, e.g.: &storageClassName network-block. Do not remove the `&storageClassName` anchor!
+  # @section -- Global
   storageClassName: &storageClassName "network-block"
   # -- (string) Insert your ingress class here, e.g.: &ingressClassName nginx. Do not remove the `&ingressCassName` anchor, and do not leave the anchor value empty, otherwise you will face a `null` value error!
   # @default -- nginx
@@ -92,6 +92,10 @@ tags:
   # @default -- true
   # @section -- Tags
   music: true
+  # -- (bool) This tag will deploy: Audiobookshelf, AuralArchive
+  # @default -- true
+  # @section -- Tags
+  audiobooks: true
 
 metrics:
   # -- Anchor to set wether to deploy the export sidecar pods or not. Requires the Prometheus stack. Do not remove the `&metricsEnabled` anchor!
@@ -1138,6 +1142,209 @@ bazarr:
         main:
           main:
             mountPath: /mnt/media
+
+# https://github.com/trueforge-org/truecharts/blob/master/charts/stable/audiobookshelf/values.yaml
+audiobookshelf:
+  # # -- Choose whether Audiobookshelf should be installed or not.
+  # # @section Services
+  # # @default -- true
+  # enabled: true
+
+  # @ignore
+  fallbackDefaults:
+    storageClass:
+    probeType: http
+    serviceProtocol: tcp
+    serviceType: ClusterIP
+    persistenceType: pvc
+    pvcRetain: false
+    pvcSize: 100Gi
+    vctSize: 100Gi
+    accessModes:
+      - ReadWriteMany
+    vctAccessModes:
+      - ReadWriteMany
+    probeTimeouts:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 1
+      readiness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+      startup:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 60
+        successThreshold: 1
+
+  # @ignore
+  addons:
+    codeserver:
+      enabled: false
+
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    audiobooks:
+      enabled: true
+      type: pvc
+      existingClaim: *media-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /audiobooks
+    metadata:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /metadata
+
+  # @ignore
+  ingress:
+    audiobookshelf-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "audiobookshelf" .Values.global.ingressHostPattern }}'
+          secretName: audiobookshelf-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
+
+# https://github.com/TheDragonShaman/AuralArchive
+auralarchive:
+  # # -- Choose whether AuralArchive should be installed or not.
+  # # @section Services
+  # # @default -- true
+  # enabled: true
+
+  # @ignore
+  fallbackDefaults:
+    storageClass:
+    probeType: http
+    serviceProtocol: tcp
+    serviceType: ClusterIP
+    persistenceType: pvc
+    pvcRetain: false
+    pvcSize: 100Gi
+    vctSize: 100Gi
+    accessModes:
+      - ReadWriteMany
+    vctAccessModes:
+      - ReadWriteMany
+    probeTimeouts:
+      liveness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 1
+      readiness:
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 5
+        failureThreshold: 5
+        successThreshold: 2
+      startup:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 2
+        failureThreshold: 60
+        successThreshold: 1
+
+  # @ignore
+  addons:
+    codeserver:
+      enabled: false
+
+  # @ignore
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      size: 500Mi
+      accessModes: ReadWriteMany
+      storageClass: *storageClassName
+      targetSelector:
+        main:
+          main:
+            mountPath: /config
+    downloads:
+      enabled: true
+      type: pvc
+      existingClaim: *downloads-volume
+      targetSelector:
+        main:
+          main:
+            mountPath: /downloads
+
+    import:
+      enabled: true
+      type: emptyDir
+      size: 1Gi
+      targetSelector:
+        main:
+          main:
+            mountPath: /import
+
+  # @ignore
+  ingress:
+    auralarchive-ing:
+      enabled: true
+      primary: true
+      required: false
+      expandObjectName: false
+      annotations:
+        cert-manager.io/cluster-issuer: *issuer
+      ingressClassName: *ingressClassName
+      hosts:
+        - host: '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - '{{ replace "SERVICE" "auralarchive" .Values.global.ingressHostPattern }}'
+          secretName: auralarchive-tls
+      integrations:
+        certManager:
+          enabled: false
+        traefik:
+          enabled: false
 
 # -- Extra resources to deploy
 extraResources: []

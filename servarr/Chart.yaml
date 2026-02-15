@@ -2,8 +2,8 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.22.11
-appVersion: 0.22.11
+version: 0.23.0
+appVersion: 0.23.0
 keywords:
   - servarr
   - prowlarr
@@ -14,9 +14,22 @@ keywords:
   - jellyfin
   - flaresolverr
   - bazarr
+  - audiobookshelf
+  - auralarchive
 home: https://github.com/datahub-local/servarr
 sources:
   - https://github.com/datahub-local/servarr
+annotations:
+  artifacthub.io/alternativeName: servar
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: AGPL-3.0-or-later
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/maintainers: |
+    - name: alvsanand
+      email: alvsanand@gmail.com
+maintainers:
+  - name: alvsanand
+    email: alvsanand@gmail.com
 dependencies:
   - name: sonarr
     version: "25.2.20"
@@ -76,15 +89,15 @@ dependencies:
     tags:
       - movies
       - tvseries
-annotations:
-  artifacthub.io/alternativeName: servar
-  artifacthub.io/category: integration-delivery
-  artifacthub.io/license: AGPL-3.0-or-later
-  artifacthub.io/prerelease: "false"
-  artifacthub.io/maintainers: |
-    - name: alvsanand
-      email: alvsanand@gmail.com
-
-maintainers:
-  - name: alvsanand
-    email: alvsanand@gmail.com
+  - name: audiobookshelf
+    version: "12.20.14"
+    repository: "oci://oci.trueforge.org/truecharts"
+    # condition: audiobookshelf.enabled
+    tags:
+      - audiobooks
+  - name: auralarchive
+    version: "0.1.0"
+    repository: "file://charts/auralarchive"
+    # condition: auralarchive.enabled
+    tags:
+      - audiobooks

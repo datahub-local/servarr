@@ -2,34 +2,38 @@
 
 set -euo pipefail
 
+CURRENT_DIR="$(dirname "$(realpath "$0")")"
+
 K3D_CLUSTER_NAME="dev-cluster"
 KUBECONFIG_CONTEXT="k3d-${K3D_CLUSTER_NAME}"
 export NFS_DIRECTORY=/tmp/k3d_data
 export NFS_SERVER=nfs-server
 
 echo "[+] Checking k3d cluster status..."
-if ! k3d cluster list | grep -q "$K3D_CLUSTER_NAME"; then
+if ! (k3d cluster list "$K3D_CLUSTER_NAME" | grep -q "$K3D_CLUSTER_NAME") >/dev/null 2>&1; then
   echo "[+] Creating k3d cluster..."
   
-  k3d cluster create "$K3D_CLUSTER_NAME" --config .github/ci/k3d-config.yaml
+  k3d cluster create "$K3D_CLUSTER_NAME" --config "$CURRENT_DIR/k3d-config.yaml"
 else
   echo "[✓] k3d cluster already exists."
 fi
+
+(helm plugin install https://github.com/databus23/helm-diff || true)
 
 echo "[+] Setting kubectl context to ${KUBECONFIG_CONTEXT}..."
 kubectl config use-context "${KUBECONFIG_CONTEXT}" || (echo ERROR && exit 1)
 
 echo "[+] Waiting for Kubernetes to be ready..."
-kubectl wait --for=condition=Ready nodes --all --timeout=60s || (echo ERROR && exit 1)
+kubectl wait --for=condition=Ready nodes --all --timeout=120s || (echo ERROR && exit 1)
 
 echo "[+] Start NFS server..."
 mkdir -p "$NFS_DIRECTORY"
-docker-compose -f .github/ci/nfs-docker-compose.yaml up -d || (echo ERROR && exit 1)
+docker compose -f "$CURRENT_DIR/nfs-docker-compose.yaml" up -d || (echo ERROR && exit 1)
 
-kubectl apply -f .github/ci/nfs-daemonset.yaml
+kubectl apply -f "$CURRENT_DIR/nfs-daemonset.yaml"
 
 echo "[+] Running helmfile to install charts..."
-helmfile apply -f .github/ci/helmfile.yaml.gotmpl || (echo ERROR && exit 1)
+helmfile apply -f "$CURRENT_DIR/helmfile.yaml.gotmpl" || (echo ERROR && exit 1)
 
 # echo "[+] Waiting for pods to be ready..."
 # kubectl wait --for=condition=Ready pod -l app=nfs-server-provisioner -n kube-system --timeout=180s || (echo ERROR && exit 1)
