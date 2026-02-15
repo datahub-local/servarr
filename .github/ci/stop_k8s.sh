@@ -16,6 +16,6 @@ else
   echo "[✓] k3d cluster deleted."
 fi
 
-docker-compose -f .github/ci/nfs-docker-compose.yaml down
+docker compose -f .github/ci/nfs-docker-compose.yaml down
 sudo rm -Rf "$NFS_DIRECTORY"
 echo "[✓] nfs server deleted."
