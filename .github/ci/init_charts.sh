@@ -6,6 +6,6 @@ helm dependency update servarr
  
 for chart in servarr/charts/*/; do
   if [ -f "$chart/Chart.yaml" ]; then
-    echo helm lint "$chart"
+    helm dependency update "$chart"
   fi
 done
