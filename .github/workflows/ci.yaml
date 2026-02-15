@@ -2,10 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
@@ -25,6 +22,13 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: devbox run lint-chart
+
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
   test:
     runs-on: ubuntu-latest
     needs: lint
@@ -45,6 +49,13 @@ jobs:
 
       - name: Helm Template
         run: devbox run helm template servarr servarr/ -f .github/ci/ci-values.yaml
+
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
 
   integration-test:
     runs-on: ubuntu-latest
@@ -77,12 +88,12 @@ jobs:
       - name: Run test verification
         run: devbox run test-check
 
-      - name: Setup upterm session
-        uses: owenthereal/action-upterm@v1
-        if: ${{ failure() }}
-        with:
-          limit-access-to-actor: true
-          wait-timeout-minutes: 5
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
 
   package:
     runs-on: ubuntu-latest
