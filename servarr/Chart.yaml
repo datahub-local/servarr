@@ -44,7 +44,7 @@ dependencies:
     tags:
       - movies
   - name: prowlarr
-    version: "21.3.21"
+    version: "21.3.23"
     repository: "oci://oci.trueforge.org/truecharts"
     # condition: prowlarr.enabled
     tags:

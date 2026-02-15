@@ -7,7 +7,7 @@ dependencies:
   version: 26.3.20
 - name: prowlarr
   repository: oci://oci.trueforge.org/truecharts
-  version: 21.3.21
+  version: 21.3.23
 - name: qbittorrent
   repository: oci://oci.trueforge.org/truecharts
   version: 24.2.22
@@ -29,5 +29,5 @@ dependencies:
 - name: auralarchive
   repository: file://charts/auralarchive
   version: 0.1.0
-digest: sha256:ba728927f1972888f61734b697766ace3c3f9dbce09e8c3ed71329aa61815779
-generated: "2026-02-15T07:47:03.685412221+01:00"
+digest: sha256:95dc3a3a05a2d88ebae54dc7030284585b64d83a171443c903482b9ecead3a41
+generated: "2026-02-15T14:48:35.749196024Z"
