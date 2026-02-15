@@ -66,6 +66,9 @@ jobs:
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Helm Dependency build
         run: devbox run init-charts
 
