@@ -29,6 +29,9 @@
         "./.github/ci/test_install.sh"
       ],
       "test_delete": "kubectl delete ns --force servarr || true",
+      "init-charts": [
+        "./.github/ci/init_charts.sh"
+      ],
       "lint_chart": "ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false",
       "unittest": "(helm plugin install https://github.com/helm-unittest/helm-unittest || true) && helm unittest servarr"
     }

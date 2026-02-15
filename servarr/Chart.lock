@@ -27,7 +27,7 @@ dependencies:
   repository: oci://oci.trueforge.org/truecharts
   version: 12.20.14
 - name: auralarchive
-  repository: file://sub-charts/auralarchive
+  repository: file://charts/auralarchive
   version: 0.1.0
-digest: sha256:cb89dd27aea1525a9b98e7513da77bb30cee09c926811e196ae6625b24f58b1b
-generated: "2026-02-14T20:02:16.603583442+01:00"
+digest: sha256:ba728927f1972888f61734b697766ace3c3f9dbce09e8c3ed71329aa61815779
+generated: "2026-02-15T07:47:03.685412221+01:00"

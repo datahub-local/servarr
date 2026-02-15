@@ -97,7 +97,7 @@ dependencies:
       - audiobooks
   - name: auralarchive
     version: "0.1.0"
-    repository: "file://sub-charts/auralarchive"
+    repository: "file://charts/auralarchive"
     # condition: auralarchive.enabled
     tags:
       - audiobooks

@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
-    branches-ignore:
+    branches:
+      - main
+  pull_request:
+    branches:
       - main
 
 jobs:
@@ -11,12 +14,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
 
       - name: Helm Dependency build
-        run: devbox run helm dependency build servarr/
+        run: devbox run init-charts
 
       - name: Run chart-testing (lint)
         run: devbox run lint_chart
@@ -33,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
@@ -53,6 +60,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
@@ -73,8 +82,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: integration-test
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@v0.14.0
@@ -89,8 +100,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: package
     steps:
-      - name: Checkout to current commit
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run helm-docs and push to the same branch
         uses: losisin/helm-docs-github-action@v1
