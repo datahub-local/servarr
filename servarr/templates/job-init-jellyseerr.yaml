@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "servarr.fullname" . }}-jellyseer-init
+  name: {{ include "servarr.fullname" . }}-jellyseerr-init
   labels:
     {{- include "servarr.labels" . | nindent 4 }}
   annotations:
@@ -27,7 +27,7 @@ spec:
   activeDeadlineSeconds: {{ .Values.init.job.activeDeadlineSeconds }}
   template:
     metadata:
-      name: "{{ include "servarr.fullname" . }}-jellyseer-finalizer"
+      name: "{{ include "servarr.fullname" . }}-jellyseerr-finalizer"
       labels:
         {{- include "servarr.selectorLabels" . | nindent 8 }}
     spec:
@@ -51,7 +51,7 @@ spec:
             - "-c"
             - "until wget --spider -S -T 10 \"http://{{ .Release.Name }}-jellyseerr.{{ .Release.Namespace }}.svc.cluster.local:10241\" 2>&1 | grep -qw '200\\|301\\|302' > /dev/null ; do echo Waiting for servarr-jellyseerr ; sleep 5 ; done ; sleep 10 ;"
       containers:
-      - name: initialize-jellyseer
+      - name: initialize-jellyseerr
         image: {{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
         imagePullPolicy: {{ .Values.init.image.pullPolicy }}
         resources:

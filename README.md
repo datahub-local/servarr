@@ -46,13 +46,13 @@ To deploy the Helm Chart:
 1. Add the Helm repository:
 
 ```shell
-$ helm repo add fonzdm https://fonzdm.github.io/servarr
+$ helm repo add datahub-local https://datahub-local.github.io/servarr/
 ```
 
 2. Install the release:
 
 ```shell
-$ helm install <release-name> fonzdm/servarr \
+$ helm install <release-name> datahub-local/servarr \
 --namespace servarr \
 --create-namespace \
 --values values.yaml
@@ -75,7 +75,7 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of cond
 ## :busts_in_silhouette: Contributors
 
 <a href="https://github.com/datahub-local/servarr/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=fonzdm/servarr" />
+  <img src="https://contrib.rocks/image?repo=datahub-local/servarr" />
 </a>
 
 See the full list of [contributors](https://github.com/datahub-local/servarr/contributors) who participated in this project.

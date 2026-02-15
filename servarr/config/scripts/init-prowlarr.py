@@ -213,7 +213,7 @@ def setup_indexers():
                 logger.debug("Setup {} index".format(idx["name"]))
                 post(
                     url="http://{}/api/v1/indexer".format(PROWLARR_HOST),
-                    body=idx["body"],
+                    json=idx["body"],
                     headers=headers,
                 )
 

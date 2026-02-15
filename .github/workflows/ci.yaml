@@ -2,10 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
@@ -17,96 +14,114 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4.1.0
+      - name: Install Devbox
+        uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: 3.13
-
-      - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.7.0
-
-      - name: Fetch cached dependencies charts
-        id: cache-charts
-        uses: actions/cache/restore@v4
-        with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
+      - name: Helm Dependency build
+        run: devbox run init-charts
 
       - name: Run chart-testing (lint)
-        env:
-          CACHE_HIT: ${{ steps.cache-charts.outputs.cache-hit == 'true' }}
-        run: |
-          extraArgs=""
-          if [[ "$CACHE_HIT" == "true" ]] ; then
-            extraArgs="--skip-helm-dependencies"
-          fi
-          ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false $extraArgs
+        run: devbox run lint-chart
 
-      - name: Save dependencies charts in the cache
-        if: ${{ steps.cache-charts.outputs.cache-hit != 'true' }}
-        id: cache-charts-save
-        uses: actions/cache/save@v4
-        with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
-
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
   test:
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4.1.0
+      - name: Install Devbox
+        uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Install helm-unittest plugin
-        run: helm plugin install --verify=false https://github.com/helm-unittest/helm-unittest.git
+      - name: Helm Dependency build
+        run: devbox run init-charts
 
       - name: Run Unit Tests
-        run: helm unittest servarr
+        run: devbox run unittest
 
-  build:
+      - name: Helm Template
+        run: devbox run helm template servarr servarr/ -f .github/ci/ci-values.yaml
+
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
+
+  integration-test:
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4.1.0
+      - name: Install Devbox
+        uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Fetch cached dependencies charts
-        id: cache-charts
-        uses: actions/cache/restore@v4
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+
+      - name: Helm Dependency build
+        run: devbox run init-charts
+
+      - name: Start cluster and deploy dependencies
+        run: devbox run start-k8s
+
+      - name: Deploy test chart
+        run: devbox run test-install
+
+      - name: Run test verification
+        run: devbox run test-check
+
+      # - name: Setup upterm session
+      #   uses: owenthereal/action-upterm@v1
+      #   if: ${{ failure() }}
+      #   with:
+      #     limit-access-to-actor: true
+      #     wait-timeout-minutes: 5
+
+  package:
+    runs-on: ubuntu-latest
+    needs: integration-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          path: servarr/charts
-          key: dep-charts-${{ hashFiles('servarr/Chart.yaml') }}
+          fetch-depth: 0
 
-      - name: Helm Dependency update
-        if: ${{ steps.cache-charts.outputs.cache-hit != 'true' }}
-        run: helm dependency update servarr/ --debug
+      - name: Install Devbox
+        uses: jetify-com/devbox-install-action@v0.14.0
 
-      - name: Helm Template
-        run: helm template servarr servarr/ --debug -f .github/ci/ci-values.yaml
+      - name: Helm Dependency build
+        run: devbox run init-charts
 
       - name: Create Package
-        run: helm package servarr/
+        run: devbox run helm package servarr/
 
   docs:
     runs-on: ubuntu-latest
-    needs: build
+    needs: package
     steps:
-      - name: Checkout to current commit
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Run helm-docs and push to the same branch
         uses: losisin/helm-docs-github-action@v1

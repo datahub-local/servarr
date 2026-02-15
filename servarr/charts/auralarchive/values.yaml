@@ -1,0 +1,71 @@
+image:
+  repository: ghcr.io/thedragonshaman/auralarchive
+  tag: v0.1.2
+  pullPolicy: IfNotPresent
+
+securityContext:
+  container:
+    readOnlyRootFilesystem: false
+    runAsNonRoot: false
+    runAsUser: 0
+    runAsGroup: 0
+
+service:
+  main:
+    ports:
+      main:
+        port: 8765
+
+redis:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+mariadb:
+  enabled: false
+
+mongodb:
+  enabled: false
+
+clickhouse:
+  enabled: false
+
+solr:
+  enabled: false
+
+workload:
+  main:
+    podSpec:
+      containers:
+        main:
+          probes:
+            liveness:
+              path: /health
+            readiness:
+              path: /health
+            startup:
+              path: /health
+          env:
+            DOCKER_CONTAINER: "true"
+            ABS_SYNC_PAGE_SIZE: "500"
+            PORT: "{{ .Values.service.main.ports.main.port }}"
+
+persistence:
+  config:
+    enabled: true
+    type: pvc
+    size: 500Mi
+    mountPath: /config
+  downloads:
+    enabled: true
+    mountPath: /downloads
+  import:
+    enabled: true
+    type: emptyDir
+    size: 1Gi
+    mountPath: /import
+
+ingress:
+  main:
+    enabled: false
