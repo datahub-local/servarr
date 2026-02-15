@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.22.11](https://img.shields.io/badge/Version-0.22.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.11](https://img.shields.io/badge/AppVersion-0.22.11-informational?style=flat-square) 
+![Version: 0.23.1](https://img.shields.io/badge/Version-0.23.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.23.1](https://img.shields.io/badge/AppVersion-0.23.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,14 +22,16 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://oci.trueforge.org/truecharts | bazarr | 23.2.21 |
-| oci://oci.trueforge.org/truecharts | flaresolverr | 16.14.17 |
-| oci://oci.trueforge.org/truecharts | jellyfin | 22.2.33 |
-| oci://oci.trueforge.org/truecharts | jellyseerr | 13.13.23 |
-| oci://oci.trueforge.org/truecharts | prowlarr | 21.3.21 |
-| oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.22 |
-| oci://oci.trueforge.org/truecharts | radarr | 26.3.20 |
-| oci://oci.trueforge.org/truecharts | sonarr | 25.2.20 |
+| file://charts/auralarchive | auralarchive | * |
+| oci://oci.trueforge.org/truecharts | audiobookshelf | 12.20.15 |
+| oci://oci.trueforge.org/truecharts | bazarr | 23.2.22 |
+| oci://oci.trueforge.org/truecharts | flaresolverr | 16.14.18 |
+| oci://oci.trueforge.org/truecharts | jellyfin | 22.2.34 |
+| oci://oci.trueforge.org/truecharts | jellyseerr | 13.13.24 |
+| oci://oci.trueforge.org/truecharts | prowlarr | 21.3.23 |
+| oci://oci.trueforge.org/truecharts | qbittorrent | 24.2.23 |
+| oci://oci.trueforge.org/truecharts | radarr | 26.3.22 |
+| oci://oci.trueforge.org/truecharts | sonarr | 25.2.22 |
 
 ---
 
@@ -330,6 +332,7 @@ flaresolverr:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| tags.audiobooks | bool | true | This tag will deploy: Audiobookshelf, AuralArchive |
 | tags.movies | bool | true | This tag will deploy: Radarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr |
 | tags.music | bool | true | This tag will deploy: Prowlarr, QBitTorrent, Jellyfin, Flaresolverr |
 | tags.tvseries | bool | true | This tag will deploy: Sonarr, Prowlarr, QBitTorrent, Jellyseerr, Jellyfin, Flaresolverr, Bazarr |
@@ -356,6 +359,8 @@ flaresolverr:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | argoCD | bool | false | The flag changes the behavior id deployed with ArgoCD. |
+| audiobookshelf | object | `{}` |  |
+| auralarchive | object | `{}` |  |
 | bazarr | object | `{}` |  |
 | extraResources | list | `[]` | Extra resources to deploy |
 | flaresolverr.workload.main.podSpec.containers.main.probes.liveness.path | string | `"/health"` |  |
