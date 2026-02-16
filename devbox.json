@@ -20,7 +20,7 @@
         "./.github/ci/test_k8s.sh"
       ],
       "setup-python": [
-        "uv venv .venv && uv pip install -r servarr/config/scripts/requirements.txt"
+        "uv venv .venv && uv pip install -r charts/servarr/config/scripts/requirements.txt"
       ],
       "test-check": [
         "./.github/ci/test_check.sh"
@@ -32,8 +32,8 @@
       "init-charts": [
         "./.github/ci/init_charts.sh"
       ],
-      "lint-chart": "ct lint --chart-dirs=. --charts=servarr --validate-maintainers=false",
-      "unittest": "(helm plugin install https://github.com/helm-unittest/helm-unittest || true) && helm unittest servarr"
+      "lint-chart": "ct lint --chart-dirs=. --charts=charts/servarr --validate-maintainers=false",
+      "unittest": "(helm plugin install https://github.com/helm-unittest/helm-unittest || true) && helm unittest charts/servarr"
     }
   }
 }
