@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      chart:
+        description: "Optional chart name to release (e.g. servarr or auralarchive)"
+        required: false
+        default: ""
 
 permissions: {}
 jobs:
@@ -38,10 +44,56 @@ jobs:
 
           git checkout main
 
+      - name: Resolve chart scope
+        id: chart_scope
+        env:
+          INPUT_CHART: ${{ github.event.inputs.chart || '' }}
+        run: |
+          echo "charts_dir=./charts" >> "${GITHUB_OUTPUT}"
+          echo "skip_packaging=true" >> "${GITHUB_OUTPUT}"
+          if [ -n "${INPUT_CHART}" ]; then
+            echo "chart_name=${INPUT_CHART}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "chart_name=" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Package chart(s)
+        env:
+          CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
+        run: |
+          rm -rf .cr-release-packages
+          mkdir -p .cr-release-packages
+
+          if [ -n "${CHART_NAME}" ]; then
+            chart_dir="./charts/${CHART_NAME}"
+            if [ ! -f "${chart_dir}/Chart.yaml" ]; then
+              echo "Chart not found: ${chart_dir}/Chart.yaml" >&2
+              exit 1
+            fi
+            charts=("${chart_dir}")
+          else
+            shopt -s nullglob
+            charts=()
+            for chart_dir in ./charts/*/; do
+              if [ -f "${chart_dir}Chart.yaml" ]; then
+              charts+=("${chart_dir%/}")
+              fi
+            done
+          fi
+
+          for chart_dir in "${charts[@]}"; do
+            if [ -f "${chart_dir}/Chart.yaml" ]; then
+              echo "Packaging chart in ${chart_dir}..."
+              helm dependency build "${chart_dir}" || helm dependency update "${chart_dir}"
+              helm package "${chart_dir}" --destination .cr-release-packages
+            fi
+          done
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         with:
-          charts_dir: ./
+          charts_dir: ${{ steps.chart_scope.outputs.charts_dir }}
+          skip_packaging: ${{ steps.chart_scope.outputs.skip_packaging }}
           config: ./.github/ci/cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -55,11 +107,25 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push charts to GHCR
+        env:
+          CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
         run: |
           shopt -s nullglob
           for pkg in .cr-release-packages/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
+
+            if [ -n "${CHART_NAME}" ]; then
+              base_pkg="$(basename "${pkg}")"
+              case "${base_pkg}" in
+                "${CHART_NAME}"-*)
+                  ;;
+                *)
+                  continue
+                  ;;
+              esac
+            fi
+
             helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/servarr"
           done

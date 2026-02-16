@@ -12,7 +12,7 @@
   "automergeStrategy": "squash",
   "forkProcessing": "enabled",
   "includePaths": [
-    "servarr/**"
+    "charts/**"
   ],
   "packageRules": [
     {
@@ -24,58 +24,20 @@
         "docker"
       ],
       "matchFileNames": [
-        "servarr/Chart.{yaml,yml}"
+        "/^charts\\/[^\\/]+\\/Chart\\.(yaml|yml)$/"
       ],
       "matchUpdateTypes": [
         "major",
         "minor",
         "patch"
       ],
-      "groupName": "main chart Helm dependencies",
-      "groupSlug": "main-chart",
+      "groupName": "Helm dependencies",
+      "groupSlug": "helm",
+      "additionalBranchPrefix": "{{parentDir}}-",
       "bumpVersions": [
         {
           "filePatterns": [
-            "servarr/Chart.{yaml,yml}"
-          ],
-          "matchStrings": [
-            "version:\\s(?<version>[^\\s]+)"
-          ],
-          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
-        },
-        {
-          "filePatterns": [
-            "servarr/Chart.{yaml,yml}"
-          ],
-          "matchStrings": [
-            "appVersion:\\s(?<version>[^\\s]+)"
-          ],
-          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
-        }
-      ]
-    },
-    {
-      "matchManagers": [
-        "helmv3"
-      ],
-      "matchDatasources": [
-        "helm",
-        "docker"
-      ],
-      "matchFileNames": [
-        "servarr/charts/**/Chart.{yaml,yml}"
-      ],
-      "matchUpdateTypes": [
-        "major",
-        "minor",
-        "patch"
-      ],
-      "groupName": "subchart Helm dependencies",
-      "groupSlug": "subchart-helm",
-      "bumpVersions": [
-        {
-          "filePatterns": [
-            "servarr/charts/**/Chart.{yaml,yml}"
+            "{{packageFileDir}}/Chart.{yaml,yml}"
           ],
           "matchStrings": [
             "version:\\s(?<version>[^\\s]+)"
@@ -92,19 +54,20 @@
         "docker"
       ],
       "matchFileNames": [
-        "servarr/charts/**/values.{yaml,yml}"
+        "/^charts\\/[^\\/]+\\/values\\.(yaml|yml)$/"
       ],
       "matchUpdateTypes": [
         "major",
         "minor",
         "patch"
       ],
-      "groupName": "subchart Docker dependencies",
-      "groupSlug": "subchart-docker",
+      "groupName": "Docker dependencies",
+      "groupSlug": "docker",
+      "additionalBranchPrefix": "{{parentDir}}-",
       "bumpVersions": [
         {
           "filePatterns": [
-            "servarr/charts/**/Chart.{yaml,yml}"
+            "{{packageFileDir}}/Chart.{yaml,yml}"
           ],
           "matchStrings": [
             "version:\\s(?<version>[^\\s]+)"
