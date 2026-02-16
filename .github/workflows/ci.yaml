@@ -48,7 +48,7 @@ jobs:
         run: devbox run unittest
 
       - name: Helm Template
-        run: devbox run helm template servarr servarr/ -f .github/ci/ci-values.yaml
+        run: devbox run helm template servarr charts/servarr -f .github/ci/ci-values.yaml
 
       # - name: Setup upterm session
       #   uses: owenthereal/action-upterm@v1
@@ -110,7 +110,7 @@ jobs:
         run: devbox run init-charts
 
       - name: Create Package
-        run: devbox run helm package servarr/
+        run: devbox run helm package charts/servarr
 
   docs:
     runs-on: ubuntu-latest
@@ -128,4 +128,4 @@ jobs:
           git-push: true
           git-push-user-name: "servarr Bot 🤖"
           git-push-user-email: "servarr-bot@datahub.local"
-          chart-search-root: ./servarr
+          chart-search-root: ./charts

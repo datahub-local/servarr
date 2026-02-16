@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      chart:
+        description: "Optional chart name to release (e.g. servarr or auralarchive)"
+        required: false
+        default: ""
 
 permissions: {}
 jobs:
@@ -38,10 +44,23 @@ jobs:
 
           git checkout main
 
+      - name: Resolve chart scope
+        id: chart_scope
+        env:
+          INPUT_CHART: ${{ github.event.inputs.chart || '' }}
+        run: |
+          if [ -n "${INPUT_CHART}" ]; then
+            echo "charts_dir=./charts/${INPUT_CHART}" >> "${GITHUB_OUTPUT}"
+            echo "chart_name=${INPUT_CHART}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "charts_dir=./charts" >> "${GITHUB_OUTPUT}"
+            echo "chart_name=" >> "${GITHUB_OUTPUT}"
+          fi
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         with:
-          charts_dir: ./
+          charts_dir: ${{ steps.chart_scope.outputs.charts_dir }}
           config: ./.github/ci/cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -55,11 +74,25 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push charts to GHCR
+        env:
+          CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
         run: |
           shopt -s nullglob
           for pkg in .cr-release-packages/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
+
+            if [ -n "${CHART_NAME}" ]; then
+              base_pkg="$(basename "${pkg}")"
+              case "${base_pkg}" in
+                "${CHART_NAME}"-*)
+                  ;;
+                *)
+                  continue
+                  ;;
+              esac
+            fi
+
             helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/servarr"
           done

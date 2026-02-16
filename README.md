@@ -30,10 +30,10 @@ $ helm dependency update
 ```
   
 3. Prepare your [`values.yaml`](#values)
-4. Try it in your cluster to check that everything is fine (replace the `servarr/` with the chart folder if your workdir is different):
+4. Try it in your cluster to check that everything is fine (replace the `charts/servarr` with the chart folder if your workdir is different):
 
 ```shell
-$ helm install servarr-dev servarr/ \
+$ helm install servarr-dev charts/servarr \
 --namespace servarr-dev \
 --create-namespace \
 --values values.yaml
@@ -60,13 +60,13 @@ $ helm install <release-name> datahub-local/servarr \
 
 > [!WARNING]
 >
-> A minimum set of values must include the various parameters with the anchor reference, otherwise the anchors won't work as intended and the deployment may fail. Please, read the [Helm Chart README.md](./servarr/README.md) section to see a minimal `values.yaml` sample.
+> A minimum set of values must include the various parameters with the anchor reference, otherwise the anchors won't work as intended and the deployment may fail. Please, read the [Helm Chart README.md](./charts/servarr/README.md) section to see a minimal `values.yaml` sample.
 
 If you want to install a specific version, execute the previous command adding: `--version x.y.z`
 
 ### Values
 
-Please read the [Helm Chart README.md](./servarr/README.md) for details on how to configure the values needed for this chart.
+Please read the [Helm Chart README.md](./charts/servarr/README.md) for details on how to configure the values needed for this chart.
 
 ## :memo: Contributing
 
