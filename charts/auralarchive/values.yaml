@@ -65,6 +65,11 @@ persistence:
     type: emptyDir
     size: 1Gi
     mountPath: /import
+  logs:
+    enabled: true
+    type: emptyDir
+    size: 500Mi
+    mountPath: /app/auralarchive/logs
 
 ingress:
   main:
