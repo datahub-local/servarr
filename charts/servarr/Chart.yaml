@@ -2,8 +2,8 @@ apiVersion: v2
 name: servarr
 description: Servarr complete Helm Chart for Kubernetes
 type: application
-version: 0.24.1
-appVersion: 0.24.1
+version: 0.24.2
+appVersion: 0.24.2
 keywords:
   - servarr
   - prowlarr
@@ -20,7 +20,7 @@ home: https://github.com/datahub-local/servarr
 sources:
   - https://github.com/datahub-local/servarr
 annotations:
-  artifacthub.io/alternativeName: servar
+  artifacthub.io/alternativeName: servarr
   artifacthub.io/category: integration-delivery
   artifacthub.io/license: AGPL-3.0-or-later
   artifacthub.io/prerelease: "false"
@@ -96,7 +96,7 @@ dependencies:
     tags:
       - audiobooks
   - name: auralarchive
-    version: "0.2.0"
+    version: "0.2.1"
     repository: "https://datahub-local.github.io/servarr"
     # condition: auralarchive.enabled
     tags:
