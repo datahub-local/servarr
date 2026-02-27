@@ -65,11 +65,21 @@ persistence:
     type: emptyDir
     size: 1Gi
     mountPath: /import
-  logs:
+  app_lauralarchive_logs:
     enabled: true
     type: emptyDir
     size: 500Mi
     mountPath: /app/auralarchive/logs
+  app_conversion:
+    enabled: true
+    type: emptyDir
+    size: 1Gi
+    mountPath: /app/conversion
+  app_audible_dl:
+    enabled: true
+    type: emptyDir
+    size: 1Gi
+    mountPath: /app/audible_dl
 
 ingress:
   main:
