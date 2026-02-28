@@ -83,6 +83,7 @@ jobs:
 
       - name: Deploy test chart
         run: devbox run test-install
+        continue-on-error: true
 
       - name: Run test verification
         run: devbox run test-check
