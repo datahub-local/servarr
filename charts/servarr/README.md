@@ -23,7 +23,7 @@ Servarr complete Helm Chart for Kubernetes
 | Repository | Name | Version |
 |------------|------|---------|
 | https://datahub-local.github.io/servarr | auralarchive | 0.2.2 |
-| oci://oci.trueforge.org/truecharts | audiobookshelf | 12.23.1 |
+| oci://oci.trueforge.org/truecharts | audiobookshelf | 12.24.0 |
 | oci://oci.trueforge.org/truecharts | bazarr | 23.5.2 |
 | oci://oci.trueforge.org/truecharts | flaresolverr | 16.17.1 |
 | oci://oci.trueforge.org/truecharts | jellyfin | 22.5.2 |
