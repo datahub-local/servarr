@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.25.0](https://img.shields.io/badge/Version-0.25.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.24.3](https://img.shields.io/badge/AppVersion-0.24.3-informational?style=flat-square) 
+![Version: 0.25.1](https://img.shields.io/badge/Version-0.25.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.25.1](https://img.shields.io/badge/AppVersion-0.25.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,16 +22,16 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://datahub-local.github.io/servarr | auralarchive | 0.2.2 |
-| oci://oci.trueforge.org/truecharts | audiobookshelf | 12.24.0 |
-| oci://oci.trueforge.org/truecharts | bazarr | 23.6.0 |
-| oci://oci.trueforge.org/truecharts | flaresolverr | 16.18.0 |
-| oci://oci.trueforge.org/truecharts | jellyfin | 22.6.1 |
-| oci://oci.trueforge.org/truecharts | jellyseerr | 13.17.0 |
-| oci://oci.trueforge.org/truecharts | prowlarr | 21.7.0 |
-| oci://oci.trueforge.org/truecharts | qbittorrent | 24.6.0 |
-| oci://oci.trueforge.org/truecharts | radarr | 26.7.0 |
-| oci://oci.trueforge.org/truecharts | sonarr | 25.6.0 |
+| https://datahub-local.github.io/servarr | auralarchive | 0.3.1 |
+| oci://oci.trueforge.org/truecharts | audiobookshelf | 12.25.0 |
+| oci://oci.trueforge.org/truecharts | bazarr | 23.6.2 |
+| oci://oci.trueforge.org/truecharts | flaresolverr | 16.18.2 |
+| oci://oci.trueforge.org/truecharts | jellyfin | 22.6.4 |
+| oci://oci.trueforge.org/truecharts | jellyseerr | 13.17.2 |
+| oci://oci.trueforge.org/truecharts | prowlarr | 21.7.2 |
+| oci://oci.trueforge.org/truecharts | qbittorrent | 24.6.2 |
+| oci://oci.trueforge.org/truecharts | radarr | 26.7.2 |
+| oci://oci.trueforge.org/truecharts | sonarr | 25.6.2 |
 
 ---
 
