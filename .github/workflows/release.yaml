@@ -47,49 +47,82 @@ jobs:
       - name: Resolve chart scope
         id: chart_scope
         env:
+          EVENT_NAME: ${{ github.event_name }}
           INPUT_CHART: ${{ github.event.inputs.chart || '' }}
+          PUSH_BEFORE: ${{ github.event.before || '' }}
+          PUSH_AFTER: ${{ github.sha }}
         run: |
-          echo "charts_dir=./charts" >> "${GITHUB_OUTPUT}"
+          echo "charts_dir=./.cr-index" >> "${GITHUB_OUTPUT}"
           echo "skip_packaging=true" >> "${GITHUB_OUTPUT}"
+
           if [ -n "${INPUT_CHART}" ]; then
-            echo "chart_name=${INPUT_CHART}" >> "${GITHUB_OUTPUT}"
-          else
-            echo "chart_name=" >> "${GITHUB_OUTPUT}"
-          fi
-
-      - name: Package chart(s)
-        env:
-          CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
-        run: |
-          rm -rf .cr-release-packages
-          mkdir -p .cr-release-packages
-
-          if [ -n "${CHART_NAME}" ]; then
-            chart_dir="./charts/${CHART_NAME}"
+            chart_dir="./charts/${INPUT_CHART}"
             if [ ! -f "${chart_dir}/Chart.yaml" ]; then
               echo "Chart not found: ${chart_dir}/Chart.yaml" >&2
               exit 1
             fi
-            charts=("${chart_dir}")
-          else
-            shopt -s nullglob
-            charts=()
-            for chart_dir in ./charts/*/; do
-              if [ -f "${chart_dir}Chart.yaml" ]; then
-              charts+=("${chart_dir%/}")
-              fi
-            done
+
+            echo "chart_name=${INPUT_CHART}" >> "${GITHUB_OUTPUT}"
+            echo "has_charts=true" >> "${GITHUB_OUTPUT}"
+            exit 0
           fi
 
-          for chart_dir in "${charts[@]}"; do
-            if [ -f "${chart_dir}/Chart.yaml" ]; then
-              echo "Packaging chart in ${chart_dir}..."
-              helm dependency build "${chart_dir}" || helm dependency update "${chart_dir}"
-              helm package "${chart_dir}" --destination .cr-release-packages
+          if [ "${EVENT_NAME}" = "push" ] && [ -n "${PUSH_BEFORE}" ] && [ "${PUSH_BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+            diff_base="${PUSH_BEFORE}"
+          else
+            diff_base="$(git rev-list --max-count=1 HEAD^ 2>/dev/null || true)"
+          fi
+
+          if [ -n "${diff_base}" ]; then
+            changed_files="$(git diff --name-only "${diff_base}" "${PUSH_AFTER}")"
+          else
+            changed_files="$(git show --pretty='' --name-only "${PUSH_AFTER}")"
+          fi
+
+          chart_names="$({ printf '%s\n' "${changed_files}" | awk -F/ '/^charts\/[^\/]+\// { print $2 }' | sort -u; } | paste -sd ',' -)"
+
+          if [ -n "${chart_names}" ]; then
+            echo "chart_name=${chart_names}" >> "${GITHUB_OUTPUT}"
+            echo "has_charts=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "chart_name=" >> "${GITHUB_OUTPUT}"
+            echo "has_charts=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Package chart(s)
+        if: steps.chart_scope.outputs.has_charts == 'true'
+        env:
+          CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
+        run: |
+          rm -rf .cr-index
+          rm -rf .cr-release-packages
+          mkdir -p .cr-index
+          mkdir -p .cr-release-packages
+
+          IFS=',' read -r -a selected_charts <<< "${CHART_NAME}"
+          charts=()
+          for chart_name in "${selected_charts[@]}"; do
+            chart_dir="./charts/${chart_name}"
+            if [ ! -f "${chart_dir}/Chart.yaml" ]; then
+              echo "Chart not found: ${chart_dir}/Chart.yaml" >&2
+              exit 1
             fi
+            charts+=("${chart_dir}")
           done
 
+          for chart_dir in "${charts[@]}"; do
+            echo "Packaging chart in ${chart_dir}..."
+            helm dependency build "${chart_dir}" || helm dependency update "${chart_dir}"
+            helm package "${chart_dir}" --destination .cr-release-packages
+            cp -R "${chart_dir}" .cr-index/
+          done
+
+      - name: Skip release when no charts changed
+        if: steps.chart_scope.outputs.has_charts != 'true'
+        run: echo "No chart directory changes detected for this run."
+
       - name: Run chart-releaser
+        if: steps.chart_scope.outputs.has_charts == 'true'
         uses: helm/chart-releaser-action@v1.5.0
         with:
           charts_dir: ${{ steps.chart_scope.outputs.charts_dir }}
@@ -100,6 +133,7 @@ jobs:
           CR_SKIP_EXISTING: "true"
 
       - name: Login to GHCR
+        if: steps.chart_scope.outputs.has_charts == 'true'
         uses: docker/login-action@v3.0.0
         with:
           registry: ghcr.io
@@ -107,24 +141,31 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push charts to GHCR
+        if: steps.chart_scope.outputs.has_charts == 'true'
         env:
           CHART_NAME: ${{ steps.chart_scope.outputs.chart_name }}
         run: |
           shopt -s nullglob
+          IFS=',' read -r -a selected_charts <<< "${CHART_NAME}"
+
           for pkg in .cr-release-packages/*.tgz; do
             if [ -z "${pkg:-}" ]; then
               break
             fi
 
-            if [ -n "${CHART_NAME}" ]; then
-              base_pkg="$(basename "${pkg}")"
+            base_pkg="$(basename "${pkg}")"
+            should_push=false
+            for chart_name in "${selected_charts[@]}"; do
               case "${base_pkg}" in
-                "${CHART_NAME}"-*)
-                  ;;
-                *)
-                  continue
+                "${chart_name}"-*)
+                  should_push=true
+                  break
                   ;;
               esac
+            done
+
+            if [ "${should_push}" != 'true' ]; then
+              continue
             fi
 
             helm push "${pkg}" "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/servarr"
