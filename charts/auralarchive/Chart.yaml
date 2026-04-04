@@ -2,9 +2,11 @@ apiVersion: v2
 name: auralarchive
 description: AuralArchive app subchart
 type: application
-version: 0.3.1
+
+version: 0.4.4
 appVersion: 0.1.2
+
 dependencies:
   - name: common
     repository: oci://oci.trueforge.org/truecharts
-    version: 28.33.4
+    version: 29.0.10
