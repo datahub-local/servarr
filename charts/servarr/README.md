@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.26.0](https://img.shields.io/badge/Version-0.26.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.25.1](https://img.shields.io/badge/AppVersion-0.25.1-informational?style=flat-square) 
+![Version: 0.26.1](https://img.shields.io/badge/Version-0.26.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.25.1](https://img.shields.io/badge/AppVersion-0.25.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -22,19 +22,16 @@ Servarr complete Helm Chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://datahub-local.github.io/servarr | auralarchive | 0.3.1 |
-| oci://oci.trueforge.org/truecharts | audiobookshelf | 13.0.1 |
-| oci://oci.trueforge.org/truecharts | bazarr | 24.0.0 |
-| oci://oci.trueforge.org/truecharts | flaresolverr | 17.0.0 |
-| oci://oci.trueforge.org/truecharts | jellyfin | 23.0.0 |
-| oci://oci.trueforge.org/truecharts | jellyseerr | 14.0.0 |
-| oci://oci.trueforge.org/truecharts | prowlarr | 22.0.0 |
-| oci://oci.trueforge.org/truecharts | qbittorrent | 25.0.0 |
-| oci://oci.trueforge.org/truecharts | radarr | 27.0.0 |
-| oci://oci.trueforge.org/truecharts | sonarr | 26.0.0 |
-
-> [!NOTE]  
-> This chart uses OCI (Open Container Initiative) image references for most dependencies via TrueCharts. OCI references do not require a Helm repository to be added - they are resolved directly during `helm dependency update`. This simplifies installation and deployment.
+| oci://ghcr.io/datahub-local/servarr | auralarchive | 0.4.4 |
+| oci://oci.trueforge.org/truecharts | audiobookshelf | 13.0.2 |
+| oci://oci.trueforge.org/truecharts | bazarr | 24.0.2 |
+| oci://oci.trueforge.org/truecharts | flaresolverr | 17.0.1 |
+| oci://oci.trueforge.org/truecharts | jellyfin | 23.0.5 |
+| oci://oci.trueforge.org/truecharts | jellyseerr | 14.0.1 |
+| oci://oci.trueforge.org/truecharts | prowlarr | 22.0.3 |
+| oci://oci.trueforge.org/truecharts | qbittorrent | 25.0.2 |
+| oci://oci.trueforge.org/truecharts | radarr | 27.0.3 |
+| oci://oci.trueforge.org/truecharts | sonarr | 26.0.3 |
 
 ---
 
