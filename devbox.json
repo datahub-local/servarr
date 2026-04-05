@@ -10,28 +10,14 @@
   "init_hook": [],
   "shell": {
     "scripts": {
-      "start-k8s": [
-        "./.github/ci/start_k8s.sh"
-      ],
-      "stop-k8s": [
-        "./.github/ci/stop_k8s.sh"
-      ],
-      "test-k8s": [
-        "./.github/ci/test_k8s.sh"
-      ],
-      "setup-python": [
-        "uv venv .venv && uv pip install -r charts/servarr/config/scripts/requirements.txt"
-      ],
-      "test-check": [
-        "./.github/ci/test_check.sh"
-      ],
-      "test-install": [
-        "./.github/ci/test_install.sh"
-      ],
+      "start-k8s": ".github/ci/start_k8s.sh",
+      "stop-k8s": ".github/ci/stop_k8s.sh",
+      "test-k8s": ".github/ci/test_k8s.sh",
+      "setup-python": "uv venv .venv && uv pip install -r charts/servarr/config/scripts/requirements.txt",
+      "test-check": ".github/ci/test_check.sh",
+      "test-install": ".github/ci/test_install.sh",
       "test-delete": "kubectl delete ns --force servarr || true",
-      "init-charts": [
-        "./.github/ci/init_charts.sh"
-      ],
+      "init-charts": "./.github/ci/init_charts.sh",
       "lint-chart": "ct lint --chart-dirs=. --charts=charts/servarr --validate-maintainers=false",
       "unittest": "(helm plugin install https://github.com/helm-unittest/helm-unittest || true) && helm unittest charts/servarr"
     }

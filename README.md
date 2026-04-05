@@ -41,18 +41,12 @@ $ helm install servarr-dev charts/servarr \
 
 ## :rocket: Deployment
 
-To deploy the Helm Chart:
+To deploy the Helm Chart using OCI images:
 
-1. Add the Helm repository:
-
-```shell
-$ helm repo add datahub-local https://datahub-local.github.io/servarr/
-```
-
-2. Install the release:
+1. Install the release:
 
 ```shell
-$ helm install <release-name> datahub-local/servarr \
+$ helm install <release-name> oci://ghcr.io/datahub-local/servarr \
 --namespace servarr \
 --create-namespace \
 --values values.yaml
