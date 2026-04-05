@@ -1,0 +1,116 @@
+apiVersion: v1
+entries:
+  auralarchive:
+  - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2026-04-05T11:30:20.087395733Z"
+    dependencies:
+    - name: common
+      repository: oci://oci.trueforge.org/truecharts
+      version: 29.0.10
+    description: AuralArchive app subchart
+    digest: 6221e32f2d9953dac603769756a977f55db4633e2863fa1cd87e5eddd7882470
+    name: auralarchive
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/auralarchive-0.4.4/auralarchive-0.4.4.tgz
+    version: 0.4.4
+  servarr:
+  - annotations:
+      artifacthub.io/alternativeName: servarr
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/license: AGPL-3.0-or-later
+      artifacthub.io/maintainers: |
+        - name: alvsanand
+          email: alvsanand@gmail.com
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 0.25.1
+    created: "2026-04-05T11:30:20.359018024Z"
+    dependencies:
+    - name: sonarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - tvseries
+      version: 26.0.3
+    - name: radarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      version: 27.0.3
+    - name: prowlarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 22.0.3
+    - name: qbittorrent
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 25.0.2
+    - name: jellyseerr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 14.0.1
+    - name: jellyfin
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 23.0.5
+    - name: flaresolverr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      - music
+      version: 17.0.1
+    - name: bazarr
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - movies
+      - tvseries
+      version: 24.0.2
+    - name: audiobookshelf
+      repository: oci://oci.trueforge.org/truecharts
+      tags:
+      - audiobooks
+      version: 13.0.2
+    - name: auralarchive
+      repository: oci://ghcr.io/datahub-local/servarr
+      tags:
+      - audiobooks
+      version: 0.4.4
+    description: Servarr complete Helm Chart for Kubernetes
+    digest: 23abf01529f335de358e3090ac6f5a8d51b0a3623fa56e03bc7321bcf3c0952a
+    home: https://github.com/datahub-local/servarr
+    keywords:
+    - servarr
+    - prowlarr
+    - radarr
+    - sonarr
+    - qbittorrent
+    - jellyseerr
+    - jellyfin
+    - flaresolverr
+    - bazarr
+    - audiobookshelf
+    - auralarchive
+    maintainers:
+    - email: alvsanand@gmail.com
+      name: alvsanand
+    name: servarr
+    sources:
+    - https://github.com/datahub-local/servarr
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/servarr-0.26.1/servarr-0.26.1.tgz
+    version: 0.26.1
+generated: "2026-04-05T11:30:20.35902658Z"
