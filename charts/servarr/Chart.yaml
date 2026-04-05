@@ -96,8 +96,8 @@ dependencies:
     tags:
       - audiobooks
   - name: auralarchive
-    version: "0.4.3"
-    repository: "https://datahub-local.github.io/servarr"
+    version: "0.4.4"
+    repository: "oci://ghcr.io/datahub-local/servarr"
     # condition: auralarchive.enabled
     tags:
       - audiobooks

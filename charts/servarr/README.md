@@ -33,6 +33,9 @@ Servarr complete Helm Chart for Kubernetes
 | oci://oci.trueforge.org/truecharts | radarr | 27.0.0 |
 | oci://oci.trueforge.org/truecharts | sonarr | 26.0.0 |
 
+> [!NOTE]  
+> This chart uses OCI (Open Container Initiative) image references for most dependencies via TrueCharts. OCI references do not require a Helm repository to be added - they are resolved directly during `helm dependency update`. This simplifies installation and deployment.
+
 ---
 
 > [!IMPORTANT]  

@@ -354,41 +354,41 @@ indexers:
       implementation: Cardigann
       implementationName: Cardigann
       indexerUrls:
-        - https://1337x.to/
-        - https://1337x.st/
-        - https://x1337x.ws/
-        - https://x1337x.eu/
-        - https://x1337x.se/
-        - https://1337x.so/
-        - https://1337x.unblockit.africa/
-        - https://1337x.unblockninja.com/
-        - https://1337x.ninjaproxy1.com/
-        - https://1337x.proxyninja.org/
-        - https://1337x.torrentbay.st/
+        - https://1337x.bz/
+        - https://1337x.tw/
       infoLink: https://wiki.servarr.com/prowlarr/supported-indexers#1337x
       language: en-US
       legacyUrls:
-        - https://1337x.is/
         - https://1337x.gd/
-        - https://1337x.nocensor.lol/
-        - https://1337x.unblockit.ink/
-        - https://1337x.nocensor.art/
-        - https://1337x.unblockit.bio/
-        - https://1337x.unblockit.boo/
+        - https://1337x.is/
+        - https://1337x.mrunblock.bond/
         - https://1337x.mrunblock.guru/
         - https://1337x.mrunblock.life/
-        - https://1337x.unblockit.click/
+        - https://1337x.nocensor.art/
+        - https://1337x.nocensor.lol/
+        - https://1337x.proxyninja.org/
+        - https://1337x.so/
+        - https://1337x.st/
+        - https://1337x.to/
+        - https://1337x.torrentbay.st/
+        - https://1337x.unblockit.africa/https://1337x.unblockninja.com/
         - https://1337x.unblockit.asia/
+        - https://1337x.unblockit.bio/
+        - https://1337x.unblockit.boo/
+        - https://1337x.unblockit.click/
+        - https://1337x.unblockit.dad/
+        - https://1337x.unblockit.date/
+        - https://1337x.unblockit.esq/
+        - https://1337x.unblockit.foo/
+        - https://1337x.unblockit.ing/
+        - https://1337x.unblockit.ink/
         - https://1337x.unblockit.mov/
         - https://1337x.unblockit.rsvp/
         - https://1337x.unblockit.vegas/
-        - https://1337x.unblockit.esq/
         - https://1337x.unblockit.zip/
-        - https://1337x.unblockit.foo/
-        - https://1337x.unblockit.ing/
-        - https://1337x.mrunblock.bond/
-        - https://1337x.unblockit.date/
-        - https://1337x.unblockit.dad/
+        - https://x1337x.eu/
+        - https://x1337x.se/
+        - https://x1337x.ws/
       name: 1337x
       priority: 25
       privacy: public
