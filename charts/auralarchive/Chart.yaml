@@ -3,10 +3,10 @@ name: auralarchive
 description: AuralArchive app subchart
 type: application
 
-version: 0.4.4
+version: 0.4.5
 appVersion: 0.1.2
 
 dependencies:
   - name: common
     repository: oci://oci.trueforge.org/truecharts
-    version: 29.0.10
+    version: 29.0.15
