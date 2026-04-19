@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.26.4](https://img.shields.io/badge/Version-0.26.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.25.1](https://img.shields.io/badge/AppVersion-0.25.1-informational?style=flat-square) 
+![Version: 0.26.5](https://img.shields.io/badge/Version-0.26.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.25.1](https://img.shields.io/badge/AppVersion-0.25.1-informational?style=flat-square) 
 
 Servarr complete Helm Chart for Kubernetes
 
@@ -24,14 +24,14 @@ Servarr complete Helm Chart for Kubernetes
 |------------|------|---------|
 | oci://ghcr.io/datahub-local/servarr | auralarchive | 0.4.5 |
 | oci://oci.trueforge.org/truecharts | audiobookshelf | 13.0.3 |
-| oci://oci.trueforge.org/truecharts | bazarr | 24.0.5 |
+| oci://oci.trueforge.org/truecharts | bazarr | 24.0.6 |
 | oci://oci.trueforge.org/truecharts | flaresolverr | 17.0.2 |
 | oci://oci.trueforge.org/truecharts | jellyfin | 23.0.9 |
-| oci://oci.trueforge.org/truecharts | jellyseerr | 14.0.3 |
+| oci://oci.trueforge.org/truecharts | jellyseerr | 14.0.4 |
 | oci://oci.trueforge.org/truecharts | prowlarr | 22.0.6 |
-| oci://oci.trueforge.org/truecharts | qbittorrent | 25.0.4 |
-| oci://oci.trueforge.org/truecharts | radarr | 27.0.5 |
-| oci://oci.trueforge.org/truecharts | sonarr | 26.0.5 |
+| oci://oci.trueforge.org/truecharts | qbittorrent | 25.0.6 |
+| oci://oci.trueforge.org/truecharts | radarr | 27.0.6 |
+| oci://oci.trueforge.org/truecharts | sonarr | 26.0.6 |
 
 ---
 
