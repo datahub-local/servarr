@@ -9,4 +9,4 @@ appVersion: 0.1.2
 dependencies:
   - name: common
     repository: oci://oci.trueforge.org/truecharts
-    version: 29.0.15
+    version: 29.0.16
