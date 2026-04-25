@@ -3,6 +3,20 @@ entries:
   auralarchive:
   - apiVersion: v2
     appVersion: 0.1.2
+    created: "2026-04-25T05:11:50.977230095Z"
+    dependencies:
+    - name: common
+      repository: oci://oci.trueforge.org/truecharts
+      version: 29.0.15
+    description: AuralArchive app subchart
+    digest: 57468bd425bdba5ccbde97a2f74fb66b7990b909df9fccce6f825719e672762a
+    name: auralarchive
+    type: application
+    urls:
+    - https://github.com/datahub-local/servarr/releases/download/auralarchive-0.4.6/auralarchive-0.4.6.tgz
+    version: 0.4.6
+  - apiVersion: v2
+    appVersion: 0.1.2
     created: "2026-04-18T10:56:05.834194181Z"
     dependencies:
     - name: common
@@ -515,4 +529,4 @@ entries:
     urls:
     - https://github.com/datahub-local/servarr/releases/download/servarr-0.26.1/servarr-0.26.1.tgz
     version: 0.26.1
-generated: "2026-04-25T05:10:26.694261376Z"
+generated: "2026-04-25T05:11:50.977255032Z"
